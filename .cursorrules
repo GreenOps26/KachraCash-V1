@@ -1,0 +1,37 @@
+# .cursorrules — KachraCash IDE Coding Guidelines & Rules
+
+# PROJECT CONTEXT
+Project: KachraCash (কচৰা ক্যাশ)
+Location: Guwahati, Assam (Northeast India)
+Architecture: Unified Vite React PWA (Citizen) + Offline-First Flutter App (Collector) + Node.js Fastify API + PostgreSQL 16 PostGIS + Prisma + Redis BullMQ.
+
+# NON-NEGOTIABLE ARCHITECTURAL & CODING RULES
+
+1. TAKE-RATE FINANCIAL MATH:
+   - Always enforce an 8% platform take-rate.
+   - Gross Transaction Value = Sum of (Weight_kg * Unit_Price_per_kg).
+   - Net Citizen Payout = Gross_Value * 0.92.
+   - Central Revenue Credit = Gross_Value * 0.08.
+   - Never hardcode alternative commission percentages unless reading dynamically from the Admin Pricing Matrix.
+
+2. HARDWARE SCALE WEIGHT VALIDATION:
+   - In production Flutter code, scrap weight values MUST originate from signed 8-byte BLE GATT packets (UUID: 0000ffe0-0000-1000-8000-00805f9b34fb).
+   - NEVER create UI text fields that allow manual keyboard entry of weights in collector field mode.
+
+3. FLOATING ESCROW TRANSACTIONS:
+   - All collector float balance debits and wallet ledger updates MUST be wrapped inside Prisma atomic `$transaction` blocks.
+   - Always verify: `collector.floatBalance >= grossTransactionAmount` before executing an OTP authorization or payout trigger.
+
+4. ASSAMESE AUDIO UI & ACCESSIBILITY:
+   - All collector-facing state updates in Flutter MUST include calls to `flutter_tts` using language code `as-IN` (Assamese).
+   - UI buttons must maintain a minimum touch target size of 48x48dp with high contrast background tokens (#111827 / #047857).
+
+5. UNIFIED APP MODEL (NO WHATSAPP BOTS):
+   - Do NOT generate code, APIs, or scripts for WhatsApp Business API integration or Meta WhatsApp bots. Both Citizens and Collectors are served via the unified app shell.
+
+6. FASTIFY & PRISMA CODING STANDARDS:
+   - Fastify HTTP handlers MUST define explicit JSON Schema / TypeBox request and response validation objects.
+   - Use PostGIS spatial functions (`ST_DWithin`, `ST_SetSRID`) for radius matching.
+
+7. OFFLINE SYNC SECURITY:
+   - Offline transactions saved to SQLite (`sqflite`) MUST be signed with an HMAC-SHA256 hash before local storage to prevent payload tampering prior to cloud sync.

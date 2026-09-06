@@ -1,0 +1,28 @@
+{
+  "name": "kachracash",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Asset-light, two-sided scrap-tech and circular economy marketplace in Guwahati, Assam",
+  "packageManager": "pnpm@11.3.0",
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "test:unit": "pnpm --filter @kachracash/api run test:unit",
+    "test:integration": "pnpm --filter @kachracash/api run test:integration",
+    "db:generate": "pnpm --filter @kachracash/db run generate",
+    "db:push": "pnpm --filter @kachracash/db run push",
+    "format": "prettier --write \"**/*.{ts,tsx,md,json}\""
+  },
+  "devDependencies": {
+    "@turbo/gen": "^2.4.4",
+    "@typescript-eslint/eslint-plugin": "^8.26.0",
+    "@typescript-eslint/parser": "^8.26.0",
+    "eslint": "^9.21.0",
+    "prettier": "^3.5.2",
+    "turbo": "^2.4.4",
+    "typescript": "^5.7.3"
+  }
+}
