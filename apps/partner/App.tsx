@@ -226,9 +226,16 @@ export default function App() {
 
         <View style={styles.headerActions}>
           {/* Float Balance Pill with Topup Trigger */}
-          <View style={styles.floatPill}>
+          <View style={[styles.floatPill, floatBalance < 2000 && { borderColor: partnerTheme.colors.alert }]}>
             <Text style={styles.floatLabel}>ৱালেট জমা (FLOAT):</Text>
-            <Text style={styles.floatValue}>₹{floatBalance.toFixed(0)}</Text>
+            <Text style={[styles.floatValue, floatBalance < 2000 && { color: partnerTheme.colors.alert }]}>
+              ₹{floatBalance.toFixed(0)}
+            </Text>
+            {floatBalance < 2000 ? (
+              <Text style={{ fontSize: 9, fontWeight: '800', color: partnerTheme.colors.alert, marginTop: 1 }}>
+                ⚠️ কম ফ্ল’ট: নূন্যতম ₹২,০০০ প্ৰয়োজন
+              </Text>
+            ) : null}
             <Text
               style={styles.topupLink}
               onPress={() => setShowTopupModal(true)}

@@ -79,8 +79,8 @@ export const BLEScaleStream: React.FC<BLEScaleStreamProps> = ({
       {/* Mandatory Zero-Tare Visual Check */}
       <View style={styles.tareRow}>
         {isTared ? (
-          <View testID="tare-status-success" style={[styles.tareBadge, { backgroundColor: colors.affirmationLight }]}>
-            <Text style={[styles.tareText, { color: colors.affirmation }]}>
+          <View testID="tare-status-success" style={[styles.tareBadge, { backgroundColor: '#1F4D3C' }]}>
+            <Text style={[styles.tareText, { color: '#C7FF3D' }]}>
               ✓ ZERO-TARED (0.000 kg BASELINE VERIFIED)
             </Text>
           </View>
@@ -93,7 +93,7 @@ export const BLEScaleStream: React.FC<BLEScaleStreamProps> = ({
         )}
       </View>
 
-      {/* Primary Weight Meter */}
+      {/* Primary Weight Meter: Dark LCD Scale Mirror Panel */}
       <View style={styles.weightDisplay}>
         <Text testID="scale-weight-display" style={styles.weightNumber}>
           {weightKg.toFixed(3)}

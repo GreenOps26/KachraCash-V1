@@ -101,18 +101,26 @@ export const CategorySelector: React.FC<CategorySelectorProps> = ({
           const maxRate = dynamicRate ? dynamicRate.maxRate : tierInfo.defaultMax;
           const floorRate = dynamicRate ? dynamicRate.floorRate : tierInfo.defaultFloor;
 
+          const tierBgColor = tierInfo.id === 'MIXED_BULKY'
+            ? (isSelected ? '#F4E3CD' : colors.card)
+            : (isSelected ? colors.affirmationLight : colors.card);
+
           return (
             <TouchableOpacity
               key={tierInfo.id}
               testID={`tier-card-${tierInfo.id}`}
-              style={[styles.card, isSelected && styles.cardSelected]}
+              style={[
+                styles.card,
+                { backgroundColor: tierBgColor },
+                isSelected && (tierInfo.id === 'MIXED_BULKY' ? styles.cardSelectedMarigold : styles.cardSelected),
+              ]}
               onPress={() => onSelectTier(tierInfo.id)}
               activeOpacity={0.8}
             >
               <View style={styles.cardHeader}>
                 <Text style={styles.emoji}>{tierInfo.emoji}</Text>
                 {isSelected && (
-                  <View style={styles.selectedPill}>
+                  <View style={[styles.selectedPill, tierInfo.id === 'MIXED_BULKY' && { backgroundColor: '#C97A2B' }]}>
                     <Text style={styles.selectedPillText}>SELECTED</Text>
                   </View>
                 )}
@@ -123,7 +131,7 @@ export const CategorySelector: React.FC<CategorySelectorProps> = ({
 
               <View style={styles.rateRow}>
                 <View style={styles.rateBadge}>
-                  <Text style={styles.rateText}>
+                  <Text style={[styles.rateText, tierInfo.id === 'MIXED_BULKY' && { color: '#C97A2B' }]}>
                     ₹{minRate.toFixed(2)} – ₹{maxRate.toFixed(2)} / kg
                   </Text>
                 </View>
@@ -168,6 +176,10 @@ const styles = StyleSheet.create({
   cardSelected: {
     borderColor: colors.affirmation,
     backgroundColor: colors.affirmationLight,
+  },
+  cardSelectedMarigold: {
+    borderColor: '#C97A2B',
+    backgroundColor: '#F4E3CD',
   },
   cardHeader: {
     flexDirection: 'row',

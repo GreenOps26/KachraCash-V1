@@ -1,24 +1,31 @@
+/**
+ * Light Paper Banyan & Marigold Theme Tokens for Citizen Consumer App (@apps/citizen)
+ */
 export const colors = {
-  // Primary Affirmation: Dispatch acceptance, verified weights, completed
-  affirmation: '#059669',
-  affirmationLight: '#ecfdf5',
+  // Light Paper Theme Tokens
+  paper: '#F1F5EF',
+  surface: '#FBFCFA',
+  banyanGreen: '#1F4D3C',
+  banyanSoft: '#DEEAE3',
+  marigold: '#C97A2B',
+  marigoldSoft: '#F4E3CD',
+  inkDeep: '#1F2A24',
+  rustRed: '#9C3B2A',
+  borderNeutral: '#DCE3D8',
 
-  // Primary Alert: Disputes, warnings, cancellations
-  alert: '#dc2626',
-  alertLight: '#fef2f2',
+  // Semantic & Component Aliases
+  affirmation: '#1F4D3C',
+  affirmationLight: '#DEEAE3',
+  alert: '#9C3B2A',
+  alertLight: '#F4E3CD',
+  caution: '#C97A2B',
+  cautionLight: '#F4E3CD',
+  financial: '#1F4D3C',
+  financialLight: '#DEEAE3',
 
-  // Caution / Transit: En-route status, zero-tare pending
-  caution: '#d97706',
-  cautionLight: '#fffbeb',
-
-  // Financial / Settlement: UPI payouts, wallet credits
-  financial: '#1d4ed8',
-  financialLight: '#eff6ff',
-
-  // Neutrals
-  background: '#f8fafc',
-  card: '#ffffff',
-  textPrimary: '#0f172a',
-  textSecondary: '#64748b',
-  border: '#e2e8f0',
+  background: '#F1F5EF',
+  card: '#FBFCFA',
+  textPrimary: '#1F2A24',
+  textSecondary: '#1F2A24B3',
+  border: '#DCE3D8',
 };

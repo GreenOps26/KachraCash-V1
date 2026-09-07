@@ -76,9 +76,9 @@ export default function App() {
             <View style={styles.banner}>
               <Text style={styles.bannerEmoji}>⚡</Text>
               <View style={styles.bannerTextContainer}>
-                <Text style={styles.bannerTitle}>Guaranteed Guwahati Floor Rates</Text>
+                <Text style={styles.bannerTitle}>Schedule → Weigh Transparently → Get Paid Instantly</Text>
                 <Text style={styles.bannerSubtitle}>
-                  Transparent algorithmic pricing • Zero bidding haggles • 100% UPI Instant Settlement
+                  পঞ্জীয়ন কৰক → স্বচ্ছ ওজন → প্ৰত্যক্ষ UPI জমা • Guaranteed Floor Rates • Zero Bidding
                 </Text>
               </View>
             </View>

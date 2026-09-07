@@ -104,8 +104,8 @@ export const WalletLedgerDesk: React.FC = () => {
             Pre-funded float enforcement • Immutable double-entry audit stream • Redacted KYC & Aadhaar compliance
           </p>
         </div>
-        <span className="px-3 py-1 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200">
-          Double-Entry Audit Enforced
+        <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#F4E3CD] text-[#C97A2B] border border-[#C97A2B]/40">
+          🌼 BANYAN & MARIGOLD AUDIT ENFORCED
         </span>
       </div>
 

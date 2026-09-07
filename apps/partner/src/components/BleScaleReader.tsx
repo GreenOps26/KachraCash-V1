@@ -251,10 +251,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 16,
-    backgroundColor: '#000000',
+    backgroundColor: '#030806',
     borderRadius: 14,
     borderWidth: 2,
-    borderColor: partnerTheme.colors.affirmation,
+    borderColor: partnerTheme.colors.telemetryCyan,
     marginBottom: 12,
   },
   weightRow: {
@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
     alignItems: 'baseline',
   },
   weightValue: {
-    color: '#ffffff',
+    color: partnerTheme.colors.telemetryCyan,
     fontSize: 56,
     fontWeight: '900',
     letterSpacing: 1,

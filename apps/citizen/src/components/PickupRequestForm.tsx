@@ -111,9 +111,9 @@ export const PickupRequestForm: React.FC<PickupRequestFormProps> = ({
 
       {/* Visual Pre-Grading Photo Upload */}
       <View style={styles.sectionCard}>
-        <Text style={styles.sectionTitle}>📸 VISUAL GRADING BASELINE (OPTIONAL)</Text>
+        <Text style={styles.sectionTitle}>📸 Add scrap photo for price protection (optional)</Text>
         <Text style={styles.photoHint}>
-          Upload a clear photo of your scrap pile for collector pre-grading and bag sizing.
+          Upload a clear photo of your scrap pile for collector bag sizing and visual dispute baseline (no AI pricing scanners).
         </Text>
         <TouchableOpacity
           testID="photo-upload-button"
@@ -122,7 +122,7 @@ export const PickupRequestForm: React.FC<PickupRequestFormProps> = ({
           activeOpacity={0.8}
         >
           <Text style={styles.photoButtonText}>
-            {photoUrl ? '✓ Photo Attached (scrap_sample.jpg) — Remove' : '📷 Take / Attach Scrap Photo'}
+            {photoUrl ? '✓ Photo Attached for Price Protection — Tap to Remove' : '📷 Take / Attach Scrap Photo'}
           </Text>
         </TouchableOpacity>
       </View>
