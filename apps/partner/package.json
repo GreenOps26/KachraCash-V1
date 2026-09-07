@@ -12,6 +12,8 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@expo-google-fonts/fraunces": "^0.4.1",
+    "@expo-google-fonts/ibm-plex-sans": "^0.4.1",
     "@kachracash/types": "workspace:*",
     "expo": "~52.0.0",
     "expo-sqlite": "^57.0.2",
