@@ -1,0 +1,3295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KachraCash • Ultra-Premium Waste-Tech Console & Mobile Apps</title>
+  
+  <!-- Premium Modern Typography: Outfit, Plus Jakarta Sans, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* Ultra-Premium Donezo & Coinest Aesthetic Palette */
+    :root {
+      --forest-900: #071a12;
+      --forest-800: #0d281a;
+      --forest-700: #143d2b;
+      --forest-600: #1a4d36;
+      --forest-500: #226447;
+      
+      --mint-500: #22c55e;
+      --mint-400: #4ade80;
+      --mint-300: #86efac;
+      --mint-100: #dcfce7;
+      --mint-50: #f0fdf4;
+      
+      --canvas-bg: #f4f7f5;
+      --surface-white: #ffffff;
+      --surface-subtle: #f8faf8;
+      --border-light: #e5ebe5;
+      --border-subtle: #eef2ee;
+      
+      --text-main: #0c1c14;
+      --text-muted: #576d61;
+      --text-subtle: #899e93;
+      
+      --radius-sm: 10px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-xl: 30px;
+      --radius-full: 9999px;
+      
+      --shadow-sm: 0 2px 8px rgba(13, 40, 26, 0.04);
+      --shadow-card: 0 8px 24px rgba(13, 40, 26, 0.05);
+      --shadow-hover: 0 16px 36px rgba(13, 40, 26, 0.09);
+      --shadow-modal: 0 25px 70px rgba(7, 26, 18, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #0f1612;
+      color: var(--text-main);
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.5;
+    }
+
+    h1, h2, h3, h4, .brand-title, .metric-value, .eco-balance-amount, .section-heading {
+      font-family: 'Outfit', sans-serif;
+      letter-spacing: -0.3px;
+    }
+
+    /* Top Global Switcher Bar */
+    .showcase-header {
+      background: #0a110d;
+      border-bottom: 1px solid #1c2a21;
+      padding: 12px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(14px);
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo-badge {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, #143d2b, #22c55e);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 900;
+      font-family: 'Outfit', sans-serif;
+      font-size: 19px;
+      box-shadow: 0 6px 18px rgba(34, 197, 94, 0.35);
+    }
+
+    .brand-text h1 {
+      font-size: 17px;
+      font-weight: 800;
+      color: #f1f8f3;
+      letter-spacing: -0.2px;
+    }
+
+    .brand-text p {
+      font-size: 11px;
+      color: #8da497;
+      font-weight: 500;
+    }
+
+    .view-switcher-pill {
+      display: flex;
+      background: #141e18;
+      padding: 4px;
+      border-radius: var(--radius-full);
+      border: 1px solid #233329;
+    }
+
+    .view-btn {
+      padding: 9px 20px;
+      border-radius: var(--radius-full);
+      border: none;
+      background: transparent;
+      color: #9ab4a6;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .view-btn.active {
+      background: #22c55e;
+      color: #071a12;
+      box-shadow: 0 4px 16px rgba(34, 197, 94, 0.35);
+    }
+
+    .view-btn:hover:not(.active) {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .badge-pill-neon {
+      background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      color: #4ade80;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 8px #22c55e;
+      animation: pulseDot 2s infinite;
+    }
+
+    @keyframes pulseDot {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.25); opacity: 1; }
+      100% { transform: scale(0.95); opacity: 0.8; }
+    }
+
+    /* Main Showcase Canvas */
+    .showcase-viewport {
+      background-color: var(--canvas-bg);
+      min-height: calc(100vh - 64px);
+      padding: 26px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      transition: all 0.3s ease;
+    }
+
+    /* ==========================================================================
+       VIEW 1: ADMIN DESKTOP CONSOLE (DONEZO ARCHITECTURE)
+       ========================================================================== */
+    .admin-desktop-container {
+      width: 100%;
+      max-width: 1360px;
+      background: var(--canvas-bg);
+      border-radius: 36px;
+      padding: 24px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 24px;
+      border: 1px solid rgba(20, 61, 43, 0.08);
+    }
+
+    /* Left Sidebar */
+    .admin-sidebar {
+      background: var(--surface-white);
+      border-radius: var(--radius-xl);
+      padding: 24px 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--shadow-card);
+      border: 1px solid var(--border-subtle);
+      height: calc(100vh - 140px);
+      position: sticky;
+      top: 90px;
+    }
+
+    .sidebar-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 4px 8px;
+      margin-bottom: 24px;
+    }
+
+    .sidebar-logo-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: var(--forest-700);
+      color: var(--mint-400);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .sidebar-logo-title {
+      font-size: 19px;
+      font-weight: 900;
+      color: var(--forest-900);
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .nav-section-title {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--text-subtle);
+      letter-spacing: 0.8px;
+      padding: 0 10px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 18px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .nav-item-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-item:hover {
+      background: var(--surface-subtle);
+      color: var(--forest-800);
+    }
+
+    .nav-item.active {
+      background: var(--forest-700);
+      color: #ffffff;
+      box-shadow: 0 6px 18px rgba(20, 61, 43, 0.22);
+    }
+
+    .nav-counter-badge {
+      background: var(--mint-100);
+      color: #15803d;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+    }
+
+    .sidebar-promo-card {
+      background: linear-gradient(145deg, #0d281a, #143d2b);
+      border-radius: 20px;
+      padding: 18px;
+      color: white;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 24px rgba(13, 40, 26, 0.25);
+    }
+
+    .promo-title {
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 4px;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .promo-desc {
+      font-size: 11px;
+      color: #a7f3d0;
+      margin-bottom: 14px;
+    }
+
+    .promo-btn {
+      width: 100%;
+      background: #22c55e;
+      color: #071a12;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 9px 12px;
+      border-radius: var(--radius-full);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .promo-btn:hover {
+      background: #4ade80;
+      transform: translateY(-1px);
+    }
+
+    /* Admin Main Section */
+    .admin-main {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Top Search & Profile Bar */
+    .admin-top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--surface-white);
+      border-radius: var(--radius-xl);
+      padding: 12px 24px;
+      box-shadow: var(--shadow-card);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .search-input-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-light);
+      padding: 8px 16px;
+      border-radius: var(--radius-full);
+      width: 360px;
+    }
+
+    .search-input-box input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 13px;
+      color: var(--text-main);
+      width: 100%;
+    }
+
+    .search-kbd {
+      background: white;
+      border: 1px solid var(--border-light);
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-subtle);
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .top-bar-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .icon-btn-pill {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--forest-800);
+      position: relative;
+      transition: all 0.2s;
+    }
+
+    .icon-btn-pill:hover {
+      background: var(--mint-50);
+      border-color: var(--mint-300);
+    }
+
+    .notif-bubble {
+      position: absolute;
+      top: 8px;
+      right: 9px;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #ef4444;
+      border: 2px solid white;
+    }
+
+    .user-profile-pill {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 4px 6px 4px 12px;
+      border-radius: var(--radius-full);
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-light);
+      cursor: pointer;
+    }
+
+    .user-avatar-img {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #fde68a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      overflow: hidden;
+      border: 2px solid white;
+    }
+
+    /* Sub-Navigation Tabs Bar */
+    .admin-tabs-bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding-bottom: 4px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .admin-subtab-btn {
+      padding: 9px 18px;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--border-light);
+      background: var(--surface-white);
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .admin-subtab-btn.active {
+      background: var(--forest-700);
+      color: white;
+      border-color: var(--forest-700);
+      box-shadow: 0 4px 14px rgba(20, 61, 43, 0.2);
+    }
+
+    /* Action Row */
+    .dashboard-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .dashboard-header-row h2 {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--forest-900);
+    }
+
+    .dashboard-header-row p {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .dashboard-cta-group {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn-pill-primary {
+      background: var(--forest-700);
+      color: white;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 10px 22px;
+      border-radius: var(--radius-full);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(20, 61, 43, 0.2);
+      transition: all 0.2s;
+    }
+
+    .btn-pill-primary:hover {
+      background: var(--forest-800);
+      transform: translateY(-1px);
+    }
+
+    .btn-pill-outline {
+      background: white;
+      color: var(--forest-800);
+      font-size: 13px;
+      font-weight: 700;
+      padding: 10px 20px;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--border-light);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-pill-outline:hover {
+      background: var(--surface-subtle);
+      border-color: var(--mint-400);
+    }
+
+    /* 4 Top Metric Cards (Donezo Exact Layout) */
+    .metrics-grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .metric-card {
+      background: var(--surface-white);
+      border-radius: var(--radius-lg);
+      padding: 22px 20px;
+      box-shadow: var(--shadow-card);
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 140px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .metric-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    /* Hero Metric Card in Solid Dark Forest Green */
+    .metric-card.hero-dark-green {
+      background: linear-gradient(145deg, #0d281a, #164831);
+      color: white;
+      border: 1px solid #1f573c;
+      box-shadow: 0 10px 28px rgba(13, 40, 26, 0.25);
+    }
+
+    .metric-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .metric-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .metric-card.hero-dark-green .metric-title {
+      color: #c0d8cb;
+    }
+
+    .metric-arrow-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: var(--forest-800);
+      cursor: pointer;
+    }
+
+    .metric-card.hero-dark-green .metric-arrow-btn {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.2);
+      color: white;
+    }
+
+    .metric-value {
+      font-size: 34px;
+      font-weight: 800;
+      color: var(--forest-900);
+      margin: 10px 0 6px 0;
+      letter-spacing: -0.8px;
+    }
+
+    .metric-card.hero-dark-green .metric-value {
+      color: #ffffff;
+    }
+
+    .metric-badge-trend {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--forest-700);
+    }
+
+    .trend-pill-bubble {
+      background: var(--mint-100);
+      color: #166534;
+      padding: 2px 7px;
+      border-radius: var(--radius-full);
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .metric-card.hero-dark-green .trend-pill-bubble {
+      background: rgba(34, 197, 94, 0.25);
+      color: #86efac;
+      border: 1px solid rgba(134, 239, 172, 0.3);
+    }
+
+    /* Middle Row Grid */
+    .dashboard-mid-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr;
+      gap: 20px;
+    }
+
+    .dash-card {
+      background: var(--surface-white);
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      box-shadow: var(--shadow-card);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .dash-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .dash-card-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--forest-900);
+      font-family: 'Outfit', sans-serif;
+    }
+
+    /* Donezo Capsule Bar Chart */
+    .capsule-bars-container {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      height: 150px;
+      padding: 10px 10px 0 10px;
+    }
+
+    .bar-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      height: 100%;
+      justify-content: flex-end;
+    }
+
+    .bar-pill {
+      width: 28px;
+      border-radius: var(--radius-full);
+      transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      cursor: pointer;
+    }
+
+    .bar-pill.striped {
+      background: repeating-linear-gradient(
+        -45deg,
+        #e2eae5,
+        #e2eae5 4px,
+        #ffffff 4px,
+        #ffffff 8px
+      );
+      border: 2px solid #d4e0d7;
+    }
+
+    .bar-pill.solid-forest {
+      background: var(--forest-800);
+    }
+
+    .bar-pill.solid-mint {
+      background: var(--mint-400);
+      box-shadow: 0 4px 12px rgba(74, 222, 128, 0.4);
+    }
+
+    .bar-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-subtle);
+    }
+
+    /* Reminders Card */
+    .reminder-box {
+      margin: 12px 0 20px 0;
+    }
+
+    .reminder-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--forest-900);
+      line-height: 1.3;
+    }
+
+    .reminder-meta {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Batches List */
+    .batch-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .batch-item:last-child {
+      border-bottom: none;
+    }
+
+    .batch-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .batch-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: var(--surface-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+    }
+
+    /* Bottom Row Grid */
+    .dashboard-bottom-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr;
+      gap: 20px;
+    }
+
+    .fleet-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+    }
+
+    .fleet-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .fleet-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #e0f2fe;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .status-badge-chip {
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+      text-transform: capitalize;
+    }
+
+    .status-badge-chip.active {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .status-badge-chip.transit {
+      background: #fef9c3;
+      color: #854d0e;
+    }
+
+    /* Semi Circle Gauge */
+    .gauge-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      text-align: center;
+    }
+
+    .gauge-render-area {
+      position: relative;
+      width: 180px;
+      height: 100px;
+      margin: 10px auto;
+      overflow: hidden;
+    }
+
+    .gauge-semi-circle-bg {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      border: 22px solid #e5ebe5;
+      border-bottom-color: transparent;
+      border-left-color: transparent;
+      transform: rotate(-45deg);
+      box-sizing: border-box;
+    }
+
+    .gauge-semi-circle-val {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      border: 22px solid var(--forest-700);
+      border-bottom-color: transparent;
+      border-right-color: transparent;
+      transform: rotate(35deg);
+      box-sizing: border-box;
+    }
+
+    .gauge-center-text {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .gauge-center-text .num {
+      font-size: 26px;
+      font-weight: 900;
+      color: var(--forest-900);
+      font-family: 'Outfit', sans-serif;
+    }
+
+    /* Time Tracker Textured Dark Green */
+    .time-tracker-card {
+      background: radial-gradient(circle at top right, #1a4d36, #0d281a);
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 24px rgba(13, 40, 26, 0.3);
+    }
+
+    .tracker-stopwatch {
+      font-size: 34px;
+      font-weight: 800;
+      font-family: 'JetBrains Mono', monospace;
+      color: #4ade80;
+      text-align: center;
+      margin: 18px 0;
+      letter-spacing: 2px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    .btn-timer-ctrl {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 800;
+      transition: all 0.2s;
+    }
+
+    /* Sub-Panels (Working Full Views) */
+    .admin-subpanel-view {
+      background: var(--surface-white);
+      border-radius: var(--radius-lg);
+      padding: 26px;
+      box-shadow: var(--shadow-card);
+      border: 1px solid var(--border-subtle);
+      display: none;
+    }
+
+    .subpanel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .subpanel-title h3 {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--forest-900);
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .subpanel-title p {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .radar-map-box {
+      height: 280px;
+      background: #edf5f0;
+      border-radius: 18px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid #d2e4d7;
+      margin-bottom: 18px;
+    }
+
+    .radar-grid-lines {
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(to right, rgba(20,61,43,0.08) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(20,61,43,0.08) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+
+    .radar-marker {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: white;
+      padding: 5px 12px;
+      border-radius: var(--radius-full);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border: 1.5px solid var(--border-light);
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .radar-marker:hover {
+      transform: scale(1.08);
+      z-index: 10;
+    }
+
+    .radar-marker.collector {
+      border-color: var(--forest-700);
+      color: var(--forest-900);
+    }
+
+    .radar-marker.pickup {
+      border-color: #22c55e;
+      color: #15803d;
+    }
+
+    .admin-data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .admin-data-table th {
+      text-align: left;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--text-subtle);
+      text-transform: uppercase;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .admin-data-table td {
+      padding: 14px;
+      border-bottom: 1px solid var(--border-subtle);
+      vertical-align: middle;
+    }
+
+    /* ==========================================================================
+       VIEW 2: CITIZEN MOBILE APP (PHONE SIMULATOR FRAME)
+       ========================================================================== */
+    .mobile-simulator-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+    /* Device Presets Toolbar */
+    .device-ratio-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+      background: #141e18;
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      border: 1px solid #233329;
+      flex-wrap: wrap;
+    }
+
+    .ratio-btn {
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      border: 1px solid transparent;
+      background: transparent;
+      color: #9ab4a6;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .ratio-btn.active {
+      background: var(--forest-700);
+      color: #86efac;
+      border-color: var(--mint-400);
+    }
+
+    /* Phone Bezel */
+    .phone-bezel {
+      width: 390px;
+      height: 840px;
+      background: #000000;
+      border-radius: 52px;
+      padding: 12px;
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4), 0 0 0 1px #27272a;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .phone-screen {
+      width: 100%;
+      height: 100%;
+      background: var(--canvas-bg);
+      border-radius: 42px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .phone-screen::-webkit-scrollbar {
+      display: none;
+    }
+
+    .phone-status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 24px 8px 24px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #18181b;
+      position: sticky;
+      top: 0;
+      background: rgba(244, 247, 245, 0.92);
+      backdrop-filter: blur(10px);
+      z-index: 50;
+    }
+
+    .dynamic-island {
+      width: 108px;
+      height: 28px;
+      background: #000000;
+      border-radius: var(--radius-full);
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 10px;
+    }
+
+    .phone-body-content {
+      padding: 12px 18px 80px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Citizen Header */
+    .citizen-header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .citizen-greeting h3 {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--forest-900);
+    }
+
+    .citizen-greeting p {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Coinest-Style Green Eco Wallet Card */
+    .citizen-eco-card {
+      background: linear-gradient(145deg, #0d281a, #164831);
+      border-radius: 26px;
+      padding: 22px;
+      color: white;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 12px 30px rgba(13, 40, 26, 0.25);
+    }
+
+    .eco-label {
+      font-size: 11px;
+      color: #a7f3d0;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .eco-balance-amount {
+      font-size: 32px;
+      font-weight: 800;
+      margin-top: 4px;
+      letter-spacing: -0.5px;
+    }
+
+    .eco-card-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 18px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .green-coins-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 5px 12px;
+      border-radius: var(--radius-full);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    /* Dual Action: AI Photo Scan OR Manual Search/Entry */
+    .scrap-entry-switch-box {
+      background: white;
+      border-radius: 22px;
+      padding: 16px;
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .entry-toggle-tabs {
+      display: flex;
+      background: var(--surface-subtle);
+      border-radius: var(--radius-full);
+      padding: 3px;
+      margin-bottom: 14px;
+      border: 1px solid var(--border-light);
+    }
+
+    .entry-tab-btn {
+      flex: 1;
+      padding: 8px;
+      text-align: center;
+      border-radius: var(--radius-full);
+      border: none;
+      background: transparent;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .entry-tab-btn.active {
+      background: var(--forest-700);
+      color: white;
+      box-shadow: 0 4px 10px rgba(20, 61, 43, 0.2);
+    }
+
+    /* Manual Garbage Input Section */
+    .manual-entry-area {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .manual-input-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .manual-text-input {
+      flex: 1;
+      background: var(--surface-subtle);
+      border: 1.5px solid var(--border-light);
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-main);
+      outline: none;
+      font-family: inherit;
+    }
+
+    .manual-text-input:focus {
+      border-color: var(--forest-700);
+      background: white;
+    }
+
+    .manual-kg-input {
+      width: 76px;
+      background: var(--surface-subtle);
+      border: 1.5px solid var(--border-light);
+      border-radius: 12px;
+      padding: 10px 8px;
+      font-size: 13px;
+      font-weight: 700;
+      text-align: center;
+      color: var(--text-main);
+      outline: none;
+    }
+
+    .btn-add-manual-item {
+      background: var(--forest-700);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .btn-add-manual-item:hover {
+      background: var(--forest-800);
+    }
+
+    /* Auto-suggest Chips */
+    .suggest-chips-row {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .suggest-chips-row::-webkit-scrollbar {
+      display: none;
+    }
+
+    .suggest-chip {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-light);
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--forest-800);
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .suggest-chip:hover {
+      background: var(--mint-100);
+      border-color: var(--mint-300);
+    }
+
+    /* Selected Items Basket */
+    .basket-items-card {
+      background: var(--surface-subtle);
+      border-radius: 14px;
+      padding: 12px;
+      border: 1px dashed var(--border-light);
+    }
+
+    .basket-item-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      padding: 4px 0;
+    }
+
+    /* Scrap Category Grid */
+    .scrap-categories-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .scrap-cat-card {
+      background: white;
+      border-radius: 20px;
+      padding: 14px;
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .scrap-cat-card:hover {
+      border-color: var(--mint-400);
+      transform: translateY(-2px);
+    }
+
+    .scrap-cat-card.selected {
+      border: 2px solid var(--forest-700);
+      background: #fbfdfc;
+    }
+
+    .cat-rate-pill {
+      background: var(--mint-100);
+      color: #166534;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: var(--radius-full);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Doorstep Scale Mirror HUD */
+    .doorstep-live-card {
+      background: white;
+      border-radius: 24px;
+      padding: 18px;
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-md);
+    }
+
+    .digital-weight-display {
+      background: #0d281a;
+      border-radius: 18px;
+      padding: 16px;
+      text-align: center;
+      color: white;
+      margin: 10px 0;
+    }
+
+    .weight-num {
+      font-size: 42px;
+      font-weight: 800;
+      font-family: 'JetBrains Mono', monospace;
+      color: #4ade80;
+      letter-spacing: 1px;
+    }
+
+    .otp-reveal-box {
+      background: linear-gradient(135deg, #103322, #143d2b);
+      border-radius: 18px;
+      padding: 14px;
+      color: white;
+      text-align: center;
+    }
+
+    .otp-code-digits {
+      font-size: 28px;
+      font-weight: 800;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 6px;
+      color: #4ade80;
+      margin: 6px 0;
+    }
+
+    /* ==========================================================================
+       VIEW 3: PARTNER COLLECTOR APP (APK SIMULATOR)
+       ========================================================================== */
+    .partner-screen-header {
+      background: var(--forest-800);
+      color: white;
+      padding: 18px 20px 22px 20px;
+      border-bottom-left-radius: 28px;
+      border-bottom-right-radius: 28px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .collector-float-pill {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 5px 14px;
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      font-weight: 800;
+      color: #4ade80;
+    }
+
+    .partner-duty-toggle-box {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(34, 197, 94, 0.18);
+      border: 1px solid rgba(74, 222, 128, 0.35);
+      border-radius: var(--radius-full);
+      padding: 8px 16px;
+      margin-top: 12px;
+      cursor: pointer;
+    }
+
+    .partner-toggle-knob {
+      width: 36px;
+      height: 20px;
+      border-radius: var(--radius-full);
+      background: #22c55e;
+      position: relative;
+      transition: all 0.2s;
+    }
+
+    .partner-toggle-knob::after {
+      content: "";
+      position: absolute;
+      right: 2px;
+      top: 2px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: white;
+      transition: all 0.2s;
+    }
+
+    .partner-duty-toggle-box.offline .partner-toggle-knob {
+      background: #6b7280;
+    }
+
+    .partner-duty-toggle-box.offline .partner-toggle-knob::after {
+      right: 18px;
+    }
+
+    /* Partner Assigned Order Card */
+    .partner-order-card {
+      background: white;
+      border-radius: 24px;
+      padding: 18px;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-light);
+    }
+
+    .partner-big-counter {
+      font-size: 48px;
+      font-weight: 900;
+      font-family: 'JetBrains Mono', monospace;
+      color: #22c55e;
+      letter-spacing: 2px;
+      margin: 10px 0;
+      text-shadow: 0 0 15px rgba(34, 197, 94, 0.4);
+    }
+
+    .partner-actions-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .btn-tare-reset {
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: var(--radius-full);
+      padding: 12px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .btn-lock-weight {
+      background: #22c55e;
+      color: #071a12;
+      border: none;
+      border-radius: var(--radius-full);
+      padding: 12px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(34, 197, 94, 0.4);
+    }
+
+    /* Keypad */
+    .keypad-grid-3x4 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .key-btn {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 12px 0;
+      font-size: 18px;
+      font-weight: 800;
+      color: #0f172a;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.1s;
+    }
+
+    /* ==========================================================================
+       WORKING MODAL WINDOWS / DIALOGS
+       ========================================================================== */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(7, 26, 18, 0.65);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s ease;
+    }
+
+    .modal-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-window {
+      background: white;
+      border-radius: 26px;
+      border: 1px solid var(--border-light);
+      width: 90%;
+      max-width: 520px;
+      box-shadow: var(--shadow-modal);
+      overflow: hidden;
+      transform: translateY(20px) scale(0.97);
+      transition: all 0.25s ease;
+    }
+
+    .modal-backdrop.open .modal-window {
+      transform: translateY(0) scale(1);
+    }
+
+    .modal-header {
+      padding: 18px 24px;
+      background: var(--surface-subtle);
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-header h3 {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--forest-900);
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .btn-modal-close {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: white;
+      border: 1px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      cursor: pointer;
+      color: var(--text-muted);
+    }
+
+    .modal-body {
+      padding: 22px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      max-height: 75vh;
+      overflow-y: auto;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--forest-900);
+    }
+
+    .form-control {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: var(--text-main);
+      outline: none;
+      font-family: inherit;
+    }
+
+    .form-control:focus {
+      border-color: var(--forest-700);
+      background: white;
+    }
+
+    .modal-footer {
+      padding: 16px 24px;
+      background: var(--surface-subtle);
+      border-top: 1px solid var(--border-light);
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    /* Toast */
+    .toast-pill {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--forest-900);
+      color: white;
+      padding: 12px 22px;
+      border-radius: var(--radius-full);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      border: 1px solid #1f573c;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      z-index: 10000;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s;
+    }
+
+    .toast-pill.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .admin-desktop-container {
+        grid-template-columns: 1fr;
+      }
+      .admin-sidebar {
+        display: none;
+      }
+      .metrics-grid-4, .dashboard-mid-grid, .dashboard-bottom-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .showcase-viewport {
+        padding: 8px 4px !important;
+      }
+      .device-ratio-toolbar {
+        display: none !important;
+      }
+      .phone-bezel {
+        width: 100% !important;
+        height: auto !important;
+        min-height: 96vh !important;
+        border-radius: 0 !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+        border: none !important;
+        background: transparent !important;
+      }
+      .phone-screen {
+        border-radius: 0 !important;
+        min-height: 96vh !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Global Switcher Bar -->
+  <header class="showcase-header">
+    <div class="brand-group">
+      <div class="brand-logo-badge">KC</div>
+      <div class="brand-text">
+        <h1>KachraCash (`কচৰা ক্যাশ`)</h1>
+        <p>Ultra-Premium Donezo & Coinest UI • Guwahati, Assam</p>
+      </div>
+    </div>
+
+    <!-- View Switcher -->
+    <div class="view-switcher-pill">
+      <button class="view-btn active" id="btnViewAdmin" onclick="switchMainView('ADMIN')">
+        <span>🖥️</span> Admin Console
+      </button>
+      <button class="view-btn" id="btnViewCitizen" onclick="switchMainView('CITIZEN')">
+        <span>📱</span> Citizen App
+      </button>
+      <button class="view-btn" id="btnViewPartner" onclick="switchMainView('PARTNER')">
+        <span>🛵</span> Partner App
+      </button>
+      <button class="view-btn" id="btnViewMulti" onclick="switchMainView('MULTI')">
+        <span>🔄</span> 3-Screen Live
+      </button>
+    </div>
+
+    <div class="header-actions">
+      <div class="badge-pill-neon">
+        <span class="status-dot"></span>
+        <span>KAMRUP METRO ACTIVE</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Viewport -->
+  <main class="showcase-viewport">
+
+    <!-- ==========================================================================
+         VIEW 1: ADMIN OPERATIONS CONSOLE (FULL DONEZO AESTHETIC + WORKING TABS)
+         ========================================================================== -->
+    <div class="admin-desktop-container" id="adminView">
+      
+      <!-- Left Sidebar -->
+      <aside class="admin-sidebar">
+        <div>
+          <div class="sidebar-logo">
+            <div class="sidebar-logo-icon">🌿</div>
+            <div class="sidebar-logo-title">KachraCash</div>
+          </div>
+
+          <div class="nav-section-title">MENU</div>
+          <ul class="nav-list">
+            <li>
+              <a class="nav-item active" id="navItemOverview" onclick="switchAdminTab('OVERVIEW')">
+                <div class="nav-item-left">
+                  <span>📊</span>
+                  <span>Dashboard</span>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a class="nav-item" id="navItemRadar" onclick="switchAdminTab('RADAR')">
+                <div class="nav-item-left">
+                  <span>📡</span>
+                  <span>Dispatch Radar</span>
+                </div>
+                <span class="nav-counter-badge">42</span>
+              </a>
+            </li>
+            <li>
+              <a class="nav-item" id="navItemRates" onclick="switchAdminTab('RATES')">
+                <div class="nav-item-left">
+                  <span>🏷️</span>
+                  <span>Floor Rate Cards</span>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a class="nav-item" id="navItemMonsoon" onclick="switchAdminTab('MONSOON')">
+                <div class="nav-item-left">
+                  <span>⛈️</span>
+                  <span>Monsoon Ward Desk</span>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a class="nav-item" id="navItemWallets" onclick="switchAdminTab('WALLETS')">
+                <div class="nav-item-left">
+                  <span>💼</span>
+                  <span>Float Ledger Desk</span>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a class="nav-item" id="navItemDisputes" onclick="switchAdminTab('DISPUTES')">
+                <div class="nav-item-left">
+                  <span>⚖️</span>
+                  <span>Dispute Queue</span>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a class="nav-item" id="navItemSwm" onclick="switchAdminTab('SWM')">
+                <div class="nav-item-left">
+                  <span>🌱</span>
+                  <span>SWM Rules 2026</span>
+                </div>
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-section-title">GENERAL</div>
+          <ul class="nav-list">
+            <li>
+              <a class="nav-item" onclick="openModal('modalSettings')">
+                <div class="nav-item-left">
+                  <span>⚙️</span>
+                  <span>Settings</span>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="sidebar-promo-card">
+          <div class="promo-title">Partner Collector APK</div>
+          <div class="promo-desc">Field BLE scale & instant UPI float sync</div>
+          <button class="promo-btn" onclick="switchMainView('PARTNER')">Open Collector View</button>
+        </div>
+      </aside>
+
+      <!-- Admin Main Area -->
+      <section class="admin-main">
+        
+        <!-- Top Bar -->
+        <div class="admin-top-bar">
+          <div class="search-input-box">
+            <span>🔍</span>
+            <input type="text" placeholder="Search ward, pickup ticket, commodity SKU..." />
+            <span class="search-kbd">⌘F</span>
+          </div>
+
+          <div class="top-bar-right">
+            <div class="icon-btn-pill" onclick="triggerToast('3 pending doorstep weighings in Ward 28')">
+              <span>🔔</span>
+              <div class="notif-bubble"></div>
+            </div>
+
+            <div class="user-profile-pill" onclick="openModal('modalSettings')">
+              <div class="user-avatar-img">👨‍💼</div>
+              <div>
+                <div style="font-size:13px;font-weight:700;color:var(--forest-900);">Pranjal Baruah</div>
+                <div style="font-size:11px;color:var(--text-subtle);">ops.guwahati@kachracash.in</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sub-Navigation Working Tabs -->
+        <div class="admin-tabs-bar">
+          <button class="admin-subtab-btn active" id="tabBtnOverview" onclick="switchAdminTab('OVERVIEW')">
+            <span>🌿</span> Overview
+          </button>
+          <button class="admin-subtab-btn" id="tabBtnRadar" onclick="switchAdminTab('RADAR')">
+            <span>📡</span> Dispatch Radar
+          </button>
+          <button class="admin-subtab-btn" id="tabBtnRates" onclick="switchAdminTab('RATES')">
+            <span>📊</span> Floor Rate Cards
+          </button>
+          <button class="admin-subtab-btn" id="tabBtnMonsoon" onclick="switchAdminTab('MONSOON')">
+            <span>⛈️</span> Monsoon Ward Desk
+          </button>
+          <button class="admin-subtab-btn" id="tabBtnWallets" onclick="switchAdminTab('WALLETS')">
+            <span>💼</span> Float Ledger Desk
+          </button>
+          <button class="admin-subtab-btn" id="tabBtnDisputes" onclick="switchAdminTab('DISPUTES')">
+            <span>⚖️</span> Dispute Queue
+          </button>
+          <button class="admin-subtab-btn" id="tabBtnSwm" onclick="switchAdminTab('SWM')">
+            <span>🌱</span> SWM Rules 2026
+          </button>
+        </div>
+
+        <!-- =================== TAB 1: OVERVIEW (DONEZO) =================== -->
+        <div id="panelOverview" style="display:flex; flex-direction:column; gap:20px;">
+          
+          <!-- Header Action Row -->
+          <div class="dashboard-header-row">
+            <div>
+              <h2>Dashboard</h2>
+              <p>Plan, prioritize, and monitor scrap circularity in Guwahati with ease.</p>
+            </div>
+            <div class="dashboard-cta-group">
+              <button class="btn-pill-primary" onclick="openModal('modalAddPickup')">
+                <span>+</span>
+                <span>Add Pickup</span>
+              </button>
+              <button class="btn-pill-outline" onclick="openModal('modalExportReport')">
+                Import / Export Data
+              </button>
+            </div>
+          </div>
+
+          <!-- 4 Metric Cards (Donezo Exact Layout) -->
+          <div class="metrics-grid-4">
+            <!-- Hero Card 1: Solid Dark Forest Green -->
+            <div class="metric-card hero-dark-green">
+              <div class="metric-header">
+                <span class="metric-title">Total Pickups</span>
+                <div class="metric-arrow-btn">↗</div>
+              </div>
+              <div class="metric-value">248</div>
+              <div class="metric-badge-trend">
+                <span class="trend-pill-bubble">+12%</span>
+                <span>Increased from yesterday</span>
+              </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="metric-card">
+              <div class="metric-header">
+                <span class="metric-title">Recycled Scrap</span>
+                <div class="metric-arrow-btn">↗</div>
+              </div>
+              <div class="metric-value">18.4 T</div>
+              <div class="metric-badge-trend">
+                <span class="trend-pill-bubble">+8.5%</span>
+                <span>Diverted from Boragaon</span>
+              </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="metric-card">
+              <div class="metric-header">
+                <span class="metric-title">Disbursed Float</span>
+                <div class="metric-arrow-btn">↗</div>
+              </div>
+              <div class="metric-value">₹4.82L</div>
+              <div class="metric-badge-trend">
+                <span class="trend-pill-bubble">92%</span>
+                <span>Instant UPI customer split</span>
+              </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="metric-card">
+              <div class="metric-header">
+                <span class="metric-title">Active Collectors</span>
+                <div class="metric-arrow-btn">↗</div>
+              </div>
+              <div class="metric-value">42</div>
+              <div class="metric-badge-trend">
+                <span class="trend-pill-bubble">Live</span>
+                <span>Beltola, Hatigaon, Jayanagar</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Middle Row: Analytics + Reminders + Projects -->
+          <div class="dashboard-mid-grid">
+            <div class="dash-card">
+              <div class="dash-card-header">
+                <div class="dash-card-title">Project Analytics</div>
+                <span class="trend-pill-bubble" style="background:#edf5f0; color:var(--forest-700); cursor:pointer;">Weekly Inflow</span>
+              </div>
+
+              <div class="capsule-bars-container">
+                <div class="bar-col">
+                  <div class="bar-pill striped" style="height:65px;" title="Sun: 4.2T"></div>
+                  <span class="bar-label">S</span>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-pill solid-forest" style="height:95px;" title="Mon: 6.8T"></div>
+                  <span class="bar-label">M</span>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-pill solid-mint" style="height:75px;" title="Tue: 5.5T Target"></div>
+                  <span class="bar-label">T</span>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-pill solid-forest" style="height:125px;" title="Wed: 8.9T Peak"></div>
+                  <span class="bar-label">W</span>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-pill striped" style="height:80px;" title="Thu: 5.8T"></div>
+                  <span class="bar-label">T</span>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-pill striped" style="height:70px;" title="Fri: 4.9T"></div>
+                  <span class="bar-label">F</span>
+                </div>
+                <div class="bar-col">
+                  <div class="bar-pill striped" style="height:100px;" title="Sat: 7.2T"></div>
+                  <span class="bar-label">S</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="dash-card">
+              <div class="dash-card-header">
+                <div class="dash-card-title">Reminders</div>
+                <span>🔔</span>
+              </div>
+
+              <div class="reminder-box">
+                <div class="reminder-title">GMC Zonal SWM Review</div>
+                <div class="reminder-meta">Time: 02:00 PM – 04:00 PM · Panbazar HQ</div>
+              </div>
+
+              <button class="btn-pill-primary" style="width:100%;justify-content:center;margin-top:14px;" onclick="openModal('modalMeeting')">
+                <span>📹</span>
+                <span>Start Meeting</span>
+              </button>
+            </div>
+
+            <div class="dash-card">
+              <div class="dash-card-header">
+                <div class="dash-card-title">Recycle Batches</div>
+                <button class="btn-pill-outline" style="padding:4px 12px;font-size:11px;" onclick="openModal('modalAddPickup')">+ New</button>
+              </div>
+
+              <div>
+                <div class="batch-item">
+                  <div class="batch-left">
+                    <div class="batch-icon">📦</div>
+                    <div>
+                      <div style="font-size:13px;font-weight:700;color:var(--forest-900);">Cardboard OCC (Ward 28)</div>
+                      <div style="font-size:11px;color:var(--text-subtle);">Due: 11:30 AM · 450 kg</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="batch-item">
+                  <div class="batch-left">
+                    <div class="batch-icon">🍾</div>
+                    <div>
+                      <div style="font-size:13px;font-weight:700;color:var(--forest-900);">PET Flakes Batch A</div>
+                      <div style="font-size:11px;color:var(--text-subtle);">Due: 01:15 PM · Byrnihat Mill</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="batch-item">
+                  <div class="batch-left">
+                    <div class="batch-icon">⚡</div>
+                    <div>
+                      <div style="font-size:13px;font-weight:700;color:var(--forest-900);">Copper & E-Scrap Hub</div>
+                      <div style="font-size:11px;color:var(--text-subtle);">Due: 03:00 PM · Verified</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Row: Team Collaboration + Progress Gauge + Time Tracker -->
+          <div class="dashboard-bottom-grid">
+            <div class="dash-card">
+              <div class="dash-card-header">
+                <div class="dash-card-title">Collector Fleet</div>
+                <button class="btn-pill-outline" style="padding:4px 12px;font-size:11px;" onclick="switchAdminTab('RADAR')">+ Add Member</button>
+              </div>
+
+              <div>
+                <div class="fleet-row">
+                  <div class="fleet-left">
+                    <div class="fleet-avatar">🛵</div>
+                    <div>
+                      <div style="font-size:13px;font-weight:700;color:var(--forest-900);">Pranjal Saikia (প্ৰাঞ্জল)</div>
+                      <div style="font-size:11px;color:var(--text-muted);">Doorstep Weighing · Beltola Ward 28</div>
+                    </div>
+                  </div>
+                  <span class="status-badge-chip active">Active</span>
+                </div>
+
+                <div class="fleet-row">
+                  <div class="fleet-left">
+                    <div class="fleet-avatar">🛺</div>
+                    <div>
+                      <div style="font-size:13px;font-weight:700;color:var(--forest-900);">Biren Kalita (বীৰেন)</div>
+                      <div style="font-size:11px;color:var(--text-muted);">Transit to Hatigaon Wholesale Depot</div>
+                    </div>
+                  </div>
+                  <span class="status-badge-chip transit">En Route</span>
+                </div>
+
+                <div class="fleet-row">
+                  <div class="fleet-left">
+                    <div class="fleet-avatar">🚛</div>
+                    <div>
+                      <div style="font-size:13px;font-weight:700;color:var(--forest-900);">Mukesh Das (মুকেশ)</div>
+                      <div style="font-size:11px;color:var(--text-muted);">Byrnihat Freight Line Dispatch</div>
+                    </div>
+                  </div>
+                  <span class="status-badge-chip transit">Pending</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="dash-card gauge-container">
+              <div class="dash-card-title" style="width:100%;text-align:left;">Ward Target Progress</div>
+              
+              <div class="gauge-render-area">
+                <div class="gauge-semi-circle-bg"></div>
+                <div class="gauge-semi-circle-val"></div>
+                <div class="gauge-center-text">
+                  <div class="num">78%</div>
+                  <div style="font-size:11px;color:var(--text-muted);font-weight:600;">Ward Quota Met</div>
+                </div>
+              </div>
+
+              <div style="display:flex;gap:14px;font-size:11px;font-weight:700;color:var(--text-muted);">
+                <span>🟢 Dispatched</span>
+                <span>🟢 Weighed</span>
+                <span>⚪ Open</span>
+              </div>
+            </div>
+
+            <div class="time-tracker-card">
+              <div style="font-size:13px;font-weight:600;color:#9ab4a6;">Live Dispatch Stopwatch</div>
+              <div class="tracker-stopwatch" id="liveTimer">01:24:08</div>
+              <div style="display:flex;justify-content:center;gap:14px;">
+                <button class="btn-timer-ctrl" style="background:white;color:var(--forest-900);" id="timerToggleBtn" onclick="toggleLiveTimer()">⏸</button>
+                <button class="btn-timer-ctrl" style="background:#ef4444;color:white;" onclick="resetLiveTimer()">⏹</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- =================== TAB 2: DISPATCH RADAR =================== -->
+        <div id="panelRadar" class="admin-subpanel-view">
+          <div class="subpanel-header">
+            <div class="subpanel-title">
+              <h3>Dispatch Radar (Kamrup Metro)</h3>
+              <p>PostGIS Spatial Radius Matching (1,500m) · Autonomous SLA Reassignment</p>
+            </div>
+            <button class="btn-pill-primary" onclick="triggerToast('GPS telemetry pinged across all 42 collectors!')">
+              <span>🔄</span> Refresh Coordinates
+            </button>
+          </div>
+
+          <div class="radar-map-box">
+            <div class="radar-grid-lines"></div>
+            <div class="radar-marker collector" style="top:40px;left:80px;" onclick="triggerToast('Collector Pranjal Saikia (Float: ₹4,250) · 137m to Beltola Tiniali')">
+              <span>🛵</span> Pranjal Saikia (₹4,250)
+            </div>
+            <div class="radar-marker collector" style="top:110px;left:240px;" onclick="triggerToast('Collector Biren Kalita (Float: ₹2,150) · Online in Jayanagar')">
+              <span>🛵</span> Biren Kalita (₹2,150)
+            </div>
+            <div class="radar-marker collector" style="top:180px;left:380px;" onclick="triggerToast('Collector Mridul Das (Float: ₹3,100) · Backup in Hatigaon')">
+              <span>🛵</span> Mridul Das (₹3,100)
+            </div>
+            <div class="radar-marker pickup" style="top:65px;left:130px;" onclick="triggerToast('Pickup Ticket REQ_BELTOLA_28 · Jatin Baruah · Cardboard OCC 14.5 kg')">
+              <span>📦</span> REQ_BELTOLA_28 (0.1 km)
+            </div>
+          </div>
+
+          <table class="admin-data-table">
+            <thead>
+              <tr>
+                <th>Collector</th>
+                <th>Phone</th>
+                <th>Ward Location</th>
+                <th>Float Balance</th>
+                <th>SLA Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Pranjal Saikia</strong></td>
+                <td>+91 98640 11223</td>
+                <td>Beltola Ward 28</td>
+                <td><strong style="color:var(--forest-700);">₹4,250.00</strong></td>
+                <td><span class="status-badge-chip active">On Time</span></td>
+                <td><button class="btn-pill-outline" style="padding:4px 10px;font-size:11px;" onclick="triggerToast('Pinging BLE scale for Pranjal Saikia')">Ping Scale</button></td>
+              </tr>
+              <tr>
+                <td><strong>Biren Kalita</strong></td>
+                <td>+91 94350 44556</td>
+                <td>Jayanagar Ward 27</td>
+                <td><strong style="color:var(--forest-700);">₹2,150.00</strong></td>
+                <td><span class="status-badge-chip active">On Time</span></td>
+                <td><button class="btn-pill-outline" style="padding:4px 10px;font-size:11px;" onclick="triggerToast('Pinging BLE scale for Biren Kalita')">Ping Scale</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- =================== TAB 3: FLOOR RATE CARDS =================== -->
+        <div id="panelRates" class="admin-subpanel-view">
+          <div class="subpanel-header">
+            <div class="subpanel-title">
+              <h3>Phase 1 Floor Rate Cards (Guwahati Corridor)</h3>
+              <p>Deterministic Pricing Engine · National Benchmark minus Freight Deductions</p>
+            </div>
+            <button class="btn-pill-primary" onclick="openModal('modalSettings')">
+              <span>⚙️</span> Edit Parameters
+            </button>
+          </div>
+
+          <table class="admin-data-table">
+            <thead>
+              <tr>
+                <th>Commodity SKU</th>
+                <th>Assamese Name</th>
+                <th>National Price</th>
+                <th>Freight Offset</th>
+                <th>Guaranteed Floor Price</th>
+                <th>Margin Split</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>CARDBOARD_OCC</strong></td>
+                <td>ভঙা কাৰ্ডব’ৰ্ড</td>
+                <td>₹19.50/kg</td>
+                <td>₹3.50/kg (Siliguri)</td>
+                <td><strong style="color:var(--forest-700);font-size:15px;">₹14.00/kg</strong></td>
+                <td>8% Platform / 92% Citizen</td>
+              </tr>
+              <tr>
+                <td><strong>PLASTIC_PET_FLAKES</strong></td>
+                <td>প্লাষ্টিক বটল</td>
+                <td>₹28.00/kg</td>
+                <td>₹3.50/kg (Siliguri)</td>
+                <td><strong style="color:var(--forest-700);font-size:15px;">₹22.00/kg</strong></td>
+                <td>8% Platform / 92% Citizen</td>
+              </tr>
+              <tr>
+                <td><strong>FERROUS_REBAR</strong></td>
+                <td>লোহা / ৰড</td>
+                <td>₹32.00/kg</td>
+                <td>₹1.20/kg (Byrnihat)</td>
+                <td><strong style="color:var(--forest-700);font-size:15px;">₹28.50/kg</strong></td>
+                <td>8% Platform / 92% Citizen</td>
+              </tr>
+              <tr>
+                <td><strong>COPPER_WIRE_NO1</strong></td>
+                <td>তামৰ তাঁৰ</td>
+                <td>₹520.00/kg</td>
+                <td>₹5.00/kg (Special)</td>
+                <td><strong style="color:var(--forest-700);font-size:15px;">₹480.00/kg</strong></td>
+                <td>8% Platform / 92% Citizen</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- =================== TAB 4: MONSOON WARD DESK =================== -->
+        <div id="panelMonsoon" class="admin-subpanel-view">
+          <div class="subpanel-header">
+            <div class="subpanel-title">
+              <h3>Monsoon Flood Suspension Desk</h3>
+              <p>GMC Waterlogging Alerts · Auto-Halt Pickups in Flooded Wards</p>
+            </div>
+            <button class="btn-pill-outline" onclick="triggerToast('Syncing rain telemetry with CPCB & GMC sensors...')">
+              <span>🌦️</span> Check Sensors
+            </button>
+          </div>
+
+          <table class="admin-data-table">
+            <thead>
+              <tr>
+                <th>Ward ID</th>
+                <th>Ward Name</th>
+                <th>Risk Level</th>
+                <th>Waterlogging Status</th>
+                <th>Dispatch Status</th>
+                <th>Toggle Suspension</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>WARD_28</td>
+                <td><strong>Beltola / Wireless</strong></td>
+                <td><span style="color:#15803d;font-weight:700;">LOW</span></td>
+                <td>Clear (0 cm)</td>
+                <td><span class="status-badge-chip active">Active</span></td>
+                <td><button class="btn-pill-outline" style="padding:4px 10px;font-size:11px;" onclick="toggleWard(this, 'Beltola')">Suspend</button></td>
+              </tr>
+              <tr>
+                <td>WARD_24</td>
+                <td><strong>Hatigaon Sijubari</strong></td>
+                <td><span style="color:#ca8a04;font-weight:700;">MEDIUM</span></td>
+                <td>Light Puddles (4 cm)</td>
+                <td><span class="status-badge-chip active">Active</span></td>
+                <td><button class="btn-pill-outline" style="padding:4px 10px;font-size:11px;" onclick="toggleWard(this, 'Hatigaon')">Suspend</button></td>
+              </tr>
+              <tr>
+                <td>WARD_16</td>
+                <td><strong>Anil Nagar / Nabin Nagar</strong></td>
+                <td><span style="color:#dc2626;font-weight:700;">HIGH RISK</span></td>
+                <td>Flash Flood (35 cm)</td>
+                <td><span class="status-badge-chip" style="background:#fee2e2;color:#b91c1c;">Suspended</span></td>
+                <td><button class="btn-pill-primary" style="padding:4px 10px;font-size:11px;" onclick="toggleWard(this, 'Anil Nagar')">Reactivate</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- =================== TAB 5: FLOAT LEDGER DESK =================== -->
+        <div id="panelWallets" class="admin-subpanel-view">
+          <div class="subpanel-header">
+            <div class="subpanel-title">
+              <h3>Collector Float Ledger Desk</h3>
+              <p>Pre-funded Escrow Floats (₹2,000 Threshold) · Instant Doorstep UPI Settlement</p>
+            </div>
+            <button class="btn-pill-primary" onclick="openModal('modalTopup')">
+              <span>💳</span> Top Up Collector Float
+            </button>
+          </div>
+
+          <table class="admin-data-table">
+            <thead>
+              <tr>
+                <th>Collector Name</th>
+                <th>Escrow Float</th>
+                <th>Status</th>
+                <th>Today Disbursed</th>
+                <th>Platform Take-Rate (8%)</th>
+                <th>Quick Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Pranjal Saikia</strong></td>
+                <td><strong style="color:var(--forest-700);">₹3,500.00</strong></td>
+                <td><span class="status-badge-chip active">Healthy</span></td>
+                <td>₹1,860.00</td>
+                <td>₹148.80</td>
+                <td><button class="btn-pill-outline" style="padding:4px 10px;font-size:11px;" onclick="openModal('modalTopup')">+ Topup</button></td>
+              </tr>
+              <tr>
+                <td><strong>Biren Kalita</strong></td>
+                <td><strong style="color:#ca8a04;">₹2,150.00</strong></td>
+                <td><span class="status-badge-chip transit">Near Threshold</span></td>
+                <td>₹940.00</td>
+                <td>₹75.20</td>
+                <td><button class="btn-pill-primary" style="padding:4px 10px;font-size:11px;" onclick="openModal('modalTopup')">+ Topup</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- =================== TAB 6: DISPUTE QUEUE =================== -->
+        <div id="panelDisputes" class="admin-subpanel-view">
+          <div class="subpanel-header">
+            <div class="subpanel-title">
+              <h3>Dispute Resolution Queue</h3>
+              <p>Hardware Scale Tampering Alerts · Analog Scale Bypass Prevention</p>
+            </div>
+          </div>
+
+          <div style="background:var(--surface-subtle);border-radius:18px;padding:24px;border:1px solid var(--border-light);text-align:center;">
+            <div style="font-size:36px;margin-bottom:8px;">⚖️</div>
+            <h4 style="font-size:16px;font-weight:800;color:var(--forest-900);">Zero Active Disputes</h4>
+            <p style="font-size:12px;color:var(--text-muted);max-width:400px;margin:6px auto 0 auto;">
+              All doorstep transactions authenticated via BLE HMAC scale sensors and 4-digit customer OTP.
+            </p>
+          </div>
+        </div>
+
+        <!-- =================== TAB 7: SWM RULES 2026 =================== -->
+        <div id="panelSwm" class="admin-subpanel-view">
+          <div class="subpanel-header">
+            <div class="subpanel-title">
+              <h3>Statutory SWM Rules 2026 Compliance</h3>
+              <p>CPCB Form IV Annual Returns · GPS Audit Trail · Boragaon Landfill Diversion</p>
+            </div>
+            <button class="btn-pill-primary" onclick="openModal('modalExportReport')">
+              <span>📑</span> Generate Statutory Manifest
+            </button>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px;">
+            <div style="background:var(--surface-subtle);padding:18px;border-radius:18px;border:1px solid var(--border-light);">
+              <div style="font-size:11px;font-weight:800;color:var(--text-subtle);">CPCB E-MANIFEST COMPLIANCE</div>
+              <div style="font-size:26px;font-weight:900;color:var(--forest-700);margin:6px 0;font-family:'Outfit';">100% Verified</div>
+              <div style="font-size:12px;color:var(--text-muted);">Zero unweighed scrap transactions logged.</div>
+            </div>
+            <div style="background:var(--surface-subtle);padding:18px;border-radius:18px;border:1px solid var(--border-light);">
+              <div style="font-size:11px;font-weight:800;color:var(--text-subtle);">LANDFILL DIVERSION CO₂ EQUIV</div>
+              <div style="font-size:26px;font-weight:900;color:#15803d;margin:6px 0;font-family:'Outfit';">38.6 Tons CO₂e</div>
+              <div style="font-size:12px;color:var(--text-muted);">Diverted to West Bengal & Byrnihat induction mills.</div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </div>
+
+    <!-- ==========================================================================
+         VIEW 2: CITIZEN MOBILE APP (PHONE SIMULATOR)
+         ========================================================================== -->
+    <div class="mobile-simulator-wrapper" id="citizenView" style="display:none;">
+      
+      <!-- Device Ratio Presets Toolbar -->
+      <div class="device-ratio-toolbar">
+        <span style="font-size:11px;color:#dcfce7;font-weight:800;">📱 Ratio:</span>
+        <button class="ratio-btn active" onclick="setRatio('iphone-pro')">🍏 19.5:9 (iPhone)</button>
+        <button class="ratio-btn" onclick="setRatio('android-modern')">🤖 20:9 (Galaxy)</button>
+        <button class="ratio-btn" onclick="setRatio('compact-go')">📦 16:9 (Android Go)</button>
+        <button class="ratio-btn" onclick="setRatio('fluid')">🌐 100% Fluid</button>
+      </div>
+
+      <div class="phone-bezel" id="citizenPhoneBezel">
+        <div class="phone-screen">
+          <div class="phone-status-bar">
+            <span>09:41</span>
+            <div class="dynamic-island"></div>
+            <span>5G 📶 98%</span>
+          </div>
+
+          <div class="phone-body-content">
+            
+            <div class="citizen-header-bar">
+              <div class="citizen-greeting">
+                <h3>Hello, Ananya! 🌿</h3>
+                <p>Sell scrap at guaranteed floor rates</p>
+              </div>
+              <div style="background:white;border:1px solid var(--border-light);padding:6px 12px;border-radius:var(--radius-full);font-size:11px;font-weight:800;color:var(--forest-700);">
+                📍 Beltola, Ward 28
+              </div>
+            </div>
+
+            <!-- Coinest-Style Green Eco Wallet Card -->
+            <div class="citizen-eco-card">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+                <div>
+                  <div class="eco-label">Wallet Balance</div>
+                  <div class="eco-balance-amount">₹1,420.50</div>
+                </div>
+                <div style="font-size:26px;">🌱</div>
+              </div>
+
+              <div class="eco-card-bottom">
+                <div class="green-coins-pill">
+                  <span>⭐ 4,780</span>
+                  <span style="opacity:0.8;">GreenCoins</span>
+                </div>
+                <div style="font-size:11px;color:#86efac;font-weight:700;">
+                  ✓ Instant UPI Active
+                </div>
+              </div>
+            </div>
+
+            <!-- Scrap Entry: Dual Choice (AI Photo Scan OR Manual Search/Entry) -->
+            <div class="scrap-entry-switch-box">
+              <div class="entry-toggle-tabs">
+                <button class="entry-tab-btn active" id="btnTabManual" onclick="switchCitizenEntryMode('MANUAL')">
+                  ✍️ Type Item Manually
+                </button>
+                <button class="entry-tab-btn" id="btnTabScan" onclick="switchCitizenEntryMode('SCAN')">
+                  📷 Scan Waste (AI Photo)
+                </button>
+              </div>
+
+              <!-- Manual Item Search & Entry Mode -->
+              <div class="manual-entry-area" id="manualEntryArea">
+                <div style="font-size:12px;font-weight:800;color:var(--forest-900);">Add Any Scrap Item Name</div>
+                
+                <div class="manual-input-row">
+                  <input
+                    type="text"
+                    id="manualItemName"
+                    class="manual-text-input"
+                    placeholder="e.g. Old AC Unit, Cardboard, Copper, Battery..."
+                    onkeyup="handleManualInputKey(event)"
+                  />
+                  <input
+                    type="number"
+                    id="manualItemKg"
+                    class="manual-kg-input"
+                    placeholder="kg"
+                    value="10"
+                    min="1"
+                  />
+                  <button class="btn-add-manual-item" onclick="addManualItemToBasket()">
+                    <span>+ Add</span>
+                  </button>
+                </div>
+
+                <!-- Quick Suggestion Chips -->
+                <div style="font-size:11px;color:var(--text-subtle);font-weight:700;margin-top:2px;">Popular in Guwahati:</div>
+                <div class="suggest-chips-row">
+                  <span class="suggest-chip" onclick="quickFillItem('Newspaper Raddi', 14)">📰 Newspaper Raddi (₹14/kg)</span>
+                  <span class="suggest-chip" onclick="quickFillItem('Old AC Outdoor Unit', 450)">❄️ Old AC Unit (₹450/kg)</span>
+                  <span class="suggest-chip" onclick="quickFillItem('Carton Boxes', 14)">📦 Carton Boxes (₹14/kg)</span>
+                  <span class="suggest-chip" onclick="quickFillItem('Car Battery (Lead)', 95)">🔋 Car Battery (₹95/kg)</span>
+                  <span class="suggest-chip" onclick="quickFillItem('Copper Wire', 480)">⚡ Copper Wire (₹480/kg)</span>
+                </div>
+
+                <!-- Basket of entered items -->
+                <div class="basket-items-card" id="citizenBasketCard">
+                  <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:800;color:var(--forest-900);margin-bottom:6px;">
+                    <span>YOUR SCRAP ITEMS (1)</span>
+                    <span style="color:var(--forest-700);" id="basketTotalEst">Est. Payout: ₹140.00</span>
+                  </div>
+                  <div id="basketItemsList">
+                    <div class="basket-item-row">
+                      <span>📦 Cardboard OCC (10 kg)</span>
+                      <strong>₹140.00</strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- AI Camera Scan Mode (Hidden by default) -->
+              <div id="scanEntryArea" style="display:none;text-align:center;padding:12px 0;">
+                <p style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">
+                  Point your camera at the scrap pile. Our AI auto-identifies polymer, paper, or metal grade.
+                </p>
+                <button class="btn-pill-primary" style="width:100%;justify-content:center;" onclick="openModal('modalScanWaste')">
+                  <span>📷</span>
+                  <span>Launch AI Scrap Camera</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Categories Grid -->
+            <div>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <span style="font-size:14px;font-weight:800;color:var(--forest-900);font-family:'Outfit';">Guaranteed Floor Rates</span>
+                <span style="font-size:11px;font-weight:800;color:var(--forest-700);cursor:pointer;" onclick="switchAdminTab('RATES')">View All</span>
+              </div>
+
+              <div class="scrap-categories-grid">
+                <div class="scrap-cat-card selected" onclick="selectCitizenCat(this, 'Cardboard (OCC)', 14.0)">
+                  <div style="display:flex;justify-content:space-between;">
+                    <span style="font-size:24px;">📦</span>
+                    <span class="cat-rate-pill">₹14/kg</span>
+                  </div>
+                  <div>
+                    <div style="font-size:13px;font-weight:700;color:var(--forest-900);">Cardboard (OCC)</div>
+                    <div style="font-size:11px;color:var(--text-subtle);">ভঙা কাৰ্ডব’ৰ্ড</div>
+                  </div>
+                </div>
+
+                <div class="scrap-cat-card" onclick="selectCitizenCat(this, 'Plastic (PET)', 22.0)">
+                  <div style="display:flex;justify-content:space-between;">
+                    <span style="font-size:24px;">🥤</span>
+                    <span class="cat-rate-pill">₹22/kg</span>
+                  </div>
+                  <div>
+                    <div style="font-size:13px;font-weight:700;color:var(--forest-900);">Plastic (PET)</div>
+                    <div style="font-size:11px;color:var(--text-subtle);">প্লাষ্টিক বটল</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Doorstep BLE Scale Mirror HUD -->
+            <div class="doorstep-live-card">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <span style="font-size:13px;font-weight:800;color:var(--forest-900);">Live Doorstep Weighing</span>
+                <span style="font-size:11px;color:#15803d;background:#dcfce7;padding:3px 10px;border-radius:var(--radius-full);font-weight:800;">✓ Scale Synced</span>
+              </div>
+
+              <div class="digital-weight-display">
+                <div style="font-size:11px;color:#a7f3d0;font-weight:600;">SCALE_01_GUW · ZERO TARE VERIFIED</div>
+                <div class="weight-num" id="citizenWeightDisplay">14.50</div>
+                <div style="font-size:13px;color:#a7f3d0;font-weight:700;">KILOGRAMS</div>
+              </div>
+
+              <!-- OTP Reveal -->
+              <div class="otp-reveal-box">
+                <div style="font-size:11px;font-weight:800;color:#a7f3d0;">GIVE THIS OTP TO COLLECTOR UPON WEIGHING</div>
+                <div class="otp-code-digits">7 4 9 2</div>
+                <div style="font-size:11px;color:#a7f3d0;">Instant UPI deposit will trigger automatically.</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================================================
+         VIEW 3: PARTNER COLLECTOR APP (PHONE SIMULATOR)
+         ========================================================================== -->
+    <div class="mobile-simulator-wrapper" id="partnerView" style="display:none;">
+      
+      <!-- Device Presets Toolbar -->
+      <div class="device-ratio-toolbar">
+        <span style="font-size:11px;color:#dcfce7;font-weight:800;">📱 Ratio:</span>
+        <button class="ratio-btn" onclick="setRatio('iphone-pro')">🍏 19.5:9 (iPhone)</button>
+        <button class="ratio-btn active" onclick="setRatio('android-modern')">🤖 20:9 (Galaxy)</button>
+        <button class="ratio-btn" onclick="setRatio('compact-go')">📦 16:9 (Android Go)</button>
+        <button class="ratio-btn" onclick="setRatio('fluid')">🌐 100% Fluid</button>
+      </div>
+
+      <div class="phone-bezel" id="partnerPhoneBezel">
+        <div class="phone-screen">
+          
+          <div class="partner-screen-header">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <span style="font-size:11px;color:#a7f3d0;font-weight:700;">ID: col_pranjal_01</span>
+              <span class="collector-float-pill">₹3,500 Float</span>
+            </div>
+            <div style="font-size:18px;font-weight:800;font-family:'Outfit';margin-top:6px;">Pranjal Saikia (প্ৰাঞ্জল)</div>
+            
+            <!-- Sliding Online / Offline Toggle -->
+            <div class="partner-duty-toggle-box" id="collectorToggleBox" onclick="toggleCollectorDuty()">
+              <span style="font-size:12px;font-weight:800;color:#dcfce7;" id="dutyStateTxt">
+                🟢 ONLINE · Receiving Dispatches
+              </span>
+              <div class="partner-toggle-knob"></div>
+            </div>
+          </div>
+
+          <div class="phone-body-content" style="padding-top:16px;">
+            
+            <!-- Assigned Order Card -->
+            <div class="partner-order-card">
+              <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
+                <span style="font-size:10px;font-weight:800;background:#f1f5f9;padding:3px 8px;border-radius:var(--radius-full);">REQ_BELTOLA_28_001</span>
+                <span style="font-size:11px;font-weight:800;color:#15803d;background:#dcfce7;padding:3px 10px;border-radius:var(--radius-full);">137m away</span>
+              </div>
+
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+                <div style="width:40px;height:40px;border-radius:50%;background:#fed7aa;display:flex;align-items:center;justify-content:center;font-size:20px;">👨</div>
+                <div>
+                  <div style="font-size:14px;font-weight:800;color:var(--forest-900);">Jatin Baruah (যতীন বৰুৱা)</div>
+                  <div style="font-size:12px;color:var(--text-muted);">+91 98640 12345 · Cardboard OCC</div>
+                </div>
+              </div>
+
+              <div style="background:var(--surface-subtle);border-radius:12px;padding:10px 12px;font-size:12px;display:flex;gap:8px;">
+                <span>📍</span>
+                <span>House #18, Near Beltola Tiniali, Guwahati</span>
+              </div>
+            </div>
+
+            <!-- Hardware BLE Scale Telemetry -->
+            <div style="background:#092014;border-radius:24px;padding:18px;color:white;text-align:center;">
+              <div style="display:flex;justify-content:space-between;font-size:11px;color:#a7f3d0;font-weight:700;">
+                <span>BLE HARDWARE SCALE</span>
+                <span style="background:#15803d;padding:2px 8px;border-radius:var(--radius-full);color:white;">TARE VERIFIED</span>
+              </div>
+
+              <div class="partner-big-counter" id="partnerWeightCounter">14.50 kg</div>
+
+              <div class="partner-actions-grid">
+                <button class="btn-tare-reset" onclick="simulateTare()">
+                  <span>⚖️ Reset Tare</span>
+                </button>
+                <button class="btn-lock-weight" onclick="simulateLockWeight()">
+                  <span>🔒 Lock Weight</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Keypad Card -->
+            <div style="background:white;border-radius:24px;padding:16px;border:1px solid var(--border-light);">
+              <div style="font-size:12px;font-weight:800;color:var(--forest-900);text-align:center;">ENTER CITIZEN 4-DIGIT OTP</div>
+              
+              <div style="display:flex;justify-content:center;gap:12px;margin:12px 0;">
+                <div style="width:44px;height:48px;border-radius:12px;border:2px solid var(--forest-700);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;font-family:'JetBrains Mono';">7</div>
+                <div style="width:44px;height:48px;border-radius:12px;border:2px solid var(--forest-700);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;font-family:'JetBrains Mono';">4</div>
+                <div style="width:44px;height:48px;border-radius:12px;border:2px solid var(--forest-700);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;font-family:'JetBrains Mono';">9</div>
+                <div style="width:44px;height:48px;border-radius:12px;border:2px solid var(--forest-700);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;font-family:'JetBrains Mono';">2</div>
+              </div>
+
+              <div class="keypad-grid-3x4">
+                <button class="key-btn" onclick="triggerToast('Key pressed: 1')">1</button>
+                <button class="key-btn" onclick="triggerToast('Key pressed: 2')">2</button>
+                <button class="key-btn" onclick="triggerToast('Key pressed: 3')">3</button>
+                <button class="key-btn" onclick="triggerToast('Key pressed: 4')">4</button>
+                <button class="key-btn" onclick="triggerToast('Key pressed: 5')">5</button>
+                <button class="key-btn" onclick="triggerToast('Key pressed: 6')">6</button>
+                <button class="key-btn" onclick="triggerToast('Key pressed: 7')">7</button>
+                <button class="key-btn" onclick="triggerToast('Key pressed: 8')">8</button>
+                <button class="key-btn" onclick="triggerToast('Key pressed: 9')">9</button>
+                <button class="key-btn" onclick="triggerToast('Keypad cleared')">C</button>
+                <button class="key-btn" onclick="triggerToast('Key pressed: 0')">0</button>
+                <button class="key-btn" onclick="triggerToast('Backspace')">⌫</button>
+              </div>
+
+              <button class="btn-pill-primary" style="width:100%;justify-content:center;margin-top:14px;" onclick="executeDisbursement()">
+                <span>⚡ VERIFY & DISBURSE UPI (₹186.76)</span>
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================================================
+         VIEW 4: MULTI-SCREEN (3 SIDE BY SIDE)
+         ========================================================================== -->
+    <div id="multiView" style="display:none;width:100%;max-width:1540px;grid-template-columns:1.5fr 1fr 1fr;gap:26px;">
+      <div>
+        <h4 style="font-size:16px;font-weight:800;margin-bottom:12px;color:var(--forest-900);">🖥️ Admin Operations Console</h4>
+        <div id="adminClone"></div>
+      </div>
+      <div>
+        <h4 style="font-size:16px;font-weight:800;margin-bottom:12px;color:var(--forest-900);">📱 Citizen Mobile App</h4>
+        <div id="citizenClone"></div>
+      </div>
+      <div>
+        <h4 style="font-size:16px;font-weight:800;margin-bottom:12px;color:var(--forest-900);">🛵 Partner Collector App</h4>
+        <div id="partnerClone"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ==========================================================================
+       WORKING INTERACTIVE MODAL WINDOWS
+       ========================================================================== -->
+
+  <!-- Modal 1: Add Pickup Request (Working Window) -->
+  <div class="modal-backdrop" id="modalAddPickup">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3>Create Doorstep Pickup Ticket</h3>
+        <button class="btn-modal-close" onclick="closeModal('modalAddPickup')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Guwahati Ward Location</label>
+          <select class="form-control" id="formWardSelect">
+            <option value="WARD_28">Beltola / Wireless (Ward 28) - ACTIVE</option>
+            <option value="WARD_24">Hatigaon Sijubari (Ward 24) - ACTIVE</option>
+            <option value="WARD_27">Jayanagar (Ward 27) - ACTIVE</option>
+            <option value="WARD_12">Ganeshguri / Dispur (Ward 12) - ACTIVE</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Scrap Commodity SKU</label>
+          <select class="form-control" id="formScrapSelect">
+            <option value="OCC">Old Corrugated Cardboard (ভঙা কাৰ্ডব’ৰ্ড) - ₹14/kg</option>
+            <option value="PET">Plastic PET Bottles (প্লাষ্টিক বটল) - ₹22/kg</option>
+            <option value="IRON">Ferrous Iron Rebar (লোহা / ৰড) - ₹28.50/kg</option>
+            <option value="COPPER">Copper Wire (তামৰ তাঁৰ) - ₹480/kg</option>
+          </select>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div class="form-group">
+            <label class="form-label">Citizen Name</label>
+            <input type="text" class="form-control" id="formCitizenName" value="Bhupen Hazarika" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone Number</label>
+            <input type="text" class="form-control" id="formCitizenPhone" value="+91 98640 55443" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Estimated Scrap Weight (kg)</label>
+          <input type="number" class="form-control" id="formEstimatedKg" value="18.5" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pill-outline" onclick="closeModal('modalAddPickup')">Cancel</button>
+        <button class="btn-pill-primary" onclick="submitAddPickup()">⚡ Dispatch Nearby Collector</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Export SWM 2026 Compliance Manifest -->
+  <div class="modal-backdrop" id="modalExportReport">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3>CPCB Form IV Statutory SWM Manifest</h3>
+        <button class="btn-modal-close" onclick="closeModal('modalExportReport')">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:13px;color:var(--text-muted);">
+          Official statutory returns under Solid Waste Management Rules 2026. 18.4 Metric Tons diverted to Byrnihat and West Bengal mills.
+        </p>
+
+        <div style="background:var(--surface-subtle);padding:16px;border-radius:14px;border:1px solid var(--border-light);font-size:12px;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+            <span>Audit Period:</span>
+            <strong>September 2026</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+            <span>Total Guwahati Tonnage Diverted:</span>
+            <strong style="color:var(--forest-700);">18.4 Metric Tons</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;">
+            <span>E-Waste & Polymer Tracked:</span>
+            <strong>6.8 Metric Tons</strong>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pill-outline" onclick="triggerToast('Downloading CSV Manifest...')">Download CSV</button>
+        <button class="btn-pill-primary" onclick="triggerToast('CPCB Signed PDF with digital seal downloaded!')">Download Signed PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3: Video Coordination Room (GMC Smart City) -->
+  <div class="modal-backdrop" id="modalMeeting">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3>GMC Zonal SWM Coordination Room</h3>
+        <button class="btn-modal-close" onclick="closeModal('modalMeeting')">✕</button>
+      </div>
+      <div class="modal-body" style="text-align:center;">
+        <div style="background:#0d281a;border-radius:18px;padding:30px;color:white;">
+          <div style="font-size:40px;margin-bottom:10px;">📹</div>
+          <h4 style="font-size:18px;font-weight:800;font-family:'Outfit';">Panbazar Smart City HQ</h4>
+          <p style="font-size:12px;color:#a7f3d0;margin-top:6px;">
+            Participants: Executive Engineer (GMC), Zonal Ward Lead, KachraCash Ops
+          </p>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:18px;color:#4ade80;margin-top:14px;">
+            ● 00:04:12 Live Encrypted Feed
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pill-primary" onclick="closeModal('modalMeeting')">Minimize</button>
+        <button class="btn-pill-outline" style="color:#ef4444;" onclick="closeModal('modalMeeting')">Leave Room</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 4: AI Scrap Photo Recognition -->
+  <div class="modal-backdrop" id="modalScanWaste">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3>AI Scrap Photo Recognition</h3>
+        <button class="btn-modal-close" onclick="closeModal('modalScanWaste')">✕</button>
+      </div>
+      <div class="modal-body" style="text-align:center;">
+        <div style="background:#0d281a;border-radius:18px;padding:26px;color:white;">
+          <div style="font-size:48px;margin-bottom:8px;">📦</div>
+          <div style="background:rgba(34,197,94,0.2);border:1px solid #22c55e;padding:6px 14px;border-radius:var(--radius-full);color:#86efac;font-size:11px;font-weight:800;display:inline-block;">
+            ✓ DETECTED: Old Corrugated Cardboard (OCC)
+          </div>
+          <div style="margin-top:14px;font-size:13px;color:#a7f3d0;">
+            Confidence: <strong>98.4%</strong> · Quality: Dry / Clean
+          </div>
+          <div style="font-size:24px;font-weight:800;color:white;margin-top:10px;font-family:'Outfit';">
+            Guaranteed Rate: ₹14.00/kg
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pill-outline" onclick="closeModal('modalScanWaste')">Retake</button>
+        <button class="btn-pill-primary" onclick="closeModal('modalScanWaste'); triggerToast('Scrap verified! Added to your schedule basket.')">Confirm & Proceed</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 5: Collector Float Topup -->
+  <div class="modal-backdrop" id="modalTopup">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3>Top Up Collector Float Wallet</h3>
+        <button class="btn-modal-close" onclick="closeModal('modalTopup')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Select Collector</label>
+          <select class="form-control">
+            <option>Pranjal Saikia (Current Float: ₹3,500)</option>
+            <option>Biren Kalita (Current Float: ₹2,150)</option>
+            <option>Mukesh Das (Current Float: ₹2,800)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Topup Amount (₹)</label>
+          <input type="number" class="form-control" value="2000" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pill-primary" onclick="closeModal('modalTopup'); triggerToast('₹2,000 float balance credited to collector wallet!')">Execute Escrow Topup</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 6: System Parameters / Settings -->
+  <div class="modal-backdrop" id="modalSettings">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3>Marketplace System Parameters</h3>
+        <button class="btn-modal-close" onclick="closeModal('modalSettings')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Platform Take-Rate (%)</label>
+          <input type="text" class="form-control" value="8.0%" readonly />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Minimum Collector Escrow Threshold (₹)</label>
+          <input type="text" class="form-control" value="₹2,000.00" readonly />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Spatial Matching Radius (meters)</label>
+          <input type="text" class="form-control" value="1,500 m" readonly />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-pill-primary" onclick="closeModal('modalSettings')">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Global Toast -->
+  <div class="toast-pill" id="globalToast">
+    <span id="toastIcon">✨</span>
+    <span id="toastMessage">Action executed</span>
+  </div>
+
+  <script>
+    // View Switcher Logic
+    function switchMainView(view) {
+      document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('adminView').style.display = 'none';
+      document.getElementById('citizenView').style.display = 'none';
+      document.getElementById('partnerView').style.display = 'none';
+      document.getElementById('multiView').style.display = 'none';
+
+      if (view === 'ADMIN') {
+        document.getElementById('btnViewAdmin').classList.add('active');
+        document.getElementById('adminView').style.display = 'grid';
+      } else if (view === 'CITIZEN') {
+        document.getElementById('btnViewCitizen').classList.add('active');
+        document.getElementById('citizenView').style.display = 'flex';
+      } else if (view === 'PARTNER') {
+        document.getElementById('btnViewPartner').classList.add('active');
+        document.getElementById('partnerView').style.display = 'flex';
+      } else if (view === 'MULTI') {
+        document.getElementById('btnViewMulti').classList.add('active');
+        setupMultiView();
+        document.getElementById('multiView').style.display = 'grid';
+      }
+    }
+
+    function setupMultiView() {
+      const cArea = document.getElementById('citizenClone');
+      const pArea = document.getElementById('partnerClone');
+      const aArea = document.getElementById('adminClone');
+      cArea.innerHTML = '';
+      pArea.innerHTML = '';
+      aArea.innerHTML = '';
+
+      const cPhone = document.getElementById('citizenPhoneBezel').cloneNode(true);
+      const pPhone = document.getElementById('partnerPhoneBezel').cloneNode(true);
+      cArea.appendChild(cPhone);
+      pArea.appendChild(pPhone);
+
+      aArea.innerHTML = `
+        <div style="background:white;border-radius:24px;padding:24px;box-shadow:var(--shadow-card);border:1px solid var(--border-subtle);">
+          <h3 style="font-size:18px;font-weight:800;font-family:'Outfit';color:var(--forest-900);">Guwahati Dispatch Central</h3>
+          <div style="font-size:12px;color:var(--text-muted);margin:4px 0 16px 0;">42 Collectors Online · 248 Pickups Today</div>
+          <div style="display:flex;gap:10px;">
+            <button class="btn-pill-primary" style="font-size:12px;" onclick="openModal('modalAddPickup')">+ Add Pickup</button>
+            <button class="btn-pill-outline" style="font-size:12px;" onclick="switchAdminTab('RADAR')">Open Radar</button>
+          </div>
+        </div>
+      `;
+    }
+
+    // Admin Tabs Switcher (WORKING TABS)
+    function switchAdminTab(tabName) {
+      const panels = ['panelOverview', 'panelRadar', 'panelRates', 'panelMonsoon', 'panelWallets', 'panelDisputes', 'panelSwm'];
+      panels.forEach(p => {
+        const el = document.getElementById(p);
+        if (el) el.style.display = 'none';
+      });
+
+      document.querySelectorAll('.admin-subtab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.admin-sidebar .nav-item').forEach(i => i.classList.remove('active'));
+
+      if (tabName === 'OVERVIEW') {
+        document.getElementById('panelOverview').style.display = 'flex';
+        document.getElementById('tabBtnOverview')?.classList.add('active');
+        document.getElementById('navItemOverview')?.classList.add('active');
+      } else if (tabName === 'RADAR') {
+        document.getElementById('panelRadar').style.display = 'block';
+        document.getElementById('tabBtnRadar')?.classList.add('active');
+        document.getElementById('navItemRadar')?.classList.add('active');
+        triggerToast('Dispatch Radar: 42 Collectors tracked in Kamrup Metro', '📡');
+      } else if (tabName === 'RATES') {
+        document.getElementById('panelRates').style.display = 'block';
+        document.getElementById('tabBtnRates')?.classList.add('active');
+        document.getElementById('navItemRates')?.classList.add('active');
+        triggerToast('Floor Rate Cards: Siliguri & Byrnihat freight index applied', '🏷️');
+      } else if (tabName === 'MONSOON') {
+        document.getElementById('panelMonsoon').style.display = 'block';
+        document.getElementById('tabBtnMonsoon')?.classList.add('active');
+        document.getElementById('navItemMonsoon')?.classList.add('active');
+        triggerToast('Monsoon Ward Desk: Live waterlogging sensors connected', '⛈️');
+      } else if (tabName === 'WALLETS') {
+        document.getElementById('panelWallets').style.display = 'block';
+        document.getElementById('tabBtnWallets')?.classList.add('active');
+        document.getElementById('navItemWallets')?.classList.add('active');
+        triggerToast('Float Ledger Desk: Escrow threshold balances verified', '💼');
+      } else if (tabName === 'DISPUTES') {
+        document.getElementById('panelDisputes').style.display = 'block';
+        document.getElementById('tabBtnDisputes')?.classList.add('active');
+        document.getElementById('navItemDisputes')?.classList.add('active');
+      } else if (tabName === 'SWM') {
+        document.getElementById('panelSwm').style.display = 'block';
+        document.getElementById('tabBtnSwm')?.classList.add('active');
+        document.getElementById('navItemSwm')?.classList.add('active');
+        triggerToast('SWM Rules 2026 Statutory Manifest loaded', '🌱');
+      }
+    }
+
+    // Modal Control
+    function openModal(modalId) {
+      const el = document.getElementById(modalId);
+      if (el) el.classList.add('open');
+    }
+
+    function closeModal(modalId) {
+      const el = document.getElementById(modalId);
+      if (el) el.classList.remove('open');
+    }
+
+    // Submit Add Pickup
+    function submitAddPickup() {
+      const citizen = document.getElementById('formCitizenName').value;
+      const ward = document.getElementById('formWardSelect').selectedOptions[0].text.split(' -')[0];
+      const kg = document.getElementById('formEstimatedKg').value;
+      
+      closeModal('modalAddPickup');
+      triggerToast(`Ticket Created: ${citizen} in ${ward} (${kg} kg)! Collector dispatched.`, '🛵');
+    }
+
+    // Citizen Scrap Entry Switcher (Manual vs Photo Scan)
+    function switchCitizenEntryMode(mode) {
+      const btnManual = document.getElementById('btnTabManual');
+      const btnScan = document.getElementById('btnTabScan');
+      const manualArea = document.getElementById('manualEntryArea');
+      const scanArea = document.getElementById('scanEntryArea');
+
+      if (mode === 'MANUAL') {
+        btnManual.classList.add('active');
+        btnScan.classList.remove('active');
+        manualArea.style.display = 'flex';
+        scanArea.style.display = 'none';
+      } else {
+        btnScan.classList.add('active');
+        btnManual.classList.remove('active');
+        manualArea.style.display = 'none';
+        scanArea.style.display = 'block';
+      }
+    }
+
+    // Manual Scrap Item Addition
+    let citizenBasket = [
+      { name: 'Cardboard (OCC)', kg: 10, rate: 14 }
+    ];
+
+    function handleManualInputKey(event) {
+      if (event.key === 'Enter') {
+        addManualItemToBasket();
+      }
+    }
+
+    function quickFillItem(name, rate) {
+      document.getElementById('manualItemName').value = name;
+      addManualItemToBasket(name, rate);
+    }
+
+    function addManualItemToBasket(customName, customRate) {
+      const nameInput = document.getElementById('manualItemName');
+      const kgInput = document.getElementById('manualItemKg');
+      const name = customName || nameInput.value.trim();
+      const kg = parseFloat(kgInput.value) || 5;
+      
+      if (!name) {
+        triggerToast('Please type the name of your scrap item', '⚠️');
+        return;
+      }
+
+      // Default rate calculation heuristics
+      let rate = customRate || 18.0;
+      if (name.toLowerCase().includes('ac') || name.toLowerCase().includes('air')) rate = 450.0;
+      else if (name.toLowerCase().includes('copper') || name.toLowerCase().includes('wire')) rate = 480.0;
+      else if (name.toLowerCase().includes('battery')) rate = 95.0;
+      else if (name.toLowerCase().includes('paper') || name.toLowerCase().includes('raddi') || name.toLowerCase().includes('carton') || name.toLowerCase().includes('box')) rate = 14.0;
+      else if (name.toLowerCase().includes('bottle') || name.toLowerCase().includes('plastic')) rate = 22.0;
+
+      citizenBasket.push({ name, kg, rate });
+      renderCitizenBasket();
+
+      nameInput.value = '';
+      triggerToast(`Added: ${name} (${kg} kg · ₹${rate}/kg)`, '📦');
+    }
+
+    function renderCitizenBasket() {
+      const listEl = document.getElementById('basketItemsList');
+      const totalEl = document.getElementById('basketTotalEst');
+      if (!listEl || !totalEl) return;
+
+      listEl.innerHTML = '';
+      let total = 0;
+
+      citizenBasket.forEach((item, i) => {
+        const itemTotal = item.kg * item.rate;
+        total += itemTotal;
+        const row = document.createElement('div');
+        row.className = 'basket-item-row';
+        row.innerHTML = `
+          <span>${item.name} (${item.kg} kg)</span>
+          <span style="display:flex;align-items:center;gap:6px;">
+            <strong>₹${itemTotal.toFixed(2)}</strong>
+            <button onclick="removeBasketItem(${i})" style="border:none;background:transparent;color:#ef4444;cursor:pointer;font-size:11px;">✕</button>
+          </span>
+        `;
+        listEl.appendChild(row);
+      });
+
+      totalEl.innerText = `Est. Payout: ₹${total.toFixed(2)}`;
+    }
+
+    function removeBasketItem(idx) {
+      citizenBasket.splice(idx, 1);
+      renderCitizenBasket();
+    }
+
+    // Ward Suspension Toggle
+    function toggleWard(btn, wardName) {
+      if (btn.innerText === 'Suspend') {
+        btn.innerText = 'Reactivate';
+        btn.classList.add('btn-pill-primary');
+        btn.classList.remove('btn-pill-outline');
+        triggerToast(`Ward ${wardName} SUSPENDED due to flash flood alert!`, '⚠️');
+      } else {
+        btn.innerText = 'Suspend';
+        btn.classList.remove('btn-pill-primary');
+        btn.classList.add('btn-pill-outline');
+        triggerToast(`Ward ${wardName} REACTIVATED. Pickups resumed.`, '✅');
+      }
+    }
+
+    // Collector Duty Toggle
+    let isOnline = true;
+    function toggleCollectorDuty() {
+      const box = document.getElementById('collectorToggleBox');
+      const txt = document.getElementById('dutyStateTxt');
+      isOnline = !isOnline;
+
+      if (isOnline) {
+        box.classList.remove('offline');
+        txt.innerText = '🟢 ONLINE · Receiving Dispatches';
+        triggerToast('Duty Status: ONLINE (Receiving nearby pickup orders)', '🛵');
+      } else {
+        box.classList.add('offline');
+        txt.innerText = '⚪ OFFLINE · Duty Paused';
+        triggerToast('Duty Status: OFFLINE (Dispatches paused)', '⏸️');
+      }
+    }
+
+    // Live Stopwatch
+    let timerSecs = 5048;
+    let timerRunning = true;
+    setInterval(() => {
+      if (timerRunning) {
+        timerSecs++;
+        const h = String(Math.floor(timerSecs / 3600)).padStart(2, '0');
+        const m = String(Math.floor((timerSecs % 3600) / 60)).padStart(2, '0');
+        const s = String(timerSecs % 60).padStart(2, '0');
+        const el = document.getElementById('liveTimer');
+        if (el) el.innerText = `${h}:${m}:${s}`;
+      }
+    }, 1000);
+
+    function toggleLiveTimer() {
+      timerRunning = !timerRunning;
+      document.getElementById('timerToggleBtn').innerText = timerRunning ? '⏸' : '▶';
+    }
+
+    function resetLiveTimer() {
+      timerSecs = 0;
+      document.getElementById('liveTimer').innerText = '00:00:00';
+    }
+
+    // Scale Simulations
+    function simulateTare() {
+      const el = document.getElementById('partnerWeightCounter');
+      if (el) el.innerText = '0.00 kg';
+      triggerToast('Scale zero-tared to 0.000 kg with hardware HMAC!', '⚖️');
+      setTimeout(() => {
+        if (el) el.innerText = '14.50 kg';
+        triggerToast('Scrap loaded: 14.50 kg verified reading locked.', '📦');
+      }, 1400);
+    }
+
+    function simulateLockWeight() {
+      triggerToast('Weight locked: 14.50 kg. Enter 4-digit citizen OTP to disburse UPI.', '🔒');
+    }
+
+    function executeDisbursement() {
+      triggerToast('OTP 7492 Verified! ₹186.76 transferred instantly to citizen bank account!', '🎉');
+    }
+
+    // Aspect Ratio Switcher
+    function setRatio(preset) {
+      document.querySelectorAll('.ratio-btn').forEach(b => b.classList.remove('active'));
+      const bezels = document.querySelectorAll('.phone-bezel');
+      bezels.forEach(b => {
+        if (preset === 'iphone-pro') {
+          b.style.width = '393px';
+          b.style.height = '852px';
+          b.style.borderRadius = '52px';
+        } else if (preset === 'android-modern') {
+          b.style.width = '360px';
+          b.style.height = '800px';
+          b.style.borderRadius = '42px';
+        } else if (preset === 'compact-go') {
+          b.style.width = '360px';
+          b.style.height = '640px';
+          b.style.borderRadius = '32px';
+        } else if (preset === 'fluid') {
+          b.style.width = '100%';
+          b.style.maxWidth = '460px';
+          b.style.height = '88vh';
+        }
+      });
+      triggerToast(`Aspect Ratio: ${preset.toUpperCase()}`, '📱');
+    }
+
+    // Toast
+    let toastTimer = null;
+    function triggerToast(msg, icon = '🌿') {
+      const toast = document.getElementById('globalToast');
+      document.getElementById('toastMessage').innerText = msg;
+      document.getElementById('toastIcon').innerText = icon;
+      toast.classList.add('show');
+
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3400);
+    }
+  </script>
+</body>
+</html>

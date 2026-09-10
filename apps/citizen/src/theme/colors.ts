@@ -1,31 +1,46 @@
 /**
- * Light Paper Banyan & Marigold Theme Tokens for Citizen Consumer App (@apps/citizen)
+ * Donezo & Coinest Forest Green & Mint Theme Tokens for Citizen Consumer App (@apps/citizen)
  */
 export const colors = {
-  // Light Paper Theme Tokens
-  paper: '#F1F5EF',
-  surface: '#FBFCFA',
-  banyanGreen: '#1F4D3C',
-  banyanSoft: '#DEEAE3',
-  marigold: '#C97A2B',
-  marigoldSoft: '#F4E3CD',
-  inkDeep: '#1F2A24',
-  rustRed: '#9C3B2A',
-  borderNeutral: '#DCE3D8',
+  // Donezo / Coinest Palette
+  forest: '#143D2B',
+  forestDark: '#0D281A',
+  forestLight: '#1C4E38',
+  mint: '#22C55E',
+  mintLight: '#86EFAC',
+  mintSoft: '#DCFCE7',
+  
+  canvas: '#F4F7F5',
+  surface: '#FFFFFF',
+  surfaceSubtle: '#F9FBF9',
+  border: '#E5EBE5',
+  borderSubtle: '#EDF2ED',
+  
+  ink: '#14241C',
+  inkMuted: '#62776C',
+  inkSubtle: '#8FA198',
 
-  // Semantic & Component Aliases
-  affirmation: '#1F4D3C',
-  affirmationLight: '#DEEAE3',
-  alert: '#9C3B2A',
-  alertLight: '#F4E3CD',
-  caution: '#C97A2B',
-  cautionLight: '#F4E3CD',
-  financial: '#1F4D3C',
-  financialLight: '#DEEAE3',
+  // Backward-compatible semantic aliases
+  paper: '#F4F7F5',
+  banyanGreen: '#143D2B',
+  banyanSoft: '#DCFCE7',
+  marigold: '#22C55E',
+  marigoldSoft: '#DCFCE7',
+  inkDeep: '#14241C',
+  rustRed: '#EF4444',
+  borderNeutral: '#E5EBE5',
 
-  background: '#F1F5EF',
-  card: '#FBFCFA',
-  textPrimary: '#1F2A24',
-  textSecondary: '#1F2A24B3',
-  border: '#DCE3D8',
+  affirmation: '#143D2B',
+  affirmationLight: '#DCFCE7',
+  alert: '#EF4444',
+  alertLight: '#FEE2E2',
+  caution: '#F59E0B',
+  cautionLight: '#FEF3C7',
+  financial: '#143D2B',
+  financialLight: '#DCFCE7',
+
+  background: '#F4F7F5',
+  card: '#FFFFFF',
+  textPrimary: '#14241C',
+  textSecondary: '#62776CB3',
 };

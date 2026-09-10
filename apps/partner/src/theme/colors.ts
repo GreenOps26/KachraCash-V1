@@ -1,33 +1,33 @@
 /**
- * Outdoor High-Contrast Dark Theme Tokens for Partner Sahaayak Collector App (@apps/partner)
+ * Donezo Outdoor High-Contrast Forest Theme Tokens for Partner Collector App (@apps/partner)
  * Optimized for 1-2GB RAM Android Go devices in direct sunlight across Guwahati
  */
 export const colors = {
-  // Outdoor Dark Theme Tokens
-  forestBase: '#07110E',
-  forestPanel: '#0C1915',
-  forestCard: '#10221C',
+  // Donezo Forest Theme Tokens
+  forestBase: '#0A2418',
+  forestPanel: '#103322',
+  forestCard: '#143D2B',
 
-  // WCAG AAA Compliant Semantic Action Colors against #07110E
-  semanticGreen: '#059669', // Accept dispatch, confirm zero-tare, lock weight
-  crimsonRed: '#DC2626',    // Dispute, hazard warning, decline, emergency SOS
-  amberYellow: '#D97706',   // En-route, tare pending, low-float alert
-  royalBlue: '#1D4ED8',     // Doorstep UPI disbursal, phone call, banking actions
+  // WCAG AAA Compliant Semantic Action Colors
+  semanticGreen: '#22C55E', // Accept dispatch, confirm zero-tare, lock weight
+  crimsonRed: '#EF4444',    // Dispute, hazard warning, decline, emergency SOS
+  amberYellow: '#F59E0B',   // En-route, tare pending, low-float alert
+  royalBlue: '#3B82F6',     // Doorstep UPI disbursal, phone call, banking actions
 
   // Telemetry Readout Colors
-  telemetryCyan: '#55F3CF',
-  brandLime: '#C7FF3D',
+  telemetryCyan: '#4ADE80',
+  brandLime: '#86EFAC',
 
   // Component Alias Mapping
-  affirmation: '#059669',
-  alert: '#DC2626',
-  caution: '#D97706',
-  financial: '#1D4ED8',
+  affirmation: '#22C55E',
+  alert: '#EF4444',
+  caution: '#F59E0B',
+  financial: '#22C55E',
 
-  bg: '#07110E',
-  surface: '#0C1915',
-  surfaceElevated: '#10221C',
-  border: '#10221C',
+  bg: '#0A2418',
+  surface: '#103322',
+  surfaceElevated: '#143D2B',
+  border: '#1B523A',
   text: '#FFFFFF',
-  textMuted: '#DEEAE3B3',
+  textMuted: '#A7F3D0',
 };

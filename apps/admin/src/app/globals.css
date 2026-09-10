@@ -1,37 +1,32 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-banyan: #1F4D3C;
-  --color-brand-banyan-soft: #DEEAE3;
-  --color-brand-marigold: #C97A2B;
-  --color-brand-marigold-soft: #F4E3CD;
-  --color-brand-paper: #F1F5EF;
-  --color-brand-surface: #FBFCFA;
-  --color-brand-forest-base: #07110E;
-  --color-brand-forest-panel: #0C1915;
-  --color-brand-forest-card: #10221C;
-  --color-brand-ink: #1F2A24;
-  --color-brand-rust: #9C3B2A;
-  --color-semantic-green: #059669;
-  --color-semantic-red: #DC2626;
-  --color-semantic-yellow: #D97706;
-  --color-semantic-blue: #1D4ED8;
-  --color-semantic-cyan: #55F3CF;
-  --color-semantic-lime: #C7FF3D;
-  --font-display: var(--font-fraunces), serif;
-  --font-sans: var(--font-ibm-plex-sans), sans-serif;
+  --color-brand-forest: #143D2B;
+  --color-brand-forest-dark: #0D281A;
+  --color-brand-forest-deep: #081B11;
+  --color-brand-mint: #22C55E;
+  --color-brand-mint-light: #86EFAC;
+  --color-brand-mint-soft: #DCFCE7;
+  --color-brand-canvas: #F4F7F5;
+  --color-brand-surface: #FFFFFF;
+  --color-brand-border: #E5EBE5;
+  --color-brand-ink: #14241C;
+  --color-brand-muted: #62776C;
+  
+  --font-display: var(--font-outfit), sans-serif;
+  --font-sans: var(--font-plus-jakarta), sans-serif;
   --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
 }
 
 :root {
-  --background: #07110E;
-  --foreground: #F1F5EF;
+  --background: #F4F7F5;
+  --foreground: #14241C;
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: var(--font-ibm-plex-sans), sans-serif;
+  font-family: var(--font-plus-jakarta), -apple-system, BlinkMacSystemFont, sans-serif;
   margin: 0;
   padding: 0;
 }

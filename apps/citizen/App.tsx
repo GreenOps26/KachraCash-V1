@@ -54,31 +54,72 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor="#f8fafc" />
+      <StatusBar barStyle="dark-content" backgroundColor="#f4f7f5" />
 
-      {/* App Header */}
+      {/* Donezo Style App Header */}
       <View style={styles.navBar}>
         <View>
-          <Text style={styles.brandTitle}>KachraCash</Text>
+          <Text style={styles.brandTitle}>KachraCash 🌿</Text>
           <Text style={styles.brandSub}>কচৰা ক্যাশ • Guwahati Circular Tech</Text>
         </View>
         <View style={styles.wardPill}>
           <Text style={styles.wardText}>
-            {activeOrder?.wardId ? `📍 ${activeOrder.wardId}` : '📍 Beltola / Guwahati'}
+            {activeOrder?.wardId ? `📍 ${activeOrder.wardId}` : '📍 Beltola, Ward 28'}
           </Text>
         </View>
       </View>
 
       <ScrollView contentContainerStyle={styles.content}>
-        {/* Stage 1: Quick-Commerce Booking */}
+        {/* Stage 1: Quick-Commerce Booking with Coinest Wallet & Quick Actions */}
         {stage === 'BOOKING' && (
-          <View>
+          <View style={{ gap: 16 }}>
+            {/* Coinest Inspired Green Wallet Card */}
+            <View style={styles.ecoWalletCard}>
+              <View style={styles.ecoCardTop}>
+                <View>
+                  <Text style={styles.ecoWalletLabel}>CITIZEN ECO-WALLET</Text>
+                  <Text style={styles.ecoBalanceText}>₹1,420.50</Text>
+                </View>
+                <Text style={{ fontSize: 24 }}>🌱</Text>
+              </View>
+
+              <View style={styles.ecoCardBottom}>
+                <View style={styles.greenCoinsPill}>
+                  <Text style={styles.greenCoinsText}>⭐ 4,780 GreenCoins</Text>
+                </View>
+                <View style={styles.upiBadge}>
+                  <Text style={styles.upiBadgeText}>✓ Instant UPI Active</Text>
+                </View>
+              </View>
+            </View>
+
+            {/* Donezo Quick Action Pills Row */}
+            <View style={styles.quickActionsRow}>
+              <TouchableOpacity style={styles.quickActionBtn} activeOpacity={0.8}>
+                <Text style={styles.actionIcon}>📅</Text>
+                <Text style={styles.actionText}>Schedule</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.quickActionBtn} activeOpacity={0.8}>
+                <Text style={styles.actionIcon}>📷</Text>
+                <Text style={styles.actionText}>Scan Scale</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.quickActionBtn} activeOpacity={0.8}>
+                <Text style={styles.actionIcon}>🏷️</Text>
+                <Text style={styles.actionText}>Floor Rates</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.quickActionBtn} activeOpacity={0.8}>
+                <Text style={styles.actionIcon}>🌳</Text>
+                <Text style={styles.actionText}>ESG Impact</Text>
+              </TouchableOpacity>
+            </View>
+
+            {/* Banner */}
             <View style={styles.banner}>
               <Text style={styles.bannerEmoji}>⚡</Text>
               <View style={styles.bannerTextContainer}>
-                <Text style={styles.bannerTitle}>Schedule → Weigh Transparently → Get Paid Instantly</Text>
+                <Text style={styles.bannerTitle}>Guaranteed Floor Rates • Zero Bidding</Text>
                 <Text style={styles.bannerSubtitle}>
-                  পঞ্জীয়ন কৰক → স্বচ্ছ ওজন → প্ৰত্যক্ষ UPI জমা • Guaranteed Floor Rates • Zero Bidding
+                  পঞ্জীয়ন কৰক → স্বচ্ছ ওজন → প্ৰত্যক্ষ UPI জমা
                 </Text>
               </View>
             </View>
@@ -109,7 +150,7 @@ export default function App() {
 
             <TouchableOpacity
               testID="approve-weighment-button"
-              style={[styles.actionButton, { backgroundColor: colors.affirmation }]}
+              style={[styles.actionButton, { backgroundColor: colors.forest }]}
               onPress={handleApproveWeighment}
               activeOpacity={0.85}
             >
@@ -129,14 +170,14 @@ export default function App() {
             </View>
 
             <OtpRevealModal
-              otp={activeOrder?.otp || '4821'}
+              otp={activeOrder?.otp || '7492'}
               orderId={activeOrder?.orderId || 'ORD_DEFAULT'}
               onOrderCompleted={handleOtpVerified}
             />
 
             <TouchableOpacity
               testID="simulate-collector-settle-button"
-              style={[styles.actionButton, { backgroundColor: colors.financial }]}
+              style={[styles.actionButton, { backgroundColor: colors.forest }]}
               onPress={handleOtpVerified}
               activeOpacity={0.85}
             >
@@ -167,7 +208,7 @@ export default function App() {
 
             <TouchableOpacity
               testID="book-another-pickup-button"
-              style={[styles.actionButton, { backgroundColor: colors.textPrimary }]}
+              style={[styles.actionButton, { backgroundColor: colors.forest }]}
               onPress={handleReset}
               activeOpacity={0.85}
             >
@@ -183,51 +224,134 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: '#F4F7F5',
   },
   navBar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 16,
+    paddingHorizontal: 18,
     paddingVertical: 14,
     borderBottomWidth: 1,
-    borderBottomColor: colors.border,
-    backgroundColor: '#ffffff',
+    borderBottomColor: '#E5EBE5',
+    backgroundColor: '#FFFFFF',
   },
   brandTitle: {
     fontSize: 20,
     fontWeight: '900',
-    color: colors.affirmation,
+    color: '#143D2B',
   },
   brandSub: {
-    fontSize: 10,
+    fontSize: 11,
     fontWeight: '700',
-    color: colors.textSecondary,
-    letterSpacing: 0.3,
+    color: '#62776C',
+    letterSpacing: 0.2,
   },
   wardPill: {
-    backgroundColor: colors.affirmationLight,
+    backgroundColor: '#DCFCE7',
     paddingVertical: 5,
-    paddingHorizontal: 10,
-    borderRadius: 16,
+    paddingHorizontal: 12,
+    borderRadius: 9999,
+    borderWidth: 1,
+    borderColor: '#86EFAC',
   },
   wardText: {
     fontSize: 11,
-    fontWeight: '700',
-    color: colors.affirmation,
+    fontWeight: '800',
+    color: '#15803D',
   },
   content: {
     padding: 16,
     paddingBottom: 40,
   },
+  ecoWalletCard: {
+    backgroundColor: '#143D2B',
+    borderRadius: 24,
+    padding: 20,
+    shadowColor: '#143D2B',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.25,
+    shadowRadius: 16,
+    elevation: 6,
+  },
+  ecoCardTop: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+  },
+  ecoWalletLabel: {
+    fontSize: 10,
+    fontWeight: '800',
+    color: '#A7F3D0',
+    letterSpacing: 0.6,
+  },
+  ecoBalanceText: {
+    fontSize: 32,
+    fontWeight: '900',
+    color: '#FFFFFF',
+    marginTop: 4,
+  },
+  ecoCardBottom: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 18,
+    paddingTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(255, 255, 255, 0.15)',
+  },
+  greenCoinsPill: {
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    paddingVertical: 4,
+    paddingHorizontal: 10,
+    borderRadius: 9999,
+  },
+  greenCoinsText: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: '#FFFFFF',
+  },
+  upiBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  upiBadgeText: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: '#86EFAC',
+  },
+  quickActionsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 8,
+  },
+  quickActionBtn: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 18,
+    paddingVertical: 12,
+    paddingHorizontal: 4,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#E5EBE5',
+  },
+  actionIcon: {
+    fontSize: 20,
+    marginBottom: 4,
+  },
+  actionText: {
+    fontSize: 10,
+    fontWeight: '800',
+    color: '#143D2B',
+  },
   banner: {
     flexDirection: 'row',
-    backgroundColor: colors.financialLight,
-    borderRadius: 12,
+    backgroundColor: '#DCFCE7',
+    borderRadius: 16,
     padding: 14,
     alignItems: 'center',
-    marginBottom: 8,
+    borderWidth: 1,
+    borderColor: '#86EFAC',
   },
   bannerEmoji: {
     fontSize: 22,
@@ -237,13 +361,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   bannerTitle: {
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: '800',
-    color: colors.financial,
+    color: '#15803D',
   },
   bannerSubtitle: {
     fontSize: 11,
-    color: colors.textSecondary,
+    color: '#166534',
     marginTop: 2,
     lineHeight: 16,
   },
@@ -253,24 +377,29 @@ const styles = StyleSheet.create({
   stageTitle: {
     fontSize: 13,
     fontWeight: '800',
-    color: colors.textPrimary,
+    color: '#14241C',
     letterSpacing: 0.6,
   },
   stageSubtitle: {
     fontSize: 11,
-    color: colors.textSecondary,
+    color: '#62776C',
     marginTop: 2,
   },
   actionButton: {
-    borderRadius: 12,
+    borderRadius: 9999,
     paddingVertical: 16,
     alignItems: 'center',
     marginTop: 14,
+    shadowColor: '#143D2B',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+    elevation: 4,
   },
   actionButtonText: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: '800',
-    color: '#ffffff',
+    color: '#FFFFFF',
     letterSpacing: 0.5,
   },
 });
