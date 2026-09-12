@@ -2,6 +2,17 @@
 
 import React, { useState } from 'react';
 import {
+  Radar,
+  AlertTriangle,
+  CheckCircle2,
+  RefreshCw,
+  Clock,
+  MapPin,
+  Truck,
+  ShieldAlert,
+  X
+} from 'lucide-react';
+import {
   CollectorRadarMarker,
   ActivePickupCoordinate,
   calculateDistanceMeters,
@@ -11,15 +22,15 @@ import {
 } from '@/services/adminOperations';
 
 export const DispatchRadar: React.FC = () => {
-  // Live collector GPS markers across Guwahati
+  // Live collector GPS markers across Guwahati municipal grid
   const [collectors, setCollectors] = useState<CollectorRadarMarker[]>([
     {
       collectorId: 'COLL_01',
-      name: 'Pranjal Saikia',
-      phone: '+91 98640 11223',
-      lat: 26.1340,
-      lng: 91.7870,
-      floatBalance: 4250.0,
+      name: 'Babul Ali',
+      phone: '+91 98640 99881',
+      lat: 26.1352,
+      lng: 91.7890,
+      floatBalance: 2450.0,
       status: 'ONLINE',
       aadhaarRaw: '542198761234',
     },
@@ -37,7 +48,7 @@ export const DispatchRadar: React.FC = () => {
       collectorId: 'COLL_03',
       name: 'Dhruba Bora',
       phone: '+91 97060 77889',
-      lat: 26.1150, // Far away (>1.8 km)
+      lat: 26.1150, // Distant (>2.8 km away)
       lng: 91.7650,
       floatBalance: 2800.0,
       status: 'IN_TRANSIT',
@@ -47,11 +58,21 @@ export const DispatchRadar: React.FC = () => {
       collectorId: 'COLL_04',
       name: 'Mridul Das',
       phone: '+91 94351 22334',
-      lat: 26.1355,
-      lng: 91.7885, // Close backup in Beltola
-      floatBalance: 3100.0,
+      lat: 26.1358,
+      lng: 91.7882, // Backup collector in Beltola ~180m away
+      floatBalance: 3200.0,
       status: 'ONLINE',
       aadhaarRaw: '665544332211',
+    },
+    {
+      collectorId: 'COLL_05',
+      name: 'Pranjal Saikia',
+      phone: '+91 98640 11223',
+      lat: 26.1530,
+      lng: 91.7830,
+      floatBalance: 4250.0,
+      status: 'ONLINE',
+      aadhaarRaw: '334455667788',
     },
   ]);
 
@@ -60,7 +81,7 @@ export const DispatchRadar: React.FC = () => {
     {
       ticketId: 'TCK_BELTOLA_01',
       orderId: 'ORD_99182',
-      citizenName: 'Anita Goswami',
+      citizenName: 'Dr. Ananya Bordoloi',
       citizenPhone: '+91 98641 55667',
       wardId: 'WARD_BELTOLA_28',
       wardName: 'Beltola',
@@ -69,10 +90,10 @@ export const DispatchRadar: React.FC = () => {
       lng: 91.7878,
       visualTier: 'SOFT_FILMS',
       scheduledSlot: '10:00 AM – 12:00 PM',
-      timeToSlotMinutes: 14, // T-14 min (<= 15 min)
-      assignedCollectorId: 'COLL_03', // Dhruba Bora is > 2,000m away!
+      timeToSlotMinutes: 14, // T-14 min (SLA BREACH triggered at T-15)
+      assignedCollectorId: 'COLL_03', // Dhruba Bora (>2,800m away)
       assignedCollectorName: 'Dhruba Bora',
-      distanceMeters: calculateDistanceMeters(26.1150, 91.7650, 26.1344, 91.7878), // ~3.1 km
+      distanceMeters: calculateDistanceMeters(26.1150, 91.7650, 26.1344, 91.7878), // ~2,840m
       slaStatus: 'BREACH_T15',
     },
     {
@@ -87,7 +108,7 @@ export const DispatchRadar: React.FC = () => {
       lng: 91.7945,
       visualTier: 'RIGID_CONTAINERS',
       scheduledSlot: '10:00 AM – 12:00 PM',
-      timeToSlotMinutes: 19, // T-19 min (<= 20 min)
+      timeToSlotMinutes: 19,
       assignedCollectorId: 'COLL_02',
       assignedCollectorName: 'Biren Kalita',
       distanceMeters: calculateDistanceMeters(26.1420, 91.7950, 26.1415, 91.7945), // ~75m
@@ -106,9 +127,9 @@ export const DispatchRadar: React.FC = () => {
       visualTier: 'MIXED_BULKY',
       scheduledSlot: '12:00 PM – 02:00 PM',
       timeToSlotMinutes: 20, // T-20 min
-      assignedCollectorId: 'COLL_01',
+      assignedCollectorId: 'COLL_05',
       assignedCollectorName: 'Pranjal Saikia',
-      distanceMeters: calculateDistanceMeters(26.1340, 91.7870, 26.1520, 91.7820), // ~2.0 km
+      distanceMeters: calculateDistanceMeters(26.1340, 91.7870, 26.1520, 91.7820), // ~2,000m
       slaStatus: 'WARNING_T20',
     },
   ]);
@@ -151,21 +172,24 @@ export const DispatchRadar: React.FC = () => {
   };
 
   return (
-    <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm space-y-6">
+    <div className="bg-[#0C1915] rounded-xl border border-white/[0.08] p-5 text-[#F1F5EF] space-y-5">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/[0.08] pb-3.5">
         <div>
-          <h2 className="text-lg font-extrabold text-slate-900">
-            📡 Live PostGIS Geospatial Dispatch Radar (Guwahati Grid)
-          </h2>
-          <p className="text-xs text-slate-500">
-            Spatial indexing (SRID 4326) • Real-time collector proximity monitoring • 500m geofence SLA tracking
+          <div className="flex items-center gap-2">
+            <Radar className="w-5 h-5 text-[#C7FF3D]" />
+            <h2 className="text-base font-display font-bold text-[#F1F5EF] tracking-tight">
+              PostGIS Geospatial Dispatch Radar
+            </h2>
+          </div>
+          <p className="text-xs text-[#DEEAE3]/60 font-mono mt-0.5">
+            Real-time proximity monitoring • ST_DistanceSphere (SRID 4326) • 500m geofence SLA
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            PostGIS Stream Active
+          <span className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full text-xs font-mono bg-[#10221C] text-[#55F3CF] border border-[#55F3CF]/20">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#C7FF3D] animate-pulse"></span>
+            PostGIS Live Stream
           </span>
         </div>
       </div>
@@ -174,215 +198,395 @@ export const DispatchRadar: React.FC = () => {
       {notification && (
         <div
           data-testid="reassignment-alert-banner"
-          className="p-4 rounded-lg bg-red-50 border border-red-300 text-xs text-red-900 flex items-start justify-between"
+          className="p-4 rounded-lg bg-red-950/30 border border-red-500/50 text-[#F1F5EF] flex items-start justify-between"
         >
           <div>
-            <div className="font-extrabold text-sm flex items-center gap-1.5">
-              <span>⚡ SLA BREACH PENALTY & TICKET REASSIGNMENT APPLIED</span>
+            <div className="font-mono font-semibold text-xs flex items-center gap-2 text-red-400">
+              <ShieldAlert className="w-4 h-4" />
+              <span>SLA Breach Reassignment Executed</span>
+              <span className="text-[11px] px-1.5 py-0.5 rounded bg-red-950 text-red-300 border border-red-800/60 font-mono">
+                {notification.ticketId}
+              </span>
             </div>
-            <p className="mt-1 font-medium">{notification.message}</p>
-            <div className="mt-2 flex gap-4 text-[11px] font-mono">
-              <span>Collector Penalty: -₹{notification.penaltyLevied.toFixed(2)}</span>
-              <span>Citizen Credit Voucher: +₹{notification.citizenVoucherIssued.toFixed(2)}</span>
-              <span>New Collector Distance: {notification.newDistanceMeters}m</span>
+            <p className="mt-1 text-xs text-[#DEEAE3]/80 font-sans leading-relaxed">
+              {notification.message}
+            </p>
+            <div className="mt-2.5 flex flex-wrap gap-3 text-xs font-mono">
+              <span className="px-2 py-0.5 rounded bg-[#10221C] text-red-400 border border-red-500/20">
+                Penalty: -₹{notification.penaltyLevied.toFixed(2)}
+              </span>
+              <span className="px-2 py-0.5 rounded bg-[#10221C] text-[#C7FF3D] border border-[#C7FF3D]/20">
+                Voucher: +₹{notification.citizenVoucherIssued.toFixed(2)}
+              </span>
+              <span className="px-2 py-0.5 rounded bg-[#10221C] text-[#55F3CF] border border-[#55F3CF]/20">
+                New Distance: {notification.newDistanceMeters}m
+              </span>
             </div>
           </div>
           <button
             onClick={() => setNotification(null)}
-            className="text-red-700 hover:text-red-900 font-bold px-2 py-1"
+            className="text-white/40 hover:text-white p-1"
           >
-            ✕
+            <X className="w-4 h-4" />
           </button>
         </div>
       )}
 
-      {/* Geospatial Radar Visualizer & Wards Overview */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Visual Radar Map Canvas */}
-        <div className="lg:col-span-2 bg-slate-950 rounded-xl p-5 border border-slate-800 text-white relative overflow-hidden min-h-[300px]">
-          <div className="flex items-center justify-between text-xs text-slate-400 border-b border-slate-800 pb-2 mb-4">
-            <span className="font-bold text-slate-200">GUWAHATI MUNICIPAL SPATIAL RADAR (SRID 4326)</span>
-            <span className="font-mono text-[11px]">Center: 26.1445° N, 91.7362° E</span>
+      {/* Geospatial Radar Canvas & Rules Overview */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        {/* Interactive Vector Map Canvas (8 Cols) */}
+        <div className="lg:col-span-8 bg-[#07110E] rounded-lg p-4 border border-white/[0.08] relative overflow-hidden flex flex-col justify-between min-h-[350px]">
+          {/* Map Top Metadata Bar */}
+          <div className="flex items-center justify-between text-xs text-[#DEEAE3]/60 border-b border-white/[0.08] pb-2.5 mb-3">
+            <span className="font-mono font-medium text-[#C7FF3D] text-[11px]">
+              GUWAHATI MUNICIPAL SPATIAL GRID
+            </span>
+            <span className="font-mono text-[10px] text-[#DEEAE3]/40">
+              Center: 26.1445° N, 91.7362° E
+            </span>
           </div>
 
-          {/* Map Grid Background Simulation */}
-          <div className="grid grid-cols-4 gap-4 h-52 border border-slate-800/80 rounded-lg p-3 bg-slate-900/40 relative">
-            {/* Beltola Zone */}
-            <div className="border border-dashed border-slate-700/60 rounded p-2 text-[10px] text-slate-400">
-              <span className="font-bold text-slate-300">Ward 28 (Beltola)</span>
-              <div className="mt-2 text-emerald-400">📍 Active Grid</div>
-            </div>
-            {/* Jayanagar Zone */}
-            <div className="border border-dashed border-slate-700/60 rounded p-2 text-[10px] text-slate-400">
-              <span className="font-bold text-slate-300">Ward 24 (Jayanagar)</span>
-              <div className="mt-2 text-emerald-400">📍 Active Grid</div>
-            </div>
-            {/* Ganeshguri Zone */}
-            <div className="border border-dashed border-slate-700/60 rounded p-2 text-[10px] text-slate-400">
-              <span className="font-bold text-slate-300">Ward 29 (Ganeshguri)</span>
-              <div className="mt-2 text-amber-400">⚠️ SLA T-20</div>
-            </div>
-            {/* Wireless/Hatigaon Zone */}
-            <div className="border border-dashed border-red-800/60 bg-red-950/20 rounded p-2 text-[10px] text-red-300">
-              <span className="font-bold text-red-200">Ward 30 (Hatigaon)</span>
-              <div className="mt-2 text-red-400">🌊 Flood Suspended</div>
-            </div>
+          {/* Interactive Vector Map Canvas with Ward Boundaries */}
+          <div className="relative w-full h-64 rounded-lg border border-white/[0.08] bg-[#0C1915]/80 overflow-hidden">
+            {/* SVG Municipal Polygons */}
+            <svg
+              className="absolute inset-0 w-full h-full"
+              viewBox="0 0 600 280"
+              preserveAspectRatio="none"
+            >
+              <defs>
+                <pattern
+                  id="hazardStripes"
+                  width="10"
+                  height="10"
+                  patternUnits="userSpaceOnUse"
+                  patternTransform="rotate(45)"
+                >
+                  <line x1="0" y1="0" x2="0" y2="10" stroke="#9C3B2A" strokeWidth="3" />
+                  <line x1="5" y1="0" x2="5" y2="10" stroke="#160807" strokeWidth="3" />
+                </pattern>
+              </defs>
 
-            {/* Visual Collector and Pickup Markers */}
-            <div className="absolute inset-0 p-4 pointer-events-none flex flex-wrap items-center justify-around">
-              {collectors.map((c) => (
-                <div
-                  key={c.collectorId}
-                  className="bg-emerald-500/90 text-slate-950 text-[10px] font-bold px-2 py-0.5 rounded-full shadow-lg shadow-emerald-900/50 flex items-center gap-1"
-                >
-                  <span>🛵</span>
-                  <span>{c.name.split(' ')[0]}</span>
-                  <span className="font-mono text-[9px]">({c.collectorId})</span>
-                </div>
-              ))}
-              {pickups.map((p) => (
-                <div
-                  key={p.ticketId}
-                  className={`text-[10px] font-bold px-2 py-0.5 rounded-full shadow-lg flex items-center gap-1 ${
-                    p.slaStatus === 'BREACH_T15'
-                      ? 'bg-red-500 text-white animate-bounce'
-                      : p.slaStatus === 'WARNING_T20'
-                        ? 'bg-amber-400 text-slate-950'
-                        : 'bg-blue-500 text-white'
-                  }`}
-                >
-                  <span>📦</span>
-                  <span>{p.wardName}</span>
-                  <span className="font-mono text-[9px]">{p.distanceMeters}m</span>
-                </div>
-              ))}
+              {/* Background Coordinate Grid */}
+              <line x1="0" y1="140" x2="600" y2="140" stroke="#1F4D3C" strokeWidth="0.5" strokeDasharray="4,4" opacity="0.4" />
+              <line x1="300" y1="0" x2="300" y2="280" stroke="#1F4D3C" strokeWidth="0.5" strokeDasharray="4,4" opacity="0.4" />
+
+              {/* Range Rings */}
+              <circle cx="300" cy="140" r="110" fill="none" stroke="#1F4D3C" strokeWidth="1" strokeDasharray="3,3" opacity="0.5" />
+              <circle cx="300" cy="140" r="60" fill="none" stroke="#1F4D3C" strokeWidth="1" strokeDasharray="3,3" opacity="0.5" />
+
+              {/* Ward Polygons */}
+              {/* Ward 15: Noonmati (Top Right) */}
+              <polygon
+                points="390,20 570,30 550,110 370,95"
+                fill="#10221C"
+                stroke="#1F4D3C"
+                strokeWidth="1.2"
+                className="hover:fill-[#1F4D3C]/30 transition-colors"
+              />
+              <text x="440" y="65" fill="#DEEAE3" fontSize="10" fontFamily="JetBrains Mono" opacity="0.8">
+                Ward 15 Noonmati
+              </text>
+
+              {/* Ward 29: Ganeshguri (Center Top) */}
+              <polygon
+                points="210,25 380,25 360,115 190,110"
+                fill="#10221C"
+                stroke="#C97A2B"
+                strokeWidth="1.2"
+                strokeDasharray="2,2"
+                className="hover:fill-[#1F4D3C]/30 transition-colors"
+              />
+              <text x="245" y="70" fill="#DEEAE3" fontSize="10" fontFamily="JetBrains Mono" opacity="0.8">
+                Ward 29 Ganeshguri
+              </text>
+
+              {/* Ward 24: Jayanagar (Center East) */}
+              <polygon
+                points="360,120 540,115 520,200 340,195"
+                fill="#10221C"
+                stroke="#1F4D3C"
+                strokeWidth="1.2"
+                className="hover:fill-[#1F4D3C]/30 transition-colors"
+              />
+              <text x="410" y="160" fill="#DEEAE3" fontSize="10" fontFamily="JetBrains Mono" opacity="0.8">
+                Ward 24 Jayanagar
+              </text>
+
+              {/* Ward 28: Beltola (Center South) */}
+              <polygon
+                points="180,125 350,120 330,260 160,250"
+                fill="#10221C"
+                stroke="#C7FF3D"
+                strokeWidth="1.2"
+                className="hover:fill-[#1F4D3C]/30 transition-colors"
+              />
+              <text x="215" y="185" fill="#C7FF3D" fontSize="10" fontFamily="JetBrains Mono" fontWeight="600">
+                Ward 28 Beltola
+              </text>
+
+              {/* Ward 30: Wireless / Hatigaon (Hazard Stripes Suspended) */}
+              <polygon
+                points="20,130 170,125 150,265 10,255"
+                fill="url(#hazardStripes)"
+                stroke="#DC2626"
+                strokeWidth="1.5"
+                opacity="0.85"
+              />
+              <text x="25" y="185" fill="#F87171" fontSize="10" fontFamily="JetBrains Mono" fontWeight="600">
+                Ward 30 (Suspended)
+              </text>
+            </svg>
+
+            {/* Visual Markers Layer */}
+            <div className="absolute inset-0 p-4 pointer-events-none">
+              {/* Collector Markers */}
+              {collectors.map((c) => {
+                const isBeltola = c.collectorId === 'COLL_01' || c.collectorId === 'COLL_04';
+                const isJayanagar = c.collectorId === 'COLL_02';
+                const isNoonmati = c.collectorId === 'COLL_05';
+                const isDistant = c.collectorId === 'COLL_03';
+
+                let top = '50%';
+                let left = '50%';
+                if (isBeltola && c.collectorId === 'COLL_01') {
+                  top = '68%';
+                  left = '45%';
+                } else if (isBeltola && c.collectorId === 'COLL_04') {
+                  top = '62%';
+                  left = '42%';
+                } else if (isJayanagar) {
+                  top = '52%';
+                  left = '70%';
+                } else if (isNoonmati) {
+                  top = '22%';
+                  left = '75%';
+                } else if (isDistant) {
+                  top = '82%';
+                  left = '12%';
+                }
+
+                return (
+                  <div
+                    key={c.collectorId}
+                    style={{ top, left }}
+                    className="absolute -translate-x-1/2 -translate-y-1/2 flex items-center gap-1.5 bg-[#10221C]/95 border border-[#C7FF3D]/40 px-2 py-0.5 rounded-full shadow-lg pointer-events-auto"
+                  >
+                    <Truck className="w-3 h-3 text-[#C7FF3D]" />
+                    <div className="text-[10px] font-mono leading-tight">
+                      <span className="text-[#F1F5EF] font-medium">{c.name}</span>
+                      <span className="text-[#C7FF3D] ml-1 font-semibold">
+                        ₹{c.floatBalance.toFixed(0)}
+                      </span>
+                    </div>
+                  </div>
+                );
+              })}
+
+              {/* Pickup Nodes */}
+              {pickups.map((p) => {
+                let top = '64%';
+                let left = '48%';
+                if (p.ticketId === 'TCK_JAYANAGAR_02') {
+                  top = '54%';
+                  left = '72%';
+                } else if (p.ticketId === 'TCK_GANESHGURI_03') {
+                  top = '28%';
+                  left = '48%';
+                }
+
+                const isBreach = p.slaStatus === 'BREACH_T15';
+                const isWarning = p.slaStatus === 'WARNING_T20';
+
+                return (
+                  <div
+                    key={p.ticketId}
+                    style={{ top, left }}
+                    className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-auto"
+                  >
+                    <div className="relative flex items-center justify-center">
+                      <span
+                        className={`animate-ping absolute inline-flex h-6 w-6 rounded-full opacity-70 ${
+                          isBreach
+                            ? 'bg-red-500'
+                            : isWarning
+                              ? 'bg-amber-400'
+                              : 'bg-[#55F3CF]'
+                        }`}
+                      ></span>
+                      <div
+                        className={`relative z-10 px-1.5 py-0.5 rounded text-[9px] font-mono font-bold shadow-md flex items-center gap-1 ${
+                          isBreach
+                            ? 'bg-red-950 text-red-300 border border-red-700'
+                            : isWarning
+                              ? 'bg-amber-950 text-amber-300 border border-amber-600'
+                              : 'bg-[#1F4D3C] text-[#55F3CF] border border-[#55F3CF]/30'
+                        }`}
+                      >
+                        <MapPin className="w-2.5 h-2.5" />
+                        <span>{p.wardName}</span>
+                        <span className="opacity-70">({p.distanceMeters}m)</span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
-          <div className="mt-4 flex items-center justify-between text-[11px] text-slate-400 pt-3 border-t border-slate-800">
-            <div className="flex items-center gap-4">
-              <span className="flex items-center gap-1">
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Optimal (≤500m)
+          {/* Map Footer Legend */}
+          <div className="mt-3 flex flex-wrap items-center justify-between text-[11px] text-[#DEEAE3]/60 pt-2.5 border-t border-white/[0.08] gap-2">
+            <div className="flex items-center gap-3 font-mono text-[10px]">
+              <span className="flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-[#059669]"></span> Optimal (≤500m)
               </span>
-              <span className="flex items-center gap-1">
-                <span className="w-2.5 h-2.5 rounded-full bg-amber-400"></span> T-20 Warning (&gt;500m)
+              <span className="flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-[#D97706]"></span> Warning (T-20)
               </span>
-              <span className="flex items-center gap-1">
-                <span className="w-2.5 h-2.5 rounded-full bg-red-500"></span> T-15 SLA Breach (&gt;500m)
+              <span className="flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-[#DC2626]"></span> Breach (T-15)
               </span>
             </div>
-            <span className="font-mono text-slate-500">PostGIS ST_DWithin Index Acceleration</span>
+            <span className="font-mono text-[#DEEAE3]/40 text-[10px]">
+              PostGIS ST_DWithin Acceleration
+            </span>
           </div>
         </div>
 
-        {/* Proximity SLA Summary Card */}
-        <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 flex flex-col justify-between">
+        {/* Proximity SLA Rules Engine Card (4 Cols) */}
+        <div className="lg:col-span-4 bg-[#10221C] border border-white/[0.08] rounded-lg p-4 flex flex-col justify-between">
           <div>
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700 mb-3">
-              Proximity SLA Rules Engine
-            </h3>
-            <div className="space-y-3 text-xs text-slate-600">
-              <div className="p-3 bg-white rounded-lg border border-slate-200">
-                <div className="font-bold text-slate-900 text-xs">Rule 1: T-20 Proximity Check</div>
-                <p className="mt-1 text-slate-500">
-                  If collector is outside the 500-meter radius at T-20 minutes, dispatch status flags an Amber operational warning.
+            <div className="flex items-center justify-between text-xs font-mono uppercase tracking-wider text-[#DEEAE3]/60 mb-3 border-b border-white/[0.08] pb-2">
+              <span className="font-semibold text-[#C7FF3D]">Proximity SLA Protocol</span>
+              <span className="text-[#55F3CF]">500m Geofence</span>
+            </div>
+
+            <div className="space-y-3 text-xs">
+              <div className="p-3 bg-[#0C1915] rounded-lg border border-white/[0.08]">
+                <div className="flex items-center justify-between text-[#C97A2B] font-mono font-medium text-xs">
+                  <span>T-20 Proximity Warning</span>
+                  <span className="px-1.5 py-0.5 rounded bg-amber-950/50 text-amber-300 border border-amber-700/40 text-[10px]">
+                    &gt; 500m
+                  </span>
+                </div>
+                <p className="mt-1 text-xs text-[#DEEAE3]/70 font-sans leading-relaxed">
+                  Collector &gt;500m from pickup node at T-20 minutes triggers an operational Amber warning state.
                 </p>
               </div>
 
-              <div className="p-3 bg-white rounded-lg border border-red-200 bg-red-50/40">
-                <div className="font-bold text-red-900 text-xs">Rule 2: T-15 Automated SLA Breach</div>
-                <p className="mt-1 text-slate-700">
-                  If collector remains outside 500m at T-15 minutes, automated reassignment triggers with ₹150 penalty and ₹100 citizen credit.
+              <div className="p-3 bg-red-950/20 rounded-lg border border-red-500/30">
+                <div className="flex items-center justify-between text-red-400 font-mono font-medium text-xs">
+                  <span>T-15 Automated Breach</span>
+                  <span className="px-1.5 py-0.5 rounded bg-red-950 text-red-300 border border-red-800 text-[10px]">
+                    ST_DistanceSphere
+                  </span>
+                </div>
+                <p className="mt-1 text-xs text-[#DEEAE3]/70 font-sans leading-relaxed">
+                  Collector &gt;500m at T-15 triggers automated reassignment to nearest qualified collector (≥₹2,000 float), ₹150 collector penalty, and ₹100 resident voucher.
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="pt-4 border-t border-slate-200 text-xs text-slate-500">
-            <span>Online Qualified Collectors: </span>
-            <strong className="text-slate-900">
+          <div className="pt-3 border-t border-white/[0.08] text-xs text-[#DEEAE3]/60 flex items-center justify-between font-mono">
+            <span>Qualified Collectors:</span>
+            <span className="text-[#C7FF3D] font-semibold">
               {collectors.filter((c) => c.floatBalance >= 2000.0).length} / {collectors.length}
-            </strong>
+            </span>
           </div>
         </div>
       </div>
 
       {/* Active Pickups & SLA Breach Monitor Table */}
       <div>
-        <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700 mb-3">
-          Active Pickup Coordinates & SLA Proximity Monitor
-        </h3>
-        <div className="overflow-x-auto border border-slate-200 rounded-lg">
+        <div className="flex items-center justify-between mb-2.5">
+          <h3 className="text-xs font-mono font-semibold uppercase tracking-wider text-[#DEEAE3]/60">
+            Active Pickup Coordinates & SLA Proximity Monitor
+          </h3>
+          <span className="text-[11px] font-mono text-[#55F3CF]">
+            {pickups.length} Coordinates Monitored
+          </span>
+        </div>
+
+        <div className="overflow-x-auto border border-white/[0.08] rounded-lg bg-[#10221C]">
           <table className="w-full text-left text-xs">
-            <thead className="bg-slate-50 text-slate-700 font-bold border-b border-slate-200">
+            <thead className="bg-[#07110E] text-[#DEEAE3]/60 font-mono border-b border-white/[0.08]">
               <tr>
-                <th className="p-3">Ticket / Order</th>
-                <th className="p-3">Ward & Citizen</th>
-                <th className="p-3">Assigned Collector</th>
-                <th className="p-3">Distance (m)</th>
-                <th className="p-3">Slot Countdown</th>
-                <th className="p-3">SLA Status</th>
-                <th className="p-3 text-right">Operations Action</th>
+                <th className="p-2.5">Ticket</th>
+                <th className="p-2.5">Ward & Citizen</th>
+                <th className="p-2.5">Collector</th>
+                <th className="p-2.5 font-mono">Distance</th>
+                <th className="p-2.5 font-mono">Countdown</th>
+                <th className="p-2.5">Status</th>
+                <th className="p-2.5 text-right">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-200 bg-white">
+            <tbody className="divide-y divide-white/[0.04]">
               {pickups.map((pickup) => (
-                <tr key={pickup.ticketId} className="hover:bg-slate-50/50">
-                  <td className="p-3 font-mono font-bold text-slate-900">
-                    <div>{pickup.ticketId}</div>
-                    <div className="text-[11px] text-slate-500 font-normal">#{pickup.orderId}</div>
+                <tr key={pickup.ticketId} className="hover:bg-white/[0.015] transition-colors">
+                  <td className="p-2.5 font-mono">
+                    <div className="font-semibold text-[#F1F5EF]">{pickup.ticketId}</div>
+                    <div className="text-[10px] text-[#DEEAE3]/40">#{pickup.orderId}</div>
                   </td>
-                  <td className="p-3">
-                    <div className="font-bold text-slate-900">
+                  <td className="p-2.5">
+                    <div className="font-medium text-[#F1F5EF]">
                       {pickup.wardName} (W{pickup.wardNumber})
                     </div>
-                    <div className="text-slate-500">{pickup.citizenName}</div>
+                    <div className="text-[11px] text-[#DEEAE3]/50 font-sans">{pickup.citizenName}</div>
                   </td>
-                  <td className="p-3">
-                    <div className="font-semibold text-slate-800">{pickup.assignedCollectorName}</div>
-                    <div className="text-[11px] font-mono text-slate-500">{pickup.assignedCollectorId}</div>
+                  <td className="p-2.5">
+                    <div className="font-medium text-[#DEEAE3]">{pickup.assignedCollectorName}</div>
+                    <div className="text-[10px] font-mono text-[#DEEAE3]/40">{pickup.assignedCollectorId}</div>
                   </td>
-                  <td className="p-3 font-mono font-bold">
-                    <span className={pickup.distanceMeters > 500 ? 'text-red-600' : 'text-emerald-600'}>
+                  <td className="p-2.5 font-mono font-medium">
+                    <span
+                      className={
+                        pickup.distanceMeters > 500
+                          ? 'text-red-400'
+                          : 'text-[#C7FF3D]'
+                      }
+                    >
                       {pickup.distanceMeters} m
                     </span>
                   </td>
-                  <td className="p-3">
-                    <span className="font-mono font-bold text-slate-900">
-                      T-{pickup.timeToSlotMinutes} min
-                    </span>
+                  <td className="p-2.5 font-mono text-[#F1F5EF]">
+                    T-{pickup.timeToSlotMinutes} min
                   </td>
-                  <td className="p-3">
+                  <td className="p-2.5">
                     {pickup.slaStatus === 'BREACH_T15' && (
-                      <span className="px-2.5 py-1 rounded-md text-[11px] font-extrabold bg-red-100 text-red-800 border border-red-200">
-                        ⚡ RED SLA BREACH
+                      <span className="px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-red-950 text-red-300 border border-red-700/50 inline-flex items-center gap-1">
+                        <AlertTriangle className="w-3 h-3 text-red-400" />
+                        SLA Breach (T-15)
                       </span>
                     )}
                     {pickup.slaStatus === 'WARNING_T20' && (
-                      <span className="px-2.5 py-1 rounded-md text-[11px] font-bold bg-amber-100 text-amber-800 border border-amber-200">
-                        ⚠️ AMBER WARNING (T-20)
+                      <span className="px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-amber-950 text-amber-300 border border-amber-700/50 inline-flex items-center gap-1">
+                        <Clock className="w-3 h-3 text-amber-400" />
+                        Warning (T-20)
                       </span>
                     )}
                     {pickup.slaStatus === 'OPTIMAL' && (
-                      <span className="px-2.5 py-1 rounded-md text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
-                        ✓ OPTIMAL (≤500m)
+                      <span className="px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-[#1F4D3C]/40 text-[#C7FF3D] border border-[#C7FF3D]/30 inline-flex items-center gap-1">
+                        <CheckCircle2 className="w-3 h-3 text-[#C7FF3D]" />
+                        Optimal (≤500m)
                       </span>
                     )}
                   </td>
-                  <td className="p-3 text-right">
+                  <td className="p-2.5 text-right">
                     {pickup.slaStatus === 'BREACH_T15' ? (
                       <button
                         onClick={() => handleReassign(pickup)}
-                        className="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm transition-all"
+                        className="bg-red-600 hover:bg-red-500 text-white font-mono font-semibold px-3 py-1.5 rounded text-xs transition-colors cursor-pointer inline-flex items-center gap-1.5"
                       >
-                        ⚡ REASSIGN TICKET (₹150 PENALTY)
+                        <RefreshCw className="w-3 h-3" />
+                        Reassign (180m • ₹150)
                       </button>
                     ) : (
                       <button
                         onClick={() => handleReassign(pickup)}
-                        className="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all"
+                        className="bg-[#10221C] hover:bg-[#1F4D3C]/40 text-[#DEEAE3] border border-white/[0.08] font-mono px-2.5 py-1 rounded text-xs transition-colors cursor-pointer"
                       >
-                        Manual Reassign
+                        Reassign
                       </button>
                     )}
                   </td>

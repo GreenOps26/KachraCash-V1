@@ -1,8 +1,14 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useEffect } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import { partnerTheme } from '../theme/partnerTheme.js';
+import { speakAssamesePrompt } from '../audio/assamesePrompts.js';
 
-interface BleScaleReaderProps {
+export interface BleScaleReaderProps {
   scaleId: string;
   scaleHardwareUuid?: string;
   weightKg: number;
@@ -16,11 +22,11 @@ interface BleScaleReaderProps {
 }
 
 export const BleScaleReader: React.FC<BleScaleReaderProps> = ({
-  scaleId,
+  scaleId = 'AS-BLE-09',
   scaleHardwareUuid = '0000ffe0-0000-1000-8000-00805f9b34fb',
   weightKg,
   isTared,
-  batteryPct,
+  batteryPct = 92,
   commodityName = 'Old Corrugated Cardboard (ভঙা কাৰ্ডব’ৰ্ড)',
   unitRate = 14.0,
   onTare,
@@ -29,106 +35,143 @@ export const BleScaleReader: React.FC<BleScaleReaderProps> = ({
 }) => {
   const estimatedGross = Math.round(weightKg * unitRate * 100) / 100;
 
+  // Automated voice telemetry announcement when weight stabilizes
+  useEffect(() => {
+    if (!isTared) {
+      speakAssamesePrompt('tarePending');
+    } else if (weightKg > 0) {
+      speakAssamesePrompt('weighing', weightKg);
+    }
+  }, [isTared, weightKg]);
+
   return (
-    <View style={styles.container}>
-      {/* Header with Paired Scale HW UUID & Battery */}
-      <View style={styles.header}>
-        <View>
-          <Text style={styles.scaleTag}>🔵 BLE SCALE: {scaleId}</Text>
-          <Text style={styles.uuidTag}>GATT UUID: {scaleHardwareUuid.substring(0, 18)}...</Text>
+    <View testID="ble-scale-reader-container" style={styles.container}>
+      {/* 1. Hardware Status Header: Glowing Cyan Bluetooth indicator */}
+      <View style={styles.hardwareHeader}>
+        <View style={styles.statusRow}>
+          <View style={styles.glowingDot} />
+          <Text style={styles.statusText}>
+            ● Hanging Scale #{scaleId} Paired
+          </Text>
         </View>
-        <View style={styles.batteryBadge}>
-          <Text style={styles.battery}>🔋 {batteryPct}%</Text>
-        </View>
+        <Text style={styles.batteryText}>🔋 {batteryPct}%</Text>
       </View>
 
-      {/* Commodity Header Banner */}
-      <View style={styles.commodityBanner}>
-        <Text style={styles.commodityName}>{commodityName}</Text>
-        <Text style={styles.commodityRate}>Floor Rate: ₹{unitRate.toFixed(2)}/kg</Text>
+      {/* GATT UUID Telemetry Header */}
+      <View style={styles.gattHeaderRow}>
+        <Text style={styles.gattUuid}>
+          GATT: {scaleHardwareUuid.substring(0, 24)}...
+        </Text>
+        <Text style={styles.commodityLabel}>{commodityName}</Text>
       </View>
 
-      {/* Strict Zero-Tare Warning / Confirmation Badge */}
+      {/* 2. Mandatory Zero-Tare Interlock */}
       {!isTared ? (
-        <View style={styles.tareAlert}>
-          <Text style={styles.tareAlertText}>⚠️ ZERO TARE REQUIRED (শূন্য কৰক - 0.000 kg)</Text>
-          <Text style={styles.tareSubtext}>Must register 0.000 kg tare before accepting scrap</Text>
+        <View testID="zero-tare-required-banner" style={styles.tareAlertBox}>
+          <Text style={styles.tareAlertTitle}>
+            ⚠️ SCALE MUST BE EMPTY (0.000 KG)
+          </Text>
+          <Text style={styles.tareAlertSubtext}>
+            প্ৰথমে স্কেলটো শূন্য কৰক। সেউজীয়া লাইট নজ্বলালৈকে বস্তু নুতুলিব।
+          </Text>
         </View>
       ) : weightKg === 0 ? (
-        <View style={styles.taredOk}>
-          <Text style={styles.taredOkText}>✓ ZERO TARE CONFIRMED (0.000 kg)</Text>
-          <Text style={styles.taredSubtext}>বস্তুটো স্কেলত তুলক (Place scrap on scale)</Text>
+        <View testID="zero-tare-confirmed-banner" style={styles.tareConfirmedBox}>
+          <Text style={styles.tareConfirmedTitle}>
+            ✓ ZERO-TARE CONFIRMED (0.000 KG)
+          </Text>
+          <Text style={styles.tareConfirmedSubtext}>
+            স্কেলত বস্তু তুলক (Place scrap on load cell)
+          </Text>
         </View>
       ) : (
-        <View style={styles.readyOk}>
-          <Text style={styles.readyOkText}>✓ ওজন গ্ৰহণযোগ্য (WEIGHT RECORDED)</Text>
+        <View style={styles.weightLockedNotice}>
+          <Text style={styles.weightLockedText}>
+            ✓ MASS STABILIZED • GATT TELEMETRY STREAMING
+          </Text>
         </View>
       )}
 
-      {/* Digital Weight Readout - Strictly Hardware Telemetry Stream (No Text Inputs) */}
-      <View style={styles.weightBox}>
-        <View style={styles.weightRow}>
-          <Text style={styles.weightValue}>{weightKg.toFixed(2)}</Text>
-          <Text style={styles.unit}>kg</Text>
+      {/* 3. Large Digital Readout: Black LCD Container (#030806) with Cyan Glowing Digits */}
+      <View testID="digital-lcd-scale" style={styles.lcdContainer}>
+        <View style={styles.lcdHeader}>
+          <Text style={styles.lcdModel}>CERTIFIED LOAD CELL • 0–100 KG</Text>
+          <Text style={styles.lcdFloorRate}>Floor Rate: ₹{unitRate.toFixed(2)}/kg</Text>
         </View>
-        {weightKg > 0 && (
-          <Text style={styles.payoutPreview}>
-            গ্ৰাহকৰ মূল্য (Gross Value): ₹{estimatedGross.toFixed(2)}
+
+        <View style={styles.lcdReadoutRow}>
+          <Text testID="ble-mass-readout" style={styles.lcdDigits}>
+            {weightKg.toFixed(2)}
           </Text>
+          <Text style={styles.lcdUnit}>kg</Text>
+        </View>
+
+        {weightKg > 0 && (
+          <View style={styles.lcdCalculation}>
+            <Text style={styles.calcMathText}>
+              {weightKg.toFixed(2)} kg × ₹{unitRate.toFixed(2)}/kg = ₹{estimatedGross.toFixed(2)}
+            </Text>
+            <Text style={styles.calcSubText}>গ্ৰাহকৰ মুঠ প্ৰদেয় (Gross Payout)</Text>
+          </View>
         )}
       </View>
 
-      {/* Test / Field Hardware Stream Simulation Controls (No editable text field) */}
+      {/* Hardware Telemetry Simulation Controls (Development & Field testing) */}
       {onSimulateWeight && (
-        <View style={styles.simContainer}>
-          <Text style={styles.simHeader}>📡 BLE STREAM TELEMETRY INGESTION (HARDWARE):</Text>
+        <View style={styles.simBox}>
+          <Text style={styles.simLabel}>
+            📡 BLE LOAD CELL BYTE SIMULATION (HARDWARE):
+          </Text>
           <View style={styles.simButtonsRow}>
             <TouchableOpacity
+              testID="sim-14-5-kg-btn"
               style={styles.simBtn}
               onPress={() => onSimulateWeight(14.5)}
               activeOpacity={0.7}
             >
-              <Text style={styles.simBtnText}>📦 +14.5 kg Cardboard</Text>
+              <Text style={styles.simBtnText}>📦 Stream 14.50 kg OCC</Text>
             </TouchableOpacity>
             <TouchableOpacity
+              testID="sim-5-2-kg-btn"
               style={styles.simBtn}
               onPress={() => onSimulateWeight(5.2)}
               activeOpacity={0.7}
             >
-              <Text style={styles.simBtnText}>🍾 +5.2 kg PET</Text>
+              <Text style={styles.simBtnText}>🍾 Stream 5.20 kg PET</Text>
             </TouchableOpacity>
           </View>
         </View>
       )}
 
-      {/* Core Action Row: TARE (Amber) & LOCK (Emerald Green) */}
-      <View style={styles.actionRow}>
+      {/* 4. Action Controls: TARE (Amber) & Full-width Emerald Green LOCK Button */}
+      <View style={styles.controlsCol}>
         <TouchableOpacity
-          style={[styles.tareButton, { backgroundColor: partnerTheme.colors.caution }]}
+          testID="tare-scale-button"
+          style={styles.tareBtn}
           onPress={onTare}
           activeOpacity={0.8}
         >
-          <Text style={styles.actionIcon}>⚖️</Text>
-          <Text style={styles.actionText}>TARE (শূন্য কৰক)</Text>
+          <Text style={styles.tareIcon}>⚖️</Text>
+          <Text style={styles.tareBtnText}>TARE (শূন্য কৰক 0.000 kg)</Text>
         </TouchableOpacity>
 
+        {/* Primary Action: Emerald Green (#059669) LOCK Button */}
+        {/* Strictly disabled until GATT payload emits verified 0.000 kg tare */}
         <TouchableOpacity
+          testID="lock-weight-button"
+          disabled={!isTared || weightKg <= 0}
           style={[
-            styles.lockButton,
-            {
-              backgroundColor:
-                isTared && weightKg > 0
-                  ? partnerTheme.colors.affirmation
-                  : '#374151',
-            },
+            styles.lockBtn,
+            (!isTared || weightKg <= 0) && styles.lockBtnDisabled,
           ]}
           onPress={onLockWeight}
-          disabled={!isTared || weightKg <= 0}
-          activeOpacity={0.8}
+          activeOpacity={0.85}
         >
-          <Text style={styles.actionIcon}>🔒</Text>
-          <Text style={styles.actionText}>
-            {isTared && weightKg > 0 ? 'LOCK WEIGHT (লক কৰক)' : 'TARE FIRST (প্ৰথমে শূন্য)'}
+          <Text style={styles.lockIcon}>🔒</Text>
+          <Text style={styles.lockBtnText}>
+            {isTared && weightKg > 0
+              ? `🔒 লক কৰক (Lock ${weightKg.toFixed(2)} kg OCC)`
+              : '🔒 লক কৰক (Awaiting Zero-Tare & Scrap)'}
           </Text>
         </TouchableOpacity>
       </View>
@@ -139,155 +182,185 @@ export const BleScaleReader: React.FC<BleScaleReaderProps> = ({
 const styles = StyleSheet.create({
   container: {
     backgroundColor: partnerTheme.colors.surface,
-    borderRadius: 16,
+    borderRadius: 20,
     padding: 16,
     borderWidth: 2,
     borderColor: partnerTheme.colors.border,
-    marginVertical: 10,
+    marginVertical: 6,
   },
-  header: {
+  hardwareHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 6,
+  },
+  statusRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  glowingDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: partnerTheme.colors.telemetryCyan,
+  },
+  statusText: {
+    fontSize: 13,
+    fontWeight: '900',
+    color: partnerTheme.colors.telemetryCyan,
+    letterSpacing: 0.4,
+  },
+  batteryText: {
+    fontSize: 12,
+    fontWeight: '800',
+    color: '#ffffff',
+  },
+  gattHeaderRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 10,
   },
-  scaleTag: {
-    color: '#ffffff',
-    fontSize: 13,
-    fontWeight: '800',
-  },
-  uuidTag: {
-    color: partnerTheme.colors.textMuted,
+  gattUuid: {
+    fontFamily: partnerTheme.typography.fontMono,
     fontSize: 10,
-    fontFamily: 'monospace',
-    marginTop: 1,
+    color: partnerTheme.colors.textMuted,
   },
-  batteryBadge: {
-    backgroundColor: partnerTheme.colors.surfaceElevated,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 6,
-  },
-  battery: {
-    color: '#ffffff',
-    fontSize: 12,
+  commodityLabel: {
+    fontSize: 11,
     fontWeight: '700',
-  },
-  commodityBanner: {
-    backgroundColor: partnerTheme.colors.surfaceElevated,
-    padding: 10,
-    borderRadius: 10,
-    marginBottom: 10,
-    borderWidth: 1,
-    borderColor: partnerTheme.colors.border,
-  },
-  commodityName: {
-    color: '#ffffff',
-    fontSize: 15,
-    fontWeight: '800',
-  },
-  commodityRate: {
     color: partnerTheme.colors.caution,
-    fontSize: 12,
-    fontWeight: '700',
-    marginTop: 2,
   },
-  tareAlert: {
+  tareAlertBox: {
     backgroundColor: '#7f1d1d',
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginBottom: 10,
-    borderWidth: 1,
-    borderColor: partnerTheme.colors.alert,
-  },
-  tareAlertText: {
-    color: '#fee2e2',
-    fontSize: 13,
-    fontWeight: '900',
-  },
-  tareSubtext: {
-    color: '#fca5a5',
-    fontSize: 11,
-    fontWeight: '600',
-    marginTop: 2,
-  },
-  taredOk: {
-    backgroundColor: '#064e3b',
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginBottom: 10,
-    borderWidth: 1,
-    borderColor: partnerTheme.colors.affirmation,
-  },
-  taredOkText: {
-    color: '#d1fae5',
-    fontSize: 13,
-    fontWeight: '900',
-  },
-  taredSubtext: {
-    color: '#a7f3d0',
-    fontSize: 11,
-    fontWeight: '600',
-    marginTop: 2,
-  },
-  readyOk: {
-    backgroundColor: '#065f46',
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  readyOkText: {
-    color: '#ecfdf5',
-    fontSize: 12,
-    fontWeight: '800',
-  },
-  weightBox: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 16,
-    backgroundColor: '#030806',
-    borderRadius: 14,
     borderWidth: 2,
-    borderColor: partnerTheme.colors.telemetryCyan,
+    borderColor: partnerTheme.colors.alert,
+    borderRadius: 12,
+    padding: 12,
+    alignItems: 'center',
     marginBottom: 12,
   },
-  weightRow: {
+  tareAlertTitle: {
+    fontSize: 13.5,
+    fontWeight: '900',
+    color: '#fee2e2',
+    letterSpacing: 0.5,
+  },
+  tareAlertSubtext: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: '#fca5a5',
+    marginTop: 3,
+    textAlign: 'center',
+  },
+  tareConfirmedBox: {
+    backgroundColor: '#064e3b',
+    borderWidth: 2,
+    borderColor: partnerTheme.colors.affirmation,
+    borderRadius: 12,
+    padding: 10,
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  tareConfirmedTitle: {
+    fontSize: 13,
+    fontWeight: '900',
+    color: '#d1fae5',
+    letterSpacing: 0.5,
+  },
+  tareConfirmedSubtext: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: '#a7f3d0',
+    marginTop: 2,
+  },
+  weightLockedNotice: {
+    backgroundColor: '#065f46',
+    borderRadius: 8,
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  weightLockedText: {
+    fontSize: 11,
+    fontWeight: '800',
+    color: '#ecfdf5',
+  },
+  lcdContainer: {
+    backgroundColor: '#030806',
+    borderRadius: 16,
+    padding: 16,
+    alignItems: 'center',
+    borderWidth: 2.5,
+    borderColor: partnerTheme.colors.telemetryCyan,
+    marginBottom: 14,
+  },
+  lcdHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    marginBottom: 6,
+  },
+  lcdModel: {
+    fontFamily: partnerTheme.typography.fontMono,
+    fontSize: 9.5,
+    color: partnerTheme.colors.textMuted,
+    fontWeight: '700',
+  },
+  lcdFloorRate: {
+    fontSize: 11,
+    fontWeight: '800',
+    color: partnerTheme.colors.caution,
+  },
+  lcdReadoutRow: {
     flexDirection: 'row',
     alignItems: 'baseline',
+    marginVertical: 4,
   },
-  weightValue: {
-    color: partnerTheme.colors.telemetryCyan,
-    fontSize: 56,
+  lcdDigits: {
+    fontFamily: partnerTheme.typography.fontMono,
+    fontSize: 48,
     fontWeight: '900',
-    letterSpacing: 1,
+    color: partnerTheme.colors.telemetryCyan,
+    letterSpacing: -1,
   },
-  unit: {
-    color: partnerTheme.colors.textMuted,
+  lcdUnit: {
     fontSize: 24,
     fontWeight: '800',
+    color: partnerTheme.colors.textMuted,
     marginLeft: 8,
   },
-  payoutPreview: {
-    color: partnerTheme.colors.affirmation,
-    fontSize: 14,
-    fontWeight: '800',
-    marginTop: 6,
-  },
-  simContainer: {
-    backgroundColor: partnerTheme.colors.surfaceElevated,
-    padding: 8,
+  lcdCalculation: {
+    backgroundColor: 'rgba(255,255,255,0.06)',
     borderRadius: 8,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    alignItems: 'center',
+    marginTop: 8,
+    width: '100%',
+  },
+  calcMathText: {
+    fontFamily: partnerTheme.typography.fontMono,
+    fontSize: 13,
+    fontWeight: '800',
+    color: partnerTheme.colors.affirmation,
+  },
+  calcSubText: {
+    fontSize: 10,
+    color: partnerTheme.colors.textMuted,
+    marginTop: 1,
+  },
+  simBox: {
+    backgroundColor: partnerTheme.colors.surfaceElevated,
+    borderRadius: 10,
+    padding: 10,
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: '#374151',
+    borderColor: 'rgba(255,255,255,0.1)',
   },
-  simHeader: {
+  simLabel: {
     fontSize: 9,
     fontWeight: '800',
     color: partnerTheme.colors.textMuted,
@@ -312,34 +385,49 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontWeight: '700',
   },
-  actionRow: {
-    flexDirection: 'row',
+  controlsCol: {
     gap: 10,
   },
-  tareButton: {
-    flex: 1,
-    minHeight: partnerTheme.touch.minHeight,
-    borderRadius: 12,
+  tareBtn: {
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 12,
+    backgroundColor: partnerTheme.colors.caution,
+    borderRadius: 14,
+    minHeight: 56,
+    paddingHorizontal: 16,
+    gap: 8,
   },
-  lockButton: {
-    flex: 1.6,
-    minHeight: partnerTheme.touch.minHeight,
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 12,
-  },
-  actionIcon: {
+  tareIcon: {
     fontSize: 20,
-    marginBottom: 2,
   },
-  actionText: {
+  tareBtnText: {
+    fontSize: 13.5,
+    fontWeight: '900',
     color: '#ffffff',
+  },
+  lockBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: partnerTheme.colors.affirmation,
+    borderRadius: 14,
+    minHeight: 64,
+    paddingHorizontal: 16,
+    gap: 8,
+    elevation: 4,
+  },
+  lockBtnDisabled: {
+    backgroundColor: '#374151',
+    opacity: 0.6,
+  },
+  lockIcon: {
+    fontSize: 20,
+  },
+  lockBtnText: {
     fontSize: 14,
     fontWeight: '900',
-    textAlign: 'center',
+    color: '#ffffff',
+    letterSpacing: 0.3,
   },
 });

@@ -1,6 +1,14 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Linking, Alert } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Linking,
+  Alert,
+} from 'react-native';
 import { colors } from '../theme/colors.js';
+import { typography } from '../theme/typography.js';
 
 export interface ItemizedScrapItem {
   categoryName: string;
@@ -9,7 +17,7 @@ export interface ItemizedScrapItem {
   grossAmount: number;
 }
 
-interface EsgImpactSlipProps {
+export interface EsgImpactSlipProps {
   receiptId: string;
   wardName: string;
   netPayout: number;
@@ -63,27 +71,34 @@ export const EsgImpactSlip: React.FC<EsgImpactSlipProps> = ({
 
   return (
     <View testID="esg-impact-slip-container" style={styles.container}>
-      <Text style={styles.badge}>🌱 KACHRACASH ESG IMPACT SLIP</Text>
-
-      <View style={styles.receiptMeta}>
-        <Text testID="receipt-id-text" style={styles.metaText}>RECEIPT #{receiptId}</Text>
-        <Text testID="ward-name-text" style={styles.metaText}>📍 {wardName}, Guwahati</Text>
+      <View style={styles.celebrationBadge}>
+        <Text style={styles.celebrationEmoji}>🎉</Text>
+        <Text style={styles.celebrationText}>DOORSTEP SETTLEMENT COMPLETE</Text>
       </View>
 
-      {/* Payout & Weight Highlight */}
+      <View style={styles.receiptMeta}>
+        <Text testID="receipt-id-text" style={styles.metaText}>
+          RECEIPT #{receiptId}
+        </Text>
+        <Text testID="ward-name-text" style={styles.metaText}>
+          📍 {wardName}, Guwahati
+        </Text>
+      </View>
+
+      {/* Primary Payout Confirmation Banner */}
       <View style={styles.payoutHighlight}>
-        <Text style={styles.payoutLabel}>NET UPI PAYOUT CREDITED</Text>
+        <Text style={styles.payoutLabel}>INSTANT SETTLEMENT DISBURSED</Text>
         <Text testID="net-payout-text" style={styles.payoutAmount}>
-          ₹{netPayout.toFixed(2)}
+          ✓ ₹{netPayout.toFixed(2)} Transferred to UPI
         </Text>
         <Text testID="diverted-weight-text" style={styles.divertedText}>
           {weightKg.toFixed(3)} kg Scrap Diverted from Boragaon Dumpsite
         </Text>
       </View>
 
-      {/* Itemized Categories */}
+      {/* Itemized Categories Summary */}
       <View style={styles.itemizedSection}>
-        <Text style={styles.itemizedTitle}>ITEMIZED SCRAP SUMMARY</Text>
+        <Text style={styles.itemizedTitle}>CERTIFIED WEIGHMENT MANIFEST</Text>
         {items && items.length > 0 ? (
           items.map((item, idx) => (
             <View key={idx} style={styles.itemRow}>
@@ -96,18 +111,18 @@ export const EsgImpactSlip: React.FC<EsgImpactSlipProps> = ({
         ) : (
           <View style={styles.itemRow}>
             <Text style={styles.itemName}>{categoryName}</Text>
-            <Text style={styles.itemDetail}>{weightKg.toFixed(3)} kg weighed</Text>
+            <Text style={styles.itemDetail}>{weightKg.toFixed(3)} kg certified weighment</Text>
           </View>
         )}
       </View>
 
-      {/* Municipal ESG Impact Card */}
+      {/* SWM Rules 2026 Compliant Municipal ESG Impact Card */}
       <View testID="esg-metrics-card" style={styles.impactCard}>
         <Text style={styles.impactTitle}>🌍 YOUR MUNICIPAL IMPACT (SWM RULES 2026):</Text>
         <View style={styles.impactItem}>
           <Text style={styles.impactBullet}>•</Text>
           <Text style={styles.impactDesc}>
-            Boragaon Dumpsite Volume Saved:{' '}
+            Landfill Volume Saved at Boragaon:{' '}
             <Text testID="esg-volume-saved" style={styles.impactBold}>
               {volumeSaved} m³
             </Text>
@@ -116,7 +131,7 @@ export const EsgImpactSlip: React.FC<EsgImpactSlipProps> = ({
         <View style={styles.impactItem}>
           <Text style={styles.impactBullet}>•</Text>
           <Text style={styles.impactDesc}>
-            Carbon Emissions Avoided:{' '}
+            CO₂ Emissions Avoided:{' '}
             <Text testID="esg-carbon-avoided" style={styles.impactBold}>
               {carbonAvoided} kg CO₂e
             </Text>
@@ -125,7 +140,7 @@ export const EsgImpactSlip: React.FC<EsgImpactSlipProps> = ({
         <View style={styles.impactItem}>
           <Text style={styles.impactBullet}>•</Text>
           <Text style={styles.impactDesc}>
-            Green Circular Credits Earned:{' '}
+            Green KC Credits Earned:{' '}
             <Text testID="esg-credits-earned" style={styles.impactBold}>
               +{credits} KC Points
             </Text>
@@ -133,14 +148,14 @@ export const EsgImpactSlip: React.FC<EsgImpactSlipProps> = ({
         </View>
       </View>
 
-      {/* WhatsApp Share Action Button */}
+      {/* Direct WhatsApp Action Button */}
       <TouchableOpacity
         testID="whatsapp-share-button"
         style={styles.shareButton}
         onPress={handleShareWhatsApp}
-        activeOpacity={0.8}
+        activeOpacity={0.82}
       >
-        <Text style={styles.shareText}>📲 SHARE WHATSAPP ESG CERTIFICATE</Text>
+        <Text style={styles.shareText}>📲 Share Green Certificate to WhatsApp</Text>
       </TouchableOpacity>
     </View>
   );
@@ -148,31 +163,49 @@ export const EsgImpactSlip: React.FC<EsgImpactSlipProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.card,
-    borderRadius: 14,
-    padding: 16,
+    backgroundColor: colors.surface,
+    borderRadius: 16,
+    padding: 18,
     borderWidth: 1.5,
-    borderColor: colors.affirmation,
-    marginVertical: 12,
+    borderColor: colors.banyanGreen,
+    marginVertical: 10,
+    shadowColor: colors.banyanGreen,
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
   },
-  badge: {
-    fontSize: 12,
+  celebrationBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.banyanSoft,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: 20,
+    alignSelf: 'center',
+    marginBottom: 10,
+  },
+  celebrationEmoji: {
+    fontSize: 16,
+    marginRight: 6,
+  },
+  celebrationText: {
+    ...typography.label,
+    fontSize: 11,
     fontWeight: '800',
-    letterSpacing: 0.8,
-    color: colors.affirmation,
-    textAlign: 'center',
-    marginBottom: 8,
+    color: colors.banyanGreen,
+    letterSpacing: 0.6,
   },
   receiptMeta: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingBottom: 8,
     borderBottomWidth: 1,
-    borderBottomColor: colors.border,
+    borderBottomColor: colors.structuralLine,
   },
   metaText: {
+    ...typography.bodyMedium,
     fontSize: 11,
-    color: colors.textSecondary,
+    color: colors.inkSoft,
     fontWeight: '600',
   },
   payoutHighlight: {
@@ -180,91 +213,104 @@ const styles = StyleSheet.create({
     marginVertical: 14,
   },
   payoutLabel: {
-    fontSize: 11,
-    fontWeight: '700',
-    color: colors.textSecondary,
+    ...typography.label,
+    fontSize: 10.5,
+    color: colors.inkSoft,
     letterSpacing: 0.6,
   },
   payoutAmount: {
-    fontSize: 34,
-    fontWeight: '900',
-    color: colors.affirmation,
-    marginVertical: 2,
+    ...typography.displayMedium,
+    fontSize: 22,
+    fontWeight: '800',
+    color: colors.banyanGreen,
+    marginVertical: 4,
+    textAlign: 'center',
   },
   divertedText: {
+    ...typography.bodyBold,
     fontSize: 12,
-    fontWeight: '700',
-    color: colors.textPrimary,
+    color: colors.inkDeep,
+    textAlign: 'center',
+    marginTop: 2,
   },
   itemizedSection: {
-    backgroundColor: '#f8fafc',
-    borderRadius: 8,
-    padding: 10,
-    marginBottom: 10,
+    backgroundColor: colors.paper,
+    borderRadius: 10,
+    padding: 12,
+    marginBottom: 12,
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: colors.structuralLine,
   },
   itemizedTitle: {
+    ...typography.label,
     fontSize: 10,
-    fontWeight: '800',
-    color: colors.textSecondary,
-    letterSpacing: 0.5,
-    marginBottom: 4,
+    color: colors.inkSoft,
+    letterSpacing: 0.6,
+    marginBottom: 6,
   },
   itemRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
     marginVertical: 2,
   },
   itemName: {
+    ...typography.bodyBold,
     fontSize: 12,
-    fontWeight: '700',
-    color: colors.textPrimary,
+    color: colors.inkDeep,
   },
   itemDetail: {
+    ...typography.bodyMedium,
     fontSize: 11,
-    color: colors.textSecondary,
-    fontWeight: '500',
+    color: colors.inkSoft,
   },
   impactCard: {
-    backgroundColor: colors.affirmationLight,
-    borderRadius: 10,
-    padding: 12,
+    backgroundColor: colors.banyanSoft,
+    borderRadius: 12,
+    padding: 14,
     marginVertical: 6,
+    borderWidth: 1,
+    borderColor: colors.strongBorder,
   },
   impactTitle: {
-    fontSize: 12,
-    fontWeight: '800',
-    color: colors.affirmation,
-    marginBottom: 6,
+    ...typography.bodyBold,
+    fontSize: 11.5,
+    color: colors.banyanGreen,
+    marginBottom: 8,
+    letterSpacing: 0.3,
   },
   impactItem: {
     flexDirection: 'row',
-    marginVertical: 2,
+    marginVertical: 3,
   },
   impactBullet: {
     fontSize: 12,
-    color: colors.affirmation,
+    color: colors.banyanGreen,
     marginRight: 6,
   },
   impactDesc: {
-    fontSize: 12,
-    color: colors.textPrimary,
+    ...typography.bodyMedium,
+    fontSize: 11.5,
+    color: colors.inkDeep,
   },
   impactBold: {
     fontWeight: '700',
+    color: colors.banyanGreen,
   },
   shareButton: {
-    backgroundColor: colors.affirmation,
-    borderRadius: 10,
-    paddingVertical: 13,
+    backgroundColor: colors.banyanGreen,
+    borderRadius: 12,
+    paddingVertical: 15,
     alignItems: 'center',
-    marginTop: 8,
+    marginTop: 10,
+    shadowColor: colors.banyanGreen,
+    shadowOpacity: 0.25,
+    shadowRadius: 6,
   },
   shareText: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: '#ffffff',
+    ...typography.bodyBold,
+    fontSize: 13.5,
+    color: colors.pureWhite,
     letterSpacing: 0.5,
   },
 });

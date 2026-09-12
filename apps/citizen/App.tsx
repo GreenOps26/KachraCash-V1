@@ -8,17 +8,20 @@ import {
   StyleSheet,
   StatusBar,
 } from 'react-native';
+import { HeaderWardBar } from './src/components/HeaderWardBar.js';
 import { PickupRequestForm } from './src/components/PickupRequestForm.js';
 import { BLEScaleStream } from './src/components/BLEScaleStream.js';
 import { OtpRevealModal } from './src/components/OtpRevealModal.js';
 import { EsgImpactSlip } from './src/components/EsgImpactSlip.js';
 import { CreatedOrderData, OrderScaleStream } from './src/services/apiClient.js';
 import { colors } from './src/theme/colors.js';
+import { typography } from './src/theme/typography.js';
 
 type OrderWorkflowStage = 'BOOKING' | 'WEIGHING' | 'OTP_REVEAL' | 'COMPLETED';
 
 export default function App() {
   const [stage, setStage] = useState<OrderWorkflowStage>('BOOKING');
+  const [selectedWard, setSelectedWard] = useState<string>('WARD_JAYANAGAR_24');
   const [activeOrder, setActiveOrder] = useState<CreatedOrderData | null>(null);
 
   // Live scale data mirrored during doorstep weighment
@@ -32,6 +35,9 @@ export default function App() {
 
   const handleOrderCreated = (order: CreatedOrderData) => {
     setActiveOrder(order);
+    if (order.wardId) {
+      setSelectedWard(order.wardId);
+    }
     setStage('WEIGHING');
   };
 
@@ -54,46 +60,44 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor="#f8fafc" />
+      <StatusBar barStyle="dark-content" backgroundColor={colors.surface} />
 
-      {/* App Header */}
-      <View style={styles.navBar}>
-        <View>
-          <Text style={styles.brandTitle}>KachraCash</Text>
-          <Text style={styles.brandSub}>কচৰা ক্যাশ • Guwahati Circular Tech</Text>
-        </View>
-        <View style={styles.wardPill}>
-          <Text style={styles.wardText}>
-            {activeOrder?.wardId ? `📍 ${activeOrder.wardId}` : '📍 Beltola / Guwahati'}
-          </Text>
-        </View>
-      </View>
+      {/* 1. Sticky Header & Municipal Ward Guard Bar */}
+      <HeaderWardBar
+        selectedWard={selectedWard}
+        onSelectWard={setSelectedWard}
+      />
 
-      <ScrollView contentContainerStyle={styles.content}>
+      <ScrollView
+        contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}
+      >
         {/* Stage 1: Quick-Commerce Booking */}
         {stage === 'BOOKING' && (
-          <View>
-            <View style={styles.banner}>
-              <Text style={styles.bannerEmoji}>⚡</Text>
-              <View style={styles.bannerTextContainer}>
-                <Text style={styles.bannerTitle}>Schedule → Weigh Transparently → Get Paid Instantly</Text>
-                <Text style={styles.bannerSubtitle}>
-                  পঞ্জীয়ন কৰক → স্বচ্ছ ওজন → প্ৰত্যক্ষ UPI জমা • Guaranteed Floor Rates • Zero Bidding
-                </Text>
-              </View>
+          <View style={styles.stageContainer}>
+            <View style={styles.quickCommerceHero}>
+              <Text style={styles.heroTitle}>Guwahati Circular Tech</Text>
+              <Text style={styles.heroSubtitle}>
+                Schedule doorstep pickup → Certified hardware weighment → 100% direct bank payout.
+              </Text>
             </View>
 
-            <PickupRequestForm onOrderCreated={handleOrderCreated} />
+            <PickupRequestForm
+              onOrderCreated={handleOrderCreated}
+              selectedWard={selectedWard}
+              onSelectWard={setSelectedWard}
+            />
           </View>
         )}
 
         {/* Stage 2: Doorstep BLE Scale Mirroring */}
         {stage === 'WEIGHING' && (
-          <View>
+          <View style={styles.stageContainer}>
             <View style={styles.stageHeader}>
-              <Text style={styles.stageTitle}>COLLECTOR AT DOORSTEP</Text>
+              <Text style={styles.stageBadge}>DOORSTEP WEIGHMENT STAGE</Text>
+              <Text style={styles.stageTitle}>Certified Hardware Mirror</Text>
               <Text style={styles.stageSubtitle}>
-                Live BLE telemetry stream from collector's certified digital scale
+                Consuming live BLE telemetry from collector load cell. Mandatory zero-tare verified.
               </Text>
             </View>
 
@@ -109,7 +113,7 @@ export default function App() {
 
             <TouchableOpacity
               testID="approve-weighment-button"
-              style={[styles.actionButton, { backgroundColor: colors.affirmation }]}
+              style={styles.primaryActionButton}
               onPress={handleApproveWeighment}
               activeOpacity={0.85}
             >
@@ -118,25 +122,27 @@ export default function App() {
           </View>
         )}
 
-        {/* Stage 3: Secure OTP Handshake */}
+        {/* Stage 3: Secure 4-Digit OTP Handshake */}
         {stage === 'OTP_REVEAL' && (
-          <View>
+          <View style={styles.stageContainer}>
             <View style={styles.stageHeader}>
-              <Text style={styles.stageTitle}>DOORSTEP SETTLEMENT HANDSHAKE</Text>
+              <Text style={styles.stageBadge}>SECURITY VERIFICATION</Text>
+              <Text style={styles.stageTitle}>Doorstep Settlement Handshake</Text>
               <Text style={styles.stageSubtitle}>
-                Collector must enter this OTP on their terminal to disburse your UPI payout
+                Disburse your instant UPI transfer by sharing this one-time code with collector Babul Ali.
               </Text>
             </View>
 
             <OtpRevealModal
-              otp={activeOrder?.otp || '4821'}
-              orderId={activeOrder?.orderId || 'ORD_DEFAULT'}
+              otp={activeOrder?.otp || '7492'}
+              orderId={activeOrder?.orderId || 'ORD_2026_GUW_01'}
+              collectorName="Babul Ali"
               onOrderCompleted={handleOtpVerified}
             />
 
             <TouchableOpacity
               testID="simulate-collector-settle-button"
-              style={[styles.actionButton, { backgroundColor: colors.financial }]}
+              style={[styles.primaryActionButton, { backgroundColor: colors.royalBlue }]}
               onPress={handleOtpVerified}
               activeOpacity={0.85}
             >
@@ -147,13 +153,13 @@ export default function App() {
 
         {/* Stage 4: Post-Settlement Digital Receipt & ESG Impact */}
         {stage === 'COMPLETED' && (
-          <View>
+          <View style={styles.stageContainer}>
             <EsgImpactSlip
-              receiptId={activeOrder?.orderId || 'KC-2026-GUW'}
-              wardName="Beltola (Ward 28)"
+              receiptId={activeOrder?.orderId || 'KC-2026-99214'}
+              wardName="Jayanagar (Ward 24)"
               netPayout={netPayout}
               weightKg={liveScaleStream.weightKg}
-              categoryName="Old Corrugated Cardboard (কাৰ্ডব’ৰ্ড)"
+              categoryName="Old Corrugated Cardboard (OCC)"
               items={[
                 {
                   categoryName: 'Old Corrugated Cardboard (OCC)',
@@ -167,11 +173,11 @@ export default function App() {
 
             <TouchableOpacity
               testID="book-another-pickup-button"
-              style={[styles.actionButton, { backgroundColor: colors.textPrimary }]}
+              style={[styles.primaryActionButton, styles.secondaryButton]}
               onPress={handleReset}
               activeOpacity={0.85}
             >
-              <Text style={styles.actionButtonText}>← BOOK ANOTHER DOORSTEP PICKUP</Text>
+              <Text style={styles.secondaryButtonText}>← BOOK ANOTHER DOORSTEP PICKUP</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -183,94 +189,90 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
-  },
-  navBar: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.border,
-    backgroundColor: '#ffffff',
-  },
-  brandTitle: {
-    fontSize: 20,
-    fontWeight: '900',
-    color: colors.affirmation,
-  },
-  brandSub: {
-    fontSize: 10,
-    fontWeight: '700',
-    color: colors.textSecondary,
-    letterSpacing: 0.3,
-  },
-  wardPill: {
-    backgroundColor: colors.affirmationLight,
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    borderRadius: 16,
-  },
-  wardText: {
-    fontSize: 11,
-    fontWeight: '700',
-    color: colors.affirmation,
+    backgroundColor: colors.paper,
   },
   content: {
     padding: 16,
     paddingBottom: 40,
+    maxWidth: 440,
+    alignSelf: 'center',
+    width: '100%',
   },
-  banner: {
-    flexDirection: 'row',
-    backgroundColor: colors.financialLight,
-    borderRadius: 12,
+  stageContainer: {
+    width: '100%',
+  },
+  quickCommerceHero: {
+    backgroundColor: colors.surface,
+    borderRadius: 14,
     padding: 14,
-    alignItems: 'center',
+    borderWidth: 1.5,
+    borderColor: colors.structuralLine,
     marginBottom: 8,
   },
-  bannerEmoji: {
-    fontSize: 22,
-    marginRight: 10,
-  },
-  bannerTextContainer: {
-    flex: 1,
-  },
-  bannerTitle: {
-    fontSize: 13,
+  heroTitle: {
+    ...typography.heading,
+    fontSize: 17,
+    color: colors.banyanGreen,
     fontWeight: '800',
-    color: colors.financial,
   },
-  bannerSubtitle: {
-    fontSize: 11,
-    color: colors.textSecondary,
-    marginTop: 2,
+  heroSubtitle: {
+    ...typography.bodyMedium,
+    fontSize: 12,
+    color: colors.inkSoft,
+    marginTop: 3,
     lineHeight: 16,
   },
   stageHeader: {
-    marginBottom: 10,
+    marginBottom: 8,
   },
-  stageTitle: {
-    fontSize: 13,
+  stageBadge: {
+    ...typography.label,
+    fontSize: 10,
+    color: colors.banyanGreen,
     fontWeight: '800',
-    color: colors.textPrimary,
     letterSpacing: 0.6,
   },
-  stageSubtitle: {
-    fontSize: 11,
-    color: colors.textSecondary,
+  stageTitle: {
+    ...typography.heading,
+    fontSize: 18,
+    color: colors.inkDeep,
     marginTop: 2,
   },
-  actionButton: {
-    borderRadius: 12,
+  stageSubtitle: {
+    ...typography.bodyMedium,
+    fontSize: 12,
+    color: colors.inkSoft,
+    marginTop: 2,
+    lineHeight: 16,
+  },
+  primaryActionButton: {
+    backgroundColor: colors.banyanGreen,
+    borderRadius: 14,
     paddingVertical: 16,
     alignItems: 'center',
     marginTop: 14,
+    shadowColor: colors.banyanGreen,
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 4 },
   },
   actionButtonText: {
-    fontSize: 14,
+    ...typography.bodyBold,
+    fontSize: 13.5,
     fontWeight: '800',
-    color: '#ffffff',
+    color: colors.pureWhite,
+    letterSpacing: 0.5,
+  },
+  secondaryButton: {
+    backgroundColor: colors.surface,
+    borderWidth: 1.5,
+    borderColor: colors.strongBorder,
+    shadowOpacity: 0,
+  },
+  secondaryButtonText: {
+    ...typography.bodyBold,
+    fontSize: 13,
+    color: colors.inkDeep,
     letterSpacing: 0.5,
   },
 });

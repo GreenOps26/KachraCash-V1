@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+} from 'react-native';
 import { colors } from '../theme/colors.js';
+import { typography } from '../theme/typography.js';
 import { apiClient } from '../services/apiClient.js';
 
-interface OtpRevealModalProps {
+export interface OtpRevealModalProps {
   otp: string;
   orderId: string;
+  collectorName?: string;
   onOrderCompleted?: () => void;
   pollIntervalMs?: number;
 }
@@ -13,6 +20,7 @@ interface OtpRevealModalProps {
 export const OtpRevealModal: React.FC<OtpRevealModalProps> = ({
   otp,
   orderId,
+  collectorName = 'Babul Ali',
   onOrderCompleted,
   pollIntervalMs = 2000,
 }) => {
@@ -44,14 +52,17 @@ export const OtpRevealModal: React.FC<OtpRevealModalProps> = ({
 
   return (
     <View testID="otp-reveal-modal-container" style={styles.container}>
-      <Text testID="order-id-label" style={styles.orderLabel}>ORDER #{orderId}</Text>
-      <Text style={styles.title}>COLLECTOR VERIFICATION PIN</Text>
-      <Text style={styles.subtitle}>
-        Share this 4-digit code with the collector ONLY after you have visually confirmed the zero-tare
-        and scrap weighment on their scale.
+      <Text testID="order-id-label" style={styles.orderLabel}>
+        ORDER #{orderId}
+      </Text>
+      <Text style={styles.title}>4-Digit Completion OTP</Text>
+      
+      {/* Required Notice */}
+      <Text style={styles.noticeText}>
+        Share this 4-digit PIN with collector {collectorName} only after verifying the weight above.
       </Text>
 
-      {/* 4-Digit OTP Pin Boxes */}
+      {/* 4 Separate Bordered Digit Boxes in Fraunces 32px */}
       <View testID="otp-digits-row" style={styles.pinRow}>
         {otp.split('').map((digit, idx) => (
           <View key={idx} testID={`otp-digit-${idx}`} style={styles.pinBox}>
@@ -64,22 +75,24 @@ export const OtpRevealModal: React.FC<OtpRevealModalProps> = ({
       <View style={styles.statusBox}>
         {isCompleted ? (
           <View testID="otp-status-completed" style={styles.statusCompleted}>
-            <Text style={styles.statusTextCompleted}>✓ OTP VERIFIED & SETTLEMENT COMPLETED</Text>
+            <Text style={styles.statusTextCompleted}>
+              ✓ OTP VERIFIED & SETTLEMENT COMPLETED
+            </Text>
           </View>
         ) : (
           <View testID="otp-status-pending" style={styles.statusPending}>
-            <ActivityIndicator size="small" color={colors.financial} style={styles.spinner} />
+            <ActivityIndicator size="small" color={colors.banyanGreen} style={styles.spinner} />
             <Text style={styles.statusTextPending}>
-              Waiting for collector to enter PIN on terminal...
+              Waiting for collector {collectorName} to enter PIN on mobile terminal...
             </Text>
           </View>
         )}
       </View>
 
-      {/* Zero Cash Anti-Fraud Guarantee */}
+      {/* Zero Cash Anti-Fraud Security Guarantee */}
       <View style={styles.securityBadge}>
         <Text style={styles.securityText}>
-          🔒 Triggers instant UPI payout directly to your bank account. Doorstep cash is strictly prohibited.
+          🔒 Automated Escrow: Payout transfers immediately to your verified UPI VPA. Doorstep cash handling is strictly prohibited.
         </Text>
       </View>
     </View>
@@ -88,33 +101,34 @@ export const OtpRevealModal: React.FC<OtpRevealModalProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.card,
-    borderRadius: 14,
-    padding: 18,
+    backgroundColor: colors.surface,
+    borderRadius: 16,
+    padding: 20,
     borderWidth: 1.5,
-    borderColor: colors.border,
+    borderColor: colors.structuralLine,
     alignItems: 'center',
-    marginVertical: 12,
+    marginVertical: 10,
   },
   orderLabel: {
-    fontSize: 11,
-    fontWeight: '700',
-    color: colors.textSecondary,
+    ...typography.label,
+    color: colors.inkSoft,
     letterSpacing: 0.6,
   },
   title: {
-    fontSize: 15,
-    fontWeight: '800',
-    color: colors.textPrimary,
+    ...typography.heading,
+    fontSize: 18,
+    color: colors.inkDeep,
     marginTop: 4,
   },
-  subtitle: {
-    fontSize: 12,
-    color: colors.textSecondary,
+  noticeText: {
+    ...typography.bodyMedium,
+    fontSize: 12.5,
+    color: colors.inkSoft,
     textAlign: 'center',
-    marginTop: 4,
+    marginTop: 6,
     marginBottom: 16,
     lineHeight: 18,
+    paddingHorizontal: 8,
   },
   pinRow: {
     flexDirection: 'row',
@@ -122,66 +136,76 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   pinBox: {
-    width: 56,
-    height: 62,
-    borderRadius: 10,
-    backgroundColor: colors.affirmationLight,
+    width: 60,
+    height: 68,
+    borderRadius: 12,
+    backgroundColor: colors.banyanSoft,
     borderWidth: 2,
-    borderColor: colors.affirmation,
+    borderColor: colors.banyanGreen,
     alignItems: 'center',
     justifyContent: 'center',
+    shadowColor: colors.banyanGreen,
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
   },
   pinDigit: {
-    fontSize: 30,
-    fontWeight: '900',
-    color: colors.affirmation,
+    ...typography.displayLarge,
+    fontSize: 32,
+    color: colors.banyanGreen,
+    fontWeight: '800',
   },
   statusBox: {
-    marginVertical: 8,
+    marginVertical: 6,
     width: '100%',
     alignItems: 'center',
   },
   statusPending: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: colors.financialLight,
-    borderRadius: 8,
-    paddingVertical: 8,
-    paddingHorizontal: 12,
+    backgroundColor: colors.paper,
+    borderWidth: 1,
+    borderColor: colors.structuralLine,
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 14,
   },
   spinner: {
     marginRight: 8,
   },
   statusTextPending: {
-    fontSize: 12,
-    color: colors.financial,
+    ...typography.bodyMedium,
+    fontSize: 11.5,
+    color: colors.inkDeep,
     fontWeight: '600',
+    flex: 1,
   },
   statusCompleted: {
-    backgroundColor: colors.affirmationLight,
-    borderRadius: 8,
-    paddingVertical: 8,
-    paddingHorizontal: 14,
+    backgroundColor: colors.banyanSoft,
+    borderWidth: 1.5,
+    borderColor: colors.banyanGreen,
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 16,
   },
   statusTextCompleted: {
+    ...typography.bodyBold,
     fontSize: 12,
-    color: colors.affirmation,
-    fontWeight: '800',
+    color: colors.banyanGreen,
   },
   securityBadge: {
-    backgroundColor: '#f8fafc',
+    backgroundColor: colors.paper,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: colors.structuralLine,
     paddingVertical: 8,
     paddingHorizontal: 12,
-    marginTop: 8,
+    marginTop: 10,
   },
   securityText: {
-    fontSize: 11,
-    color: colors.textSecondary,
-    fontWeight: '600',
+    ...typography.bodyMedium,
+    fontSize: 10.5,
+    color: colors.inkSoft,
     textAlign: 'center',
-    lineHeight: 15,
+    lineHeight: 14,
   },
 });

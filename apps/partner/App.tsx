@@ -10,10 +10,13 @@ import {
   Alert,
 } from 'react-native';
 import { partnerTheme } from './src/theme/partnerTheme.js';
-import { SemanticButton } from './src/components/SemanticButton.js';
+import { CollectorStatusHeader } from './src/components/CollectorStatusHeader.js';
+import { DispatchCard } from './src/components/DispatchCard.js';
+import { WaypointTransit } from './src/components/WaypointTransit.js';
 import { BleScaleReader } from './src/components/BleScaleReader.js';
 import { OtpKeypad } from './src/components/OtpKeypad.js';
 import { SahaayakEmergencyFab } from './src/components/SahaayakEmergencyFab.js';
+import { SemanticButton } from './src/components/SemanticButton.js';
 import { useBLEScale } from './src/hooks/useBLEScale.js';
 import { speakAssamesePrompt } from './src/audio/assamesePrompts.js';
 import { partnerApi, VerifyOtpResult } from './src/services/partnerApi.js';
@@ -27,6 +30,7 @@ interface ActivePickupOrder {
   phoneNumber: string;
   wardName: string;
   address: string;
+  locationText: string;
   visualTier: string;
   commoditySku: string;
   commodityName: string;
@@ -35,25 +39,27 @@ interface ActivePickupOrder {
   distanceMeters: number;
 }
 
-const DEFAULT_COLLECTOR_ID = 'col_pranjal_saikia_01';
+const DEFAULT_COLLECTOR_ID = 'col_babul_ali_01';
 
 const INITIAL_ORDER: ActivePickupOrder = {
-  id: 'REQ_BELTOLA_28_001',
-  citizenName: 'Jatin Baruah (যতীন বৰুৱা)',
+  id: 'REQ_JAYANAGAR_24_001',
+  citizenName: 'Dr. Ananya Bordoloi',
   phoneNumber: '+919864012345',
-  wardName: 'Beltola, Ward 28',
-  address: 'House #18, Near Beltola Tiniali, Guwahati',
+  wardName: 'Jayanagar, Ward 24',
+  address: 'House #42, Jayanagar Bye-Lane 3, Guwahati',
+  locationText: 'Jayanagar Bye-Lane 3',
   visualTier: 'SOFT_FILMS',
   commoditySku: 'CARDBOARD_OCC',
   commodityName: 'Old Corrugated Cardboard (ভঙা কাৰ্ডব’ৰ্ড)',
   unitRate: 14.0,
-  timeSlot: '10:00 AM – 12:00 PM',
-  distanceMeters: 137,
+  timeSlot: '02:00 PM – 04:00 PM',
+  distanceMeters: 185,
 };
 
 export default function App() {
   const [step, setStep] = useState<PartnerStep>('DISPATCH');
-  const [floatBalance, setFloatBalance] = useState<number>(3500.0);
+  const [floatBalance, setFloatBalance] = useState<number>(2450.0);
+  const [isOnline, setIsOnline] = useState<boolean>(true);
   const [currentOrder, setCurrentOrder] = useState<ActivePickupOrder>(INITIAL_ORDER);
   const [lockedWeight, setLockedWeight] = useState<number>(14.5);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -76,7 +82,7 @@ export default function App() {
     refreshOfflineCount();
   }, [refreshOfflineCount]);
 
-  // Trigger colloquial Assamese audio prompts on operational state transitions
+  // Audio prompt on step transitions
   useEffect(() => {
     if (step === 'DISPATCH') {
       speakAssamesePrompt('dispatch');
@@ -101,7 +107,7 @@ export default function App() {
       setCurrentOrder({
         ...INITIAL_ORDER,
         id: res.data.requestId,
-        wardName: `${res.data.wardName}, Ward Active`,
+        wardName: `${res.data.wardName}, Ward 24`,
         visualTier: res.data.visualTier,
         distanceMeters: res.data.distanceMeters,
       });
@@ -109,9 +115,15 @@ export default function App() {
     } else {
       Alert.alert(
         'অনলাইন সংগ্ৰহ (DISPATCH)',
-        res.message || 'No pending pickups within 1.5 km radius. Current order maintained.',
+        res.message || 'No closer pickups within 1.5 km radius. Current order maintained.',
       );
     }
+  };
+
+  // Step 2 -> Step 3: Arrival at customer gate
+  const handleGateArrival = () => {
+    scale.sendTareCommand();
+    setStep('WEIGHING');
   };
 
   // Step 3 -> Step 4: Lock verified weight from BLE scale stream
@@ -153,7 +165,8 @@ export default function App() {
 
     setSettlementResult(res);
 
-    // Update collector floating wallet balance display
+    // Update collector floating wallet balance display:
+    // e.g., ₹2,450.00 - ₹219.24 = ₹2,230.76
     const debitAmount = res.data?.totalCollectorDebit || estimatedDebit;
     setFloatBalance((prev) => Math.max(0, Math.round((prev - debitAmount) * 100) / 100));
 
@@ -165,12 +178,13 @@ export default function App() {
       const payout = res.data?.citizenPayout || grossScrap;
       const profit = res.data?.platformFee || estimatedPlatformFee;
       speakAssamesePrompt('settlement', payout, profit);
+      speakAssamesePrompt('otpSuccess', profit);
     }
 
     setStep('COMPLETED');
   };
 
-  // Mid-Route Float Topup via payment gateway
+  // Mid-Route Float Topup via UPI payment gateway
   const handleTopupWallet = async (amount: number) => {
     setIsTopupLoading(true);
     const idempotencyKey = `TOPUP_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
@@ -193,7 +207,7 @@ export default function App() {
     }
   };
 
-  // Offline Sync: Process local SQLite queued transactions when data restores
+  // Offline Sync: Process local SQLite queued transactions when network reconnects
   const handleSyncOffline = async () => {
     setIsSubmitting(true);
     const result = await partnerApi.syncOfflineQueue();
@@ -213,249 +227,109 @@ export default function App() {
     }
   };
 
+  const grossAmount = Math.round(lockedWeight * currentOrder.unitRate * 100) / 100;
+  const platformFee = Math.round(grossAmount * 0.08 * 100) / 100;
+
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#000000" />
+      <StatusBar barStyle="light-content" backgroundColor="#07110E" />
 
-      {/* Top Bar: Float Balance Monitor & Guwahati Municipal Ward Tag */}
-      <View style={styles.header}>
-        <View>
-          <Text style={styles.title}>KachraCash Partner</Text>
-          <Text style={styles.subtitle}>কচৰা ক্যাশ সংগ্ৰাহক • Guwahati Hub</Text>
-        </View>
-
-        <View style={styles.headerActions}>
-          {/* Float Balance Pill with Topup Trigger */}
-          <View style={[styles.floatPill, floatBalance < 2000 && { borderColor: partnerTheme.colors.alert }]}>
-            <Text style={styles.floatLabel}>ৱালেট জমা (FLOAT):</Text>
-            <Text style={[styles.floatValue, floatBalance < 2000 && { color: partnerTheme.colors.alert }]}>
-              ₹{floatBalance.toFixed(0)}
-            </Text>
-            {floatBalance < 2000 ? (
-              <Text style={{ fontSize: 9, fontWeight: '800', color: partnerTheme.colors.alert, marginTop: 1 }}>
-                ⚠️ কম ফ্ল’ট: নূন্যতম ₹২,০০০ প্ৰয়োজন
-              </Text>
-            ) : null}
-            <Text
-              style={styles.topupLink}
-              onPress={() => setShowTopupModal(true)}
-              accessibilityRole="button"
-            >
-              + TOPUP
-            </Text>
-          </View>
-        </View>
-      </View>
-
-      {/* Persistent Offline Transactions Sync Alert Banner */}
-      {pendingOfflineCount > 0 && (
-        <View style={styles.offlineBanner}>
-          <Text style={styles.offlineBannerText}>
-            📶 {pendingOfflineCount} OFFLINE TRANSACTION(S) QUEUED IN SQLITE
-          </Text>
-          <Text
-            style={styles.syncBtnText}
-            onPress={handleSyncOffline}
-            accessibilityRole="button"
-          >
-            ছিংক কৰক (SYNC NOW)
-          </Text>
-        </View>
-      )}
+      {/* Section A: Floating Wallet Header & Float-Gated Online Switch */}
+      <CollectorStatusHeader
+        floatBalance={floatBalance}
+        isOnline={isOnline}
+        onToggleOnline={() => setIsOnline((prev) => !prev)}
+        onTopUpPress={() => setShowTopupModal(true)}
+        pendingOfflineCount={pendingOfflineCount}
+        onSyncPress={handleSyncOffline}
+      />
 
       <ScrollView contentContainerStyle={styles.scroll}>
-        {/* ==================================================================== */}
-        {/* Step 1: DISPATCH - Zero-Text High-Contrast Order Acceptance         */}
-        {/* ==================================================================== */}
+        {/* State 1: DISPATCH - Zero-Text Dispatch Intake Alert */}
         {step === 'DISPATCH' && (
-          <View style={styles.stepContainer}>
-            <View style={styles.card}>
-              <View style={styles.cardBadgeRow}>
-                <Text style={styles.cardHeader}>নতুন অনুৰোধ (NEW PICKUP)</Text>
-                <Text style={styles.distanceBadge}>📍 {currentOrder.distanceMeters}m away</Text>
-              </View>
-              <Text style={styles.address}>{currentOrder.address}</Text>
-              <Text style={styles.ward}>{currentOrder.wardName}</Text>
-              <Text style={styles.detail}>Time Slot: {currentOrder.timeSlot}</Text>
-              <Text style={styles.commodityHighlight}>
-                📦 {currentOrder.commodityName} (₹{currentOrder.unitRate.toFixed(2)}/kg)
-              </Text>
-            </View>
-
-            {/* Semantic Accept Button: Emerald Green (#059669) */}
-            <SemanticButton
-              variant="affirmation"
-              label="গ্ৰহণ কৰক (ACCEPT PICKUP)"
-              sublabel="Tap to lock pickup and start navigation"
-              icon="✓"
-              onPress={() => setStep('NAVIGATION')}
-            />
-
-            {/* Semantic Decline Button: Crimson Red (#DC2626) */}
-            <SemanticButton
-              variant="alert"
-              label="প্ৰত্যাখ্যান (DECLINE)"
-              sublabel="Pass request to next nearest collector"
-              icon="✕"
-              onPress={handleFetchNearbyDispatch}
-              loading={isSubmitting}
-            />
-
-            {/* Financial Refresh Button: Royal Blue (#1D4ED8) */}
-            <SemanticButton
-              variant="financial"
-              label="নতুন অনুৰোধ বিচৰা (FIND NEARBY)"
-              sublabel="PostGIS 1.5 km Spatial Search"
-              icon="🔄"
-              onPress={handleFetchNearbyDispatch}
-              loading={isSubmitting}
-            />
-          </View>
+          <DispatchCard
+            order={{
+              id: currentOrder.id,
+              citizenName: currentOrder.citizenName,
+              distanceMeters: currentOrder.distanceMeters,
+              locationText: currentOrder.locationText,
+              visualTier: currentOrder.visualTier,
+              commodityName: currentOrder.commodityName,
+              unitRate: currentOrder.unitRate,
+            }}
+            onAccept={() => setStep('NAVIGATION')}
+            onDecline={handleFetchNearbyDispatch}
+            isSubmitting={isSubmitting}
+          />
         )}
 
-        {/* ==================================================================== */}
-        {/* Step 2: NAVIGATION - Transit State with Telephony & Arrived Actions   */}
-        {/* ==================================================================== */}
+        {/* State 2: NAVIGATION - Waypoint Navigation & Customer Handshake */}
         {step === 'NAVIGATION' && (
-          <View style={styles.stepContainer}>
-            <View style={[styles.card, { borderColor: partnerTheme.colors.caution }]}>
-              <Text style={[styles.cardHeader, { color: partnerTheme.colors.caution }]}>
-                গ্ৰাহকৰ দিশে অগ্ৰসৰ (EN-ROUTE / IN TRANSIT)
-              </Text>
-              <Text style={styles.address}>{currentOrder.address}</Text>
-              <Text style={styles.detail}>Customer: {currentOrder.citizenName}</Text>
-              <Text style={styles.detail}>Proximity: {currentOrder.distanceMeters}m (Within 500m geofence)</Text>
-              <Text style={styles.tierPill}>SLA TARGET: ARRIVE WITHIN 15 MIN</Text>
-            </View>
-
-            {/* Semantic Telephony / Masked Call: Royal Blue (#1D4ED8) */}
-            <SemanticButton
-              variant="financial"
-              label="গ্ৰাহকলৈ ফোন কৰক (MASKED CALL)"
-              sublabel="Connect securely via Cloud Telephony"
-              icon="📞"
-              onPress={() => {
-                Alert.alert(
-                  'টেলিফনী যোগাযোগ (CALL CITIZEN)',
-                  `Dialing masked bridge for ${currentOrder.citizenName}...`,
-                );
-              }}
-            />
-
-            {/* Semantic Arrived Confirmation: Emerald Green (#059669) */}
-            <SemanticButton
-              variant="affirmation"
-              label="মই উপস্থিত হৈছোঁ (ARRIVED AT DOORSTEP)"
-              sublabel="Tap when parked at citizen's house"
-              icon="📍"
-              onPress={() => {
-                scale.sendTareCommand();
-                setStep('WEIGHING');
-              }}
-            />
-          </View>
+          <WaypointTransit
+            customerName={currentOrder.citizenName}
+            addressText={currentOrder.address}
+            distanceMeters={currentOrder.distanceMeters}
+            navigationInstruction="↑ 150m straight, turn right at temple"
+            onMaskedCall={() => {
+              Alert.alert(
+                'টেলিফনী যোগাযোগ (MASKED CALL)',
+                `Dialing resident ${currentOrder.citizenName} through virtual privacy bridge (+91 98640-XXXXX)...`,
+              );
+            }}
+            onGateArrival={handleGateArrival}
+          />
         )}
 
-        {/* ==================================================================== */}
-        {/* Step 3: WEIGHING - BLE Scale Stream & Anti-Tamper Zero-Tare Check    */}
-        {/* ==================================================================== */}
+        {/* State 3: WEIGHING - Hardware BLE Scale Telemetry Stream */}
         {step === 'WEIGHING' && (
-          <View style={styles.stepContainer}>
-            <BleScaleReader
-              scaleId={scale.scaleId}
-              scaleHardwareUuid={scale.scaleHardwareUuid}
-              weightKg={scale.currentWeightKg > 0 ? scale.currentWeightKg : 14.5}
-              isTared={scale.isTared}
-              batteryPct={scale.batteryPct}
-              commodityName={currentOrder.commodityName}
-              unitRate={currentOrder.unitRate}
-              onTare={() => scale.sendTareCommand()}
-              onLockWeight={handleLockWeight}
-              onSimulateWeight={(kg) => scale.simulateWeight(kg)}
-            />
-          </View>
+          <BleScaleReader
+            scaleId="AS-BLE-09"
+            scaleHardwareUuid="0000ffe0-0000-1000-8000-00805f9b34fb"
+            weightKg={scale.currentWeightKg > 0 ? scale.currentWeightKg : 14.5}
+            isTared={scale.isTared}
+            batteryPct={scale.batteryPct}
+            commodityName={currentOrder.commodityName}
+            unitRate={currentOrder.unitRate}
+            onTare={() => scale.sendTareCommand()}
+            onLockWeight={handleLockWeight}
+            onSimulateWeight={(kg) => scale.simulateWeight(kg)}
+          />
         )}
 
-        {/* ==================================================================== */}
-        {/* Step 4: OTP KEYPAD - Citizen 4-Digit Doorstep Settlement Verification*/}
-        {/* ==================================================================== */}
+        {/* State 4: OTP KEYPAD - Doorstep Settlement & Tactile 4-Digit Dialpad */}
         {step === 'OTP' && (
-          <View style={styles.stepContainer}>
-            <OtpKeypad
-              onOtpComplete={handleVerifyOtp}
-              isLoading={isSubmitting}
-              errorMessage={otpError}
-              summary={{
-                commodityName: currentOrder.commodityName,
-                weightKg: lockedWeight,
-                unitRate: currentOrder.unitRate,
-                grossAmount: Math.round(lockedWeight * currentOrder.unitRate * 100) / 100,
-              }}
-            />
-          </View>
+          <OtpKeypad
+            onOtpComplete={handleVerifyOtp}
+            isLoading={isSubmitting}
+            errorMessage={otpError}
+            summary={{
+              commodityName: currentOrder.commodityName,
+              weightKg: lockedWeight,
+              unitRate: currentOrder.unitRate,
+              grossAmount,
+              platformFee,
+            }}
+          />
         )}
 
-        {/* ==================================================================== */}
-        {/* Step 5: COMPLETED - Margin Credit Confirmation & Next Job Loop       */}
-        {/* ==================================================================== */}
+        {/* State 5: COMPLETED - Full-Screen Settlement Confirmation & Margin Credit */}
         {step === 'COMPLETED' && (
-          <View style={styles.stepContainer}>
-            <View style={[styles.card, { borderColor: partnerTheme.colors.affirmation }]}>
-              <Text style={[styles.cardHeader, { color: partnerTheme.colors.affirmation }]}>
-                ✓ কাৰ্য্য সম্পন্ন (SETTLEMENT COMPLETE)
-              </Text>
-              <Text style={styles.address}>
-                {settlementResult?.isOfflineQueued
-                  ? '📶 Offline Queue: Signed & Saved to SQLite'
-                  : '⚡ Instant UPI Disbursement via Bank Rails: SUCCESS'}
-              </Text>
-
-              <View style={styles.breakdownBox}>
-                <View style={styles.breakdownRow}>
-                  <Text style={styles.breakdownLabel}>গ্ৰাহকৰ মুঠ ধন (Citizen Payout):</Text>
-                  <Text style={styles.breakdownVal}>
-                    ₹{(settlementResult?.data?.citizenPayout || (lockedWeight * currentOrder.unitRate)).toFixed(2)}
-                  </Text>
-                </View>
-                <View style={styles.breakdownRow}>
-                  <Text style={styles.breakdownLabel}>সংগ্ৰাহকৰ লাভ (8% Profit Margin):</Text>
-                  <Text style={[styles.breakdownVal, { color: partnerTheme.colors.affirmation }]}>
-                    +₹{(settlementResult?.data?.platformFee || (lockedWeight * currentOrder.unitRate * 0.08)).toFixed(2)}
-                  </Text>
-                </View>
-                <View style={styles.breakdownRow}>
-                  <Text style={styles.breakdownLabel}>মুঠ ৱালেট কৰ্তন (Float Debited):</Text>
-                  <Text style={styles.breakdownVal}>
-                    -₹{(settlementResult?.data?.totalCollectorDebit || (lockedWeight * currentOrder.unitRate * 1.08)).toFixed(2)}
-                  </Text>
-                </View>
-              </View>
-
-              {settlementResult?.isOfflineQueued && (
-                <View style={styles.offlineNotice}>
-                  <Text style={styles.offlineNoticeText}>
-                    📝 Offline Ref: {settlementResult.queueId}
-                  </Text>
-                  <Text style={styles.offlineNoticeSubtext}>
-                    Payload cryptographically signed with BLE scale key. Auto-syncs on cellular reconnect.
-                  </Text>
-                </View>
-              )}
-            </View>
-
-            {/* Semantic Next Job Button: Emerald Green (#059669) */}
-            <SemanticButton
-              variant="affirmation"
-              label="পৰৱৰ্তী কামলৈ যাওক (NEXT PICKUP)"
-              sublabel="Return to Guwahati Dispatch Radar"
-              icon="🚀"
-              onPress={() => {
-                scale.sendTareCommand();
-                setSettlementResult(null);
-                setStep('DISPATCH');
-              }}
-            />
-          </View>
+          <OtpKeypad
+            onOtpComplete={() => {}}
+            isCompleted={true}
+            summary={{
+              commodityName: currentOrder.commodityName,
+              weightKg: lockedWeight,
+              unitRate: currentOrder.unitRate,
+              grossAmount,
+              platformFee,
+            }}
+            onNextJob={() => {
+              scale.sendTareCommand();
+              setSettlementResult(null);
+              setStep('DISPATCH');
+            }}
+          />
         )}
       </ScrollView>
 
@@ -505,195 +379,22 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: partnerTheme.colors.bg,
   },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    backgroundColor: partnerTheme.colors.surface,
-    borderBottomWidth: 1,
-    borderBottomColor: partnerTheme.colors.border,
-  },
-  headerActions: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  title: {
-    fontSize: 17,
-    fontWeight: '900',
-    color: '#ffffff',
-  },
-  subtitle: {
-    fontSize: 11,
-    color: partnerTheme.colors.textMuted,
-  },
-  floatPill: {
-    backgroundColor: partnerTheme.colors.surfaceElevated,
-    paddingVertical: 6,
-    paddingHorizontal: 10,
-    borderRadius: 10,
-    borderWidth: 1.5,
-    borderColor: partnerTheme.colors.affirmation,
-    alignItems: 'flex-end',
-  },
-  floatLabel: {
-    fontSize: 9,
-    color: partnerTheme.colors.textMuted,
-    fontWeight: '700',
-  },
-  floatValue: {
-    fontSize: 16,
-    fontWeight: '900',
-    color: partnerTheme.colors.affirmation,
-  },
-  topupLink: {
-    fontSize: 10,
-    color: partnerTheme.colors.financial,
-    fontWeight: '900',
-    marginTop: 2,
-  },
-  offlineBanner: {
-    backgroundColor: '#b45309',
-    paddingVertical: 8,
-    paddingHorizontal: 14,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  offlineBannerText: {
-    color: '#ffffff',
-    fontSize: 11,
-    fontWeight: '800',
-    flex: 1,
-  },
-  syncBtnText: {
-    backgroundColor: '#000000',
-    color: '#fef3c7',
-    fontSize: 11,
-    fontWeight: '900',
-    paddingVertical: 4,
-    paddingHorizontal: 8,
-    borderRadius: 6,
-  },
   scroll: {
-    padding: 16,
+    padding: 14,
     paddingBottom: 110,
-  },
-  stepContainer: {
-    gap: 12,
-  },
-  card: {
-    backgroundColor: partnerTheme.colors.surface,
-    borderRadius: 16,
-    padding: 18,
-    borderWidth: 2,
-    borderColor: partnerTheme.colors.border,
-  },
-  cardBadgeRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 6,
-  },
-  cardHeader: {
-    fontSize: 16,
-    fontWeight: '900',
-    color: '#ffffff',
-  },
-  distanceBadge: {
-    backgroundColor: partnerTheme.colors.surfaceElevated,
-    color: partnerTheme.colors.caution,
-    fontSize: 12,
-    fontWeight: '800',
-    paddingVertical: 4,
-    paddingHorizontal: 8,
-    borderRadius: 6,
-  },
-  address: {
-    fontSize: 16,
-    fontWeight: '800',
-    color: '#ffffff',
-    marginBottom: 4,
-  },
-  ward: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: partnerTheme.colors.caution,
-    marginBottom: 6,
-  },
-  detail: {
-    fontSize: 14,
-    color: partnerTheme.colors.textMuted,
-    marginBottom: 4,
-  },
-  commodityHighlight: {
-    fontSize: 14,
-    fontWeight: '800',
-    color: '#ffffff',
-    backgroundColor: partnerTheme.colors.surfaceElevated,
-    padding: 8,
-    borderRadius: 8,
-    marginTop: 8,
-  },
-  tierPill: {
-    alignSelf: 'flex-start',
-    backgroundColor: partnerTheme.colors.surfaceElevated,
-    color: partnerTheme.colors.caution,
-    fontSize: 11,
-    fontWeight: '800',
-    paddingVertical: 4,
-    paddingHorizontal: 8,
-    borderRadius: 6,
-    marginTop: 6,
-  },
-  breakdownBox: {
-    backgroundColor: partnerTheme.colors.surfaceElevated,
-    padding: 12,
-    borderRadius: 10,
-    marginTop: 12,
-    gap: 6,
-  },
-  breakdownRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  breakdownLabel: {
-    fontSize: 13,
-    color: partnerTheme.colors.textMuted,
-    fontWeight: '600',
-  },
-  breakdownVal: {
-    fontSize: 14,
-    fontWeight: '900',
-    color: '#ffffff',
-  },
-  offlineNotice: {
-    backgroundColor: '#374151',
-    padding: 8,
-    borderRadius: 8,
-    marginTop: 10,
-  },
-  offlineNoticeText: {
-    color: '#fef08a',
-    fontSize: 11,
-    fontWeight: '800',
-  },
-  offlineNoticeSubtext: {
-    color: '#d1d5db',
-    fontSize: 10,
-    marginTop: 2,
+    maxWidth: 420,
+    alignSelf: 'center',
+    width: '100%',
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: '#000000bb',
+    backgroundColor: 'rgba(0, 0, 0, 0.85)',
     justifyContent: 'center',
     padding: 20,
   },
   modalCard: {
     backgroundColor: partnerTheme.colors.surface,
-    borderRadius: 18,
+    borderRadius: 20,
     padding: 20,
     borderWidth: 2,
     borderColor: partnerTheme.colors.border,

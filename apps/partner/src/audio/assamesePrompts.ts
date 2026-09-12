@@ -32,9 +32,13 @@ export const assamesePrompts = {
     textEn: 'No cellular network. Transaction signed and queued locally in SQLite. Will sync automatically.',
   },
   lowFloat: {
-    textAs: 'ৱালেটত জমা টকা কমি গৈছে। অনুগ্ৰহ কৰি টপ-আপ কৰক।',
-    textEn: 'Wallet float balance is low. Please topup to accept more pickups.',
+    textAs: 'আপোনাৰ ৱালেট ফ্ল’ট ₹২,০০০ তকৈ কম। ৰিজাৰ্ভ টপ-আপ কৰক।',
+    textEn: 'Your wallet float is below ₹2,000. Please top up reserve float.',
   },
+  otpSuccess: (profit: number) => ({
+    textAs: `গ্ৰাহকৰ পৰিশোধ সম্পূৰ্ণ হ'ল। আপোনাৰ লাভ ${profit.toFixed(2)} টকা ৱালেটত জমা হৈছে।`,
+    textEn: `Customer payment complete. Your profit of ₹${profit.toFixed(2)} has been credited to your wallet.`,
+  }),
   syncSuccess: (count: number) => ({
     textAs: `${count} টা অফলাইন কাৰ্য্য চাৰ্ভাৰত সফলভাৱে ছিংক হ\'ল।`,
     textEn: `${count} offline transaction(s) synced successfully with server.`,
@@ -47,6 +51,8 @@ export function speakAssamesePrompt(key: keyof typeof assamesePrompts, arg1?: nu
     promptText = assamesePrompts.weighing(arg1).textAs;
   } else if (key === 'settlement' && typeof arg1 === 'number' && typeof arg2 === 'number') {
     promptText = assamesePrompts.settlement(arg1, arg2).textAs;
+  } else if (key === 'otpSuccess' && typeof arg1 === 'number') {
+    promptText = assamesePrompts.otpSuccess(arg1).textAs;
   } else if (key === 'syncSuccess' && typeof arg1 === 'number') {
     promptText = assamesePrompts.syncSuccess(arg1).textAs;
   } else {
