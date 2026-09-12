@@ -1,0 +1,422 @@
+/* ── Brand ───────────────────────────────────────────── */
+.brand-row {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.brand-mark {
+	width: 34px;
+	height: 34px;
+	border-radius: 10px;
+	background: linear-gradient(155deg, var(--color-sage-300), var(--color-forest-600));
+	display: grid;
+	place-items: center;
+	flex-shrink: 0;
+	color: var(--color-cream-50);
+}
+
+.brand-mark svg {
+	width: 18px;
+	height: 18px;
+}
+
+.brand-mark--lg {
+	width: 42px;
+	height: 42px;
+	border-radius: 12px;
+}
+
+.brand-mark--lg svg {
+	width: 22px;
+	height: 22px;
+}
+
+.brand-name {
+	font-family: var(--font-display);
+	font-size: 1.125rem;
+	font-weight: 500;
+	color: var(--glade-heading);
+	letter-spacing: 0.02em;
+}
+
+.brand-sub {
+	font-size: 0.6875rem;
+	color: var(--glade-text-muted);
+	margin-top: 1px;
+}
+
+/* ── Typography utilities ────────────────────────────── */
+.glade-display {
+	font-family: var(--font-display);
+	font-weight: 500;
+	color: var(--glade-heading);
+}
+
+.glade-tabular {
+	font-variant-numeric: tabular-nums;
+}
+
+/* ── Buttons (identical shape across citizen / partner / admin) */
+.btn {
+	font-family: var(--font-body);
+	font-size: 0.875rem;
+	font-weight: 600;
+	border-radius: var(--radius-pill);
+	padding: 10px 20px;
+	border: 1px solid transparent;
+	cursor: pointer;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	transition: transform 0.12s ease, background 0.15s ease, box-shadow 0.15s ease;
+	text-decoration: none;
+}
+
+.btn:active:not(:disabled) {
+	transform: scale(0.97);
+}
+
+.btn:disabled {
+	opacity: 0.4;
+	cursor: not-allowed;
+}
+
+.btn-primary {
+	background: var(--color-forest-600);
+	color: var(--color-cream-50);
+}
+
+.btn-primary:hover:not(:disabled) {
+	background: var(--color-forest-700);
+}
+
+.btn-gold {
+	background: var(--color-gold-500);
+	color: var(--color-pine-950);
+}
+
+.btn-gold:hover:not(:disabled) {
+	background: var(--color-gold-600);
+}
+
+.btn-outline {
+	background: transparent;
+	border-color: var(--color-forest-600);
+	color: var(--glade-accent);
+}
+
+.btn-outline:hover:not(:disabled) {
+	background: var(--color-sage-200);
+}
+
+[data-glade-surface='dark'] .btn-outline:hover:not(:disabled) {
+	background: var(--color-pine-800);
+}
+
+.btn-ghost {
+	background: transparent;
+	color: var(--glade-text-subtle);
+}
+
+.btn-ghost:hover:not(:disabled) {
+	background: var(--glade-border-subtle);
+}
+
+.btn-danger {
+	background: var(--color-coral-600);
+	color: var(--color-cream-50);
+}
+
+.btn-sm {
+	padding: 6px 14px;
+	font-size: 0.8125rem;
+}
+
+.btn-lg {
+	padding: 13px 26px;
+	font-size: 0.96875rem;
+}
+
+.btn-field {
+	min-height: 64px;
+	min-width: 64px;
+	padding: 14px 22px;
+	font-size: 1rem;
+}
+
+/* ── Cards ───────────────────────────────────────────── */
+.glade-card {
+	background: var(--glade-card);
+	border: 1px solid var(--glade-border);
+	border-radius: var(--radius-lg);
+	padding: var(--space-5, 24px);
+	box-shadow: var(--shadow-glade-1);
+}
+
+.stat-card {
+	background: var(--glade-card);
+	border: 1px solid var(--glade-border);
+	border-radius: var(--radius-lg);
+	padding: 24px;
+}
+
+.stat-label {
+	font-size: 0.8125rem;
+	color: var(--glade-text-muted);
+	font-weight: 600;
+}
+
+.stat-value {
+	font-family: var(--font-display);
+	font-size: 1.75rem;
+	color: var(--glade-heading);
+	margin: 2px 0 8px;
+	font-variant-numeric: tabular-nums;
+}
+
+.greet-card {
+	background: var(--color-pine-900);
+	color: var(--color-cream-50);
+	border-radius: var(--radius-lg);
+	padding: 24px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 16px;
+}
+
+.greet-name {
+	font-family: var(--font-display);
+	font-size: 1.375rem;
+}
+
+.greet-sub {
+	font-size: 0.8125rem;
+	color: var(--color-sage-300);
+	margin-top: 4px;
+}
+
+/* ── Pills & tags ──────────────────────────────────── */
+.pill {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	font-size: 0.75rem;
+	font-weight: 600;
+	padding: 4px 11px;
+	border-radius: var(--radius-pill);
+}
+
+.pill-dot {
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background: currentColor;
+}
+
+.pill-success {
+	background: var(--color-sage-200);
+	color: var(--color-forest-700);
+}
+
+.pill-warning {
+	background: #f3e6c6;
+	color: var(--color-gold-600);
+}
+
+.pill-danger {
+	background: var(--color-coral-100);
+	color: var(--color-coral-600);
+}
+
+.pill-info {
+	background: var(--color-info-100);
+	color: var(--color-info-600);
+}
+
+.pill-neutral {
+	background: var(--color-sand-300);
+	color: var(--color-ink-700);
+}
+
+.tag {
+	background: var(--glade-card);
+	border: 1px solid var(--glade-border);
+	border-radius: var(--radius-sm);
+	padding: 5px 10px;
+	font-size: 0.8125rem;
+	color: var(--glade-text-subtle);
+}
+
+/* ── Step banner (shared 3-step promise) ───────────── */
+.step-banner {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	flex-wrap: wrap;
+	padding: 12px 16px;
+	background: var(--glade-card-muted);
+	border: 1px solid var(--glade-border-subtle);
+	border-radius: var(--radius-md);
+	font-size: 0.8125rem;
+	color: var(--glade-text-subtle);
+}
+
+.step-banner .step {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	font-weight: 600;
+}
+
+.step-banner .step.is-active {
+	color: var(--glade-accent);
+}
+
+.step-banner .arrow {
+	color: var(--glade-text-muted);
+}
+
+/* ── App chrome ────────────────────────────────────── */
+.glade-topbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	padding: 14px 0 20px;
+	border-bottom: 1px solid var(--glade-border-subtle);
+	margin-bottom: 24px;
+}
+
+.glade-app-main {
+	max-width: 480px;
+	margin: 0 auto;
+	padding: 16px 20px 48px;
+}
+
+.glade-admin-layout {
+	display: flex;
+	min-height: 100dvh;
+}
+
+.glade-sidebar {
+	width: 248px;
+	flex-shrink: 0;
+	background: var(--glade-sidebar);
+	color: var(--glade-sidebar-text);
+	padding: 32px 20px;
+	display: flex;
+	flex-direction: column;
+}
+
+.glade-sidebar .brand-name {
+	color: var(--color-cream-50);
+}
+
+.glade-sidebar .brand-sub {
+	color: var(--color-sage-400);
+}
+
+.glade-side-link {
+	display: block;
+	padding: 9px 12px;
+	border-radius: var(--radius-sm);
+	font-size: 0.875rem;
+	color: var(--glade-sidebar-text);
+	text-decoration: none;
+	margin-bottom: 2px;
+}
+
+.glade-side-link:hover {
+	background: var(--color-pine-800);
+	color: var(--color-cream-50);
+}
+
+.glade-side-link.is-active {
+	background: var(--glade-sidebar-active);
+	color: var(--color-cream-50);
+}
+
+.glade-admin-main {
+	flex: 1;
+	padding: 32px 40px 48px;
+	max-width: 1180px;
+}
+
+.scale-readout {
+	background: var(--color-pine-900);
+	border-radius: var(--radius-md);
+	padding: 20px;
+	text-align: center;
+}
+
+.scale-readout .value {
+	font-family: var(--font-display);
+	font-size: 2rem;
+	color: var(--color-sage-300);
+	font-variant-numeric: tabular-nums;
+}
+
+.scale-readout .label {
+	font-size: 0.75rem;
+	color: var(--color-sage-400);
+	margin-top: 4px;
+}
+
+.category-grid {
+	display: grid;
+	gap: 12px;
+}
+
+button.category-card {
+	width: 100%;
+	text-align: left;
+	font: inherit;
+	color: inherit;
+}
+
+.category-card {
+	background: var(--glade-card);
+	border: 1px solid var(--glade-border);
+	border-radius: var(--radius-md);
+	padding: 16px;
+	cursor: pointer;
+	transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.category-card:hover,
+.category-card.is-selected {
+	border-color: var(--color-forest-600);
+	box-shadow: 0 0 0 1px var(--color-forest-600) inset;
+}
+
+.category-card h3 {
+	font-family: var(--font-display);
+	font-size: 1rem;
+	margin: 0 0 4px;
+	color: var(--glade-heading);
+}
+
+.category-card p {
+	font-size: 0.8125rem;
+	color: var(--glade-text-muted);
+	margin: 0 0 8px;
+}
+
+.category-card .rate {
+	font-weight: 600;
+	font-variant-numeric: tabular-nums;
+	color: var(--glade-accent);
+}
+
+@media (max-width: 900px) {
+	.glade-sidebar {
+		display: none;
+	}
+
+	.glade-admin-main {
+		padding: 20px 16px 40px;
+	}
+}

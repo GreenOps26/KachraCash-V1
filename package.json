@@ -1,0 +1,25 @@
+{
+	"name": "kachracash",
+	"private": true,
+	"version": "0.0.1",
+	"packageManager": "pnpm@9.15.0",
+	"scripts": {
+		"dev": "turbo run dev",
+		"dev:api": "pnpm --filter @kachracash/api dev",
+		"build": "turbo run build",
+		"check": "turbo run check",
+		"lint": "turbo run lint",
+		"test": "turbo run test",
+		"test:unit": "pnpm --filter @kachracash/api test:unit",
+		"test:integration": "pnpm --filter @kachracash/api test:integration",
+		"db:generate": "pnpm --filter @kachracash/db db:generate",
+		"db:migrate": "pnpm --filter @kachracash/db db:migrate",
+		"db:migrate:deploy": "pnpm --filter @kachracash/db db:migrate:deploy",
+		"db:seed": "pnpm --filter @kachracash/db db:seed",
+		"format": "prettier --write ."
+	},
+	"devDependencies": {
+		"prettier": "^3.8.3",
+		"turbo": "^2.5.4"
+	}
+}

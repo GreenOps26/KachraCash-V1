@@ -1,0 +1,4 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+@import '../lib/styles/glade-tokens.css';
+@import '../lib/styles/glade-components.css';

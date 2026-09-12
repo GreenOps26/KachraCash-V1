@@ -1,0 +1,20 @@
+{
+  "expo": {
+    "name": "KachraCash Citizen",
+    "slug": "kachracash-citizen",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": { "supportsTablet": true, "bundleIdentifier": "com.kachracash.citizen" },
+    "android": {
+      "package": "com.kachracash.citizen",
+      "adaptiveIcon": {
+        "backgroundColor": "#f4f0e4",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      }
+    }
+  }
+}

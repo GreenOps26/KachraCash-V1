@@ -1,0 +1,30 @@
+{
+	"name": "@kachracash/db",
+	"version": "0.0.1",
+	"private": true,
+	"type": "module",
+	"exports": {
+		".": "./src/index.ts"
+	},
+	"scripts": {
+		"build": "prisma generate",
+		"db:generate": "prisma generate",
+		"db:migrate": "prisma migrate dev",
+		"db:migrate:deploy": "prisma migrate deploy",
+		"db:seed": "prisma db seed",
+		"db:push": "prisma db push",
+		"typecheck": "tsc --noEmit"
+	},
+	"prisma": {
+		"seed": "tsx prisma/seed.ts"
+	},
+	"dependencies": {
+		"@prisma/client": "^6.19.0"
+	},
+	"devDependencies": {
+		"@types/node": "^24",
+		"prisma": "^6.19.0",
+		"tsx": "^4.20.5",
+		"typescript": "^6.0.3"
+	}
+}

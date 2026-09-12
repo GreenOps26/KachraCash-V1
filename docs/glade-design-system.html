@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glade — Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,340..600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ============================= TOKENS ============================= */
+  :root{
+    --pine-950:#0F1E16;
+    --pine-900:#152A20;
+    --pine-800:#1D3A2B;
+    --forest-700:#2C5A43;
+    --forest-600:#356B4E;
+    --forest-500:#457F5F;
+    --sage-400:#8FAE96;
+    --sage-300:#AFC7B2;
+    --sage-200:#D2E0D3;
+    --cream-50:#FAF7EF;
+    --cream-100:#F4F0E4;
+    --sand-300:#E4DCC5;
+    --sand-400:#D6CBA8;
+    --gold-600:#B3822A;
+    --gold-500:#C99A3B;
+    --gold-300:#E4C888;
+    --coral-600:#B14B41;
+    --coral-100:#F3DAD6;
+    --info-600:#3E6E7A;
+    --info-100:#DCE8E9;
+    --ink-900:#1B211C;
+    --ink-700:#3D453E;
+    --ink-500:#6B756E;
+    --ink-300:#9AA39B;
+    --white:#FFFFFF;
+
+    --radius-sm:6px;
+    --radius-md:12px;
+    --radius-lg:20px;
+    --radius-pill:999px;
+
+    --shadow-1:0 1px 2px rgba(15,30,22,0.06);
+    --shadow-2:0 6px 16px rgba(15,30,22,0.10);
+    --shadow-3:0 16px 40px rgba(15,30,22,0.16);
+
+    --space-1:4px;
+    --space-2:8px;
+    --space-3:12px;
+    --space-4:16px;
+    --space-5:24px;
+    --space-6:32px;
+    --space-7:48px;
+    --space-8:64px;
+    --space-9:96px;
+
+    --font-display:'Fraunces', serif;
+    --font-body:'Inter', -apple-system, sans-serif;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:var(--font-body);
+    background:var(--cream-100);
+    color:var(--ink-900);
+    -webkit-font-smoothing:antialiased;
+  }
+  img,svg{display:block;}
+  ::selection{background:var(--gold-300);}
+  a{color:inherit;}
+  :focus-visible{outline:2px solid var(--forest-600);outline-offset:2px;}
+
+  /* ============================= LAYOUT ============================= */
+  .sidebar{
+    position:fixed;top:0;left:0;bottom:0;width:248px;
+    background:var(--pine-900);
+    color:var(--sage-200);
+    padding:var(--space-6) var(--space-5);
+    overflow-y:auto;
+    display:flex;flex-direction:column;
+    z-index:20;
+  }
+  .brand{
+    display:flex;align-items:center;gap:10px;
+    margin-bottom:var(--space-7);
+  }
+  .brand-mark{
+    width:34px;height:34px;border-radius:10px;
+    background:linear-gradient(155deg, var(--sage-300), var(--forest-600));
+    display:grid;place-items:center;flex-shrink:0;
+  }
+  .brand-mark svg{width:18px;height:18px;}
+  .brand-name{font-family:var(--font-display);font-size:19px;color:var(--cream-50);letter-spacing:0.2px;}
+  .brand-sub{font-size:11px;color:var(--sage-400);margin-top:1px;}
+
+  .side-nav{flex:1;}
+  .side-group{margin-bottom:var(--space-6);}
+  .side-group-label{
+    font-size:11px;color:var(--sage-400);
+    margin:0 0 var(--space-2) var(--space-2);
+    font-weight:600;
+  }
+  .side-link{
+    display:flex;align-items:center;gap:10px;
+    padding:9px var(--space-3);
+    border-radius:var(--radius-sm);
+    font-size:14px;color:var(--sage-200);
+    text-decoration:none;
+    transition:background .15s ease, color .15s ease;
+  }
+  .side-link:hover{background:var(--pine-800);color:var(--cream-50);}
+  .side-link.is-active{background:var(--forest-700);color:var(--cream-50);}
+  .side-link svg{width:16px;height:16px;flex-shrink:0;opacity:.85;}
+
+  .side-foot{
+    font-size:11.5px;color:var(--sage-400);
+    padding-top:var(--space-4);border-top:1px solid var(--pine-800);
+  }
+
+  main{margin-left:248px;padding:var(--space-8) var(--space-8) var(--space-9);max-width:1180px;}
+
+  section{padding-top:var(--space-9);}
+  section:first-of-type{padding-top:0;}
+  section + section{border-top:1px solid var(--sand-300);}
+
+  .section-tag{
+    font-size:13px;color:var(--forest-600);font-weight:600;
+    margin:0 0 var(--space-2);
+  }
+  .section-title{
+    font-family:var(--font-display);
+    font-weight:500;
+    font-size:34px;
+    margin:0 0 var(--space-3);
+    color:var(--pine-900);
+  }
+  .section-desc{
+    font-size:15.5px;line-height:1.65;color:var(--ink-700);
+    max-width:640px;margin:0 0 var(--space-6);
+  }
+  .subhead{
+    font-size:12.5px;font-weight:600;color:var(--ink-500);
+    margin:var(--space-6) 0 var(--space-3);
+  }
+
+  .swatch-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-4);}
+  .swatch{
+    border-radius:var(--radius-md);
+    overflow:hidden;border:1px solid var(--sand-300);
+    background:var(--white);
+    cursor:pointer;
+  }
+  .swatch-fill{height:78px;}
+  .swatch-meta{padding:10px 12px;}
+  .swatch-name{font-size:13px;font-weight:600;}
+  .swatch-hex{font-size:12px;color:var(--ink-500);font-variant-numeric:tabular-nums;}
+  .swatch-copied{color:var(--forest-600);}
+
+  /* Typography */
+  .type-row{
+    display:flex;align-items:baseline;gap:var(--space-5);
+    padding:var(--space-4) 0;border-bottom:1px solid var(--sand-300);
+  }
+  .type-row:last-child{border-bottom:none;}
+  .type-sample{font-family:var(--font-display);color:var(--pine-900);flex:1;}
+  .type-meta{width:210px;font-size:12.5px;color:var(--ink-500);flex-shrink:0;font-variant-numeric:tabular-nums;}
+  .type-meta b{color:var(--ink-700);display:block;font-size:13px;margin-bottom:2px;font-family:var(--font-body);}
+  .body-sample{font-family:var(--font-body);color:var(--ink-900);}
+
+  .card{
+    background:var(--white);
+    border:1px solid var(--sand-300);
+    border-radius:var(--radius-lg);
+    padding:var(--space-5);
+  }
+  .showcase{
+    display:grid;gap:var(--space-5);
+  }
+  .cols-2{grid-template-columns:1fr 1fr;}
+  .cols-3{grid-template-columns:1fr 1fr 1fr;}
+  .cols-4{grid-template-columns:repeat(4,1fr);}
+
+  /* Spacing */
+  .space-row{display:flex;align-items:center;gap:var(--space-4);margin-bottom:var(--space-3);}
+  .space-bar{background:var(--forest-500);border-radius:3px;height:14px;}
+  .space-label{width:120px;font-size:12.5px;color:var(--ink-500);font-variant-numeric:tabular-nums;}
+
+  /* Buttons */
+  .btn{
+    font-family:var(--font-body);
+    font-size:14px;font-weight:600;
+    border-radius:var(--radius-pill);
+    padding:10px 20px;
+    border:1px solid transparent;
+    cursor:pointer;
+    display:inline-flex;align-items:center;gap:8px;
+    transition:transform .12s ease, box-shadow .12s ease, background .15s ease;
+  }
+  .btn:active{transform:scale(.97);}
+  .btn-primary{background:var(--forest-600);color:var(--cream-50);}
+  .btn-primary:hover{background:var(--forest-700);}
+  .btn-gold{background:var(--gold-500);color:var(--pine-950);}
+  .btn-gold:hover{background:var(--gold-600);}
+  .btn-outline{background:transparent;border-color:var(--forest-600);color:var(--forest-700);}
+  .btn-outline:hover{background:var(--sage-200);}
+  .btn-ghost{background:transparent;color:var(--ink-700);}
+  .btn-ghost:hover{background:var(--sand-300);}
+  .btn-danger{background:var(--coral-600);color:var(--cream-50);}
+  .btn-danger:hover{background:#9a3c33;}
+  .btn-sm{padding:6px 14px;font-size:12.5px;}
+  .btn-lg{padding:13px 26px;font-size:15.5px;}
+  .btn[disabled]{opacity:.4;cursor:not-allowed;}
+  .btn-icon{
+    width:38px;height:38px;padding:0;border-radius:50%;
+    display:inline-flex;align-items:center;justify-content:center;
+    background:var(--sand-300);color:var(--ink-700);border:none;
+  }
+  .btn-icon:hover{background:var(--sand-400);}
+  .btn-icon svg{width:17px;height:17px;}
+  .btn-row{display:flex;gap:var(--space-3);flex-wrap:wrap;align-items:center;}
+
+  /* Forms */
+  .field{margin-bottom:var(--space-4);}
+  .field label{display:block;font-size:12.5px;font-weight:600;color:var(--ink-700);margin-bottom:6px;}
+  .field-hint{font-size:12px;color:var(--ink-500);margin-top:5px;}
+  .input, .select, .textarea{
+    width:100%;font-family:var(--font-body);font-size:14px;
+    padding:11px 14px;border:1px solid var(--sand-400);
+    border-radius:var(--radius-sm);background:var(--cream-50);
+    color:var(--ink-900);
+  }
+  .input:focus, .select:focus, .textarea:focus{
+    border-color:var(--forest-600);outline:none;
+    box-shadow:0 0 0 3px var(--sage-200);
+  }
+  .input.is-error{border-color:var(--coral-600);}
+  .field-hint.is-error{color:var(--coral-600);}
+  .input[disabled]{background:var(--sand-300);color:var(--ink-300);}
+  .input-icon-wrap{position:relative;}
+  .input-icon-wrap .input{padding-left:38px;}
+  .input-icon-wrap svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--ink-500);}
+  .textarea{resize:vertical;min-height:88px;}
+
+  .check-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;font-size:14px;}
+  .check-box, .radio-box{
+    width:18px;height:18px;border:1.5px solid var(--sand-400);
+    border-radius:5px;display:inline-grid;place-items:center;
+    cursor:pointer;flex-shrink:0;
+  }
+  .radio-box{border-radius:50%;}
+  .check-box.checked{background:var(--forest-600);border-color:var(--forest-600);}
+  .check-box.checked svg{width:11px;height:11px;stroke:white;}
+  .radio-box.checked{border-color:var(--forest-600);}
+  .radio-box.checked::after{content:'';width:8px;height:8px;border-radius:50%;background:var(--forest-600);}
+
+  .toggle{width:40px;height:24px;border-radius:var(--radius-pill);background:var(--sand-400);position:relative;cursor:pointer;flex-shrink:0;transition:background .15s ease;}
+  .toggle::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:white;transition:left .15s ease;box-shadow:var(--shadow-1);}
+  .toggle.on{background:var(--forest-600);}
+  .toggle.on::after{left:19px;}
+
+  /* Stat / chart cards */
+  .stat-card{background:var(--white);border:1px solid var(--sand-300);border-radius:var(--radius-lg);padding:var(--space-5);}
+  .stat-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:var(--space-3);}
+  .stat-label{font-size:12.5px;color:var(--ink-500);font-weight:600;}
+  .stat-value{font-family:var(--font-display);font-size:28px;color:var(--pine-900);margin:2px 0 8px;font-variant-numeric:tabular-nums;}
+  .delta{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:700;padding:3px 8px;border-radius:var(--radius-pill);}
+  .delta.up{background:var(--sage-200);color:var(--forest-700);}
+  .delta.down{background:var(--coral-100);color:var(--coral-600);}
+  .delta svg{width:11px;height:11px;}
+
+  .greet-card{
+    background:var(--pine-900);color:var(--cream-50);
+    border-radius:var(--radius-lg);padding:var(--space-5);
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .greet-name{font-family:var(--font-display);font-size:22px;}
+  .greet-sub{font-size:13px;color:var(--sage-300);margin-top:4px;}
+
+  .list-card .row{
+    display:flex;align-items:center;gap:12px;
+    padding:11px 0;border-bottom:1px solid var(--sand-300);
+  }
+  .list-card .row:last-child{border-bottom:none;}
+  .row-name{font-size:14px;font-weight:600;flex:1;}
+  .row-sub{font-size:12px;color:var(--ink-500);}
+  .row-amount{font-size:14px;font-weight:600;font-variant-numeric:tabular-nums;}
+
+  .empty-state{
+    text-align:center;padding:var(--space-7) var(--space-4);
+    color:var(--ink-500);
+  }
+  .empty-state svg{width:34px;height:34px;margin:0 auto 12px;opacity:.5;}
+  .empty-state p{margin:0;font-size:13.5px;}
+
+  .skeleton{background:linear-gradient(90deg,var(--sand-300) 25%,var(--sand-400) 37%,var(--sand-300) 63%);background-size:400% 100%;animation:shimmer 1.6s ease infinite;border-radius:6px;}
+  @keyframes shimmer{0%{background-position:100% 0}100%{background-position:0 0}}
+
+  /* Data viz */
+  .chart-card-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:var(--space-4);}
+  .chart-card-head h4{margin:0;font-size:14px;font-weight:600;}
+  .chart-card-head span{font-size:12px;color:var(--ink-500);}
+
+  .bar-chart{display:flex;align-items:flex-end;gap:8px;height:120px;}
+  .bar-chart .bar{flex:1;border-radius:5px 5px 2px 2px;background:var(--sage-300);position:relative;}
+  .bar-chart .bar.active{background:var(--forest-600);}
+  .bar-chart .bar span{position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);font-size:10.5px;color:var(--ink-500);white-space:nowrap;}
+
+  .radial{border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--forest-600) calc(var(--pct) * 1%), var(--sand-300) 0);}
+  .radial-inner{border-radius:50%;background:var(--white);display:grid;place-items:center;text-align:center;}
+  .radial-inner b{font-size:16px;font-family:var(--font-display);color:var(--pine-900);}
+  .radial-inner span{font-size:9.5px;color:var(--ink-500);}
+  .radial.lg{width:110px;height:110px;}
+  .radial.lg .radial-inner{width:80px;height:80px;}
+  .radial.md{width:78px;height:78px;}
+  .radial.md .radial-inner{width:56px;height:56px;}
+
+  .progress-track{height:8px;background:var(--sand-300);border-radius:var(--radius-pill);overflow:hidden;}
+  .progress-fill{height:100%;background:var(--forest-600);border-radius:var(--radius-pill);}
+
+  .sparkline{width:100%;height:44px;}
+
+  /* Navigation components */
+  .topbar-demo{
+    display:flex;justify-content:space-between;align-items:center;
+    background:var(--white);border:1px solid var(--sand-300);border-radius:var(--radius-md);
+    padding:12px 16px;
+  }
+  .tabs{display:flex;gap:var(--space-5);border-bottom:1px solid var(--sand-300);}
+  .tab{padding:10px 2px;font-size:14px;color:var(--ink-500);font-weight:600;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;}
+  .tab.is-active{color:var(--pine-900);border-color:var(--forest-600);}
+
+  .breadcrumb{display:flex;gap:8px;font-size:13px;color:var(--ink-500);align-items:center;}
+  .breadcrumb b{color:var(--ink-900);font-weight:600;}
+
+  .pagination{display:flex;gap:6px;}
+  .page-btn{width:32px;height:32px;border-radius:var(--radius-sm);display:grid;place-items:center;font-size:13px;color:var(--ink-700);cursor:pointer;font-variant-numeric:tabular-nums;}
+  .page-btn.is-active{background:var(--forest-600);color:white;}
+  .page-btn:hover:not(.is-active){background:var(--sand-300);}
+
+  /* Table */
+  table.data-table{width:100%;border-collapse:collapse;font-size:13.5px;}
+  table.data-table th{
+    text-align:left;font-size:12px;color:var(--ink-500);font-weight:600;
+    padding:10px 14px;border-bottom:1px solid var(--sand-400);
+  }
+  table.data-table td{padding:13px 14px;border-bottom:1px solid var(--sand-300);}
+  table.data-table tr:hover td{background:var(--cream-50);}
+  .sort-ind{opacity:.5;font-size:11px;margin-left:3px;}
+
+  /* Badges */
+  .pill{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;padding:4px 11px;border-radius:var(--radius-pill);}
+  .pill.success{background:var(--sage-200);color:var(--forest-700);}
+  .pill.warning{background:#F3E6C6;color:var(--gold-600);}
+  .pill.danger{background:var(--coral-100);color:var(--coral-600);}
+  .pill.neutral{background:var(--sand-300);color:var(--ink-700);}
+  .pill.info{background:var(--info-100);color:var(--info-600);}
+  .pill-dot{width:6px;height:6px;border-radius:50%;background:currentColor;}
+  .tag{background:var(--white);border:1px solid var(--sand-400);border-radius:var(--radius-sm);padding:5px 10px;font-size:12.5px;color:var(--ink-700);}
+  .count-badge{background:var(--coral-600);color:white;font-size:10.5px;font-weight:700;min-width:17px;height:17px;border-radius:var(--radius-pill);display:inline-grid;place-items:center;padding:0 4px;}
+
+  /* Avatars */
+  .avatar{border-radius:50%;background:var(--forest-500);color:white;display:inline-grid;place-items:center;font-weight:700;font-family:var(--font-body);flex-shrink:0;position:relative;}
+  .avatar.sz-sm{width:28px;height:28px;font-size:11px;}
+  .avatar.sz-md{width:38px;height:38px;font-size:13px;}
+  .avatar.sz-lg{width:56px;height:56px;font-size:17px;}
+  .avatar .status-dot{position:absolute;bottom:-1px;right:-1px;width:10px;height:10px;border-radius:50%;background:var(--forest-600);border:2px solid var(--white);}
+  .avatar-stack{display:flex;}
+  .avatar-stack .avatar{margin-left:-10px;border:2px solid var(--white);}
+  .avatar-stack .avatar:first-child{margin-left:0;}
+
+  /* Alerts / toast */
+  .alert{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:var(--radius-md);font-size:13.5px;border:1px solid transparent;}
+  .alert svg{width:18px;height:18px;flex-shrink:0;margin-top:1px;}
+  .alert b{display:block;font-size:14px;margin-bottom:2px;}
+  .alert.success{background:var(--sage-200);color:var(--forest-700);}
+  .alert.warning{background:#F3E6C6;color:var(--gold-600);}
+  .alert.danger{background:var(--coral-100);color:var(--coral-600);}
+  .alert.info{background:var(--info-100);color:var(--info-600);}
+
+  #toast-container{position:fixed;bottom:28px;right:28px;display:flex;flex-direction:column;gap:10px;z-index:100;}
+  .toast{
+    background:var(--pine-900);color:var(--cream-50);padding:13px 18px;border-radius:var(--radius-md);
+    font-size:13.5px;box-shadow:var(--shadow-3);display:flex;align-items:center;gap:10px;
+    transform:translateX(120%);transition:transform .3s ease;
+  }
+  .toast.show{transform:translateX(0);}
+  .toast svg{width:16px;height:16px;color:var(--sage-300);}
+
+  /* Modal */
+  #modal-overlay{
+    position:fixed;inset:0;background:rgba(15,30,22,0.45);
+    display:none;align-items:center;justify-content:center;z-index:90;
+  }
+  #modal-overlay.show{display:flex;}
+  .modal{
+    background:var(--cream-50);border-radius:var(--radius-lg);padding:var(--space-6);
+    width:400px;box-shadow:var(--shadow-3);
+    transform:scale(.94);opacity:0;transition:transform .2s ease, opacity .2s ease;
+  }
+  #modal-overlay.show .modal{transform:scale(1);opacity:1;}
+  .modal h3{font-family:var(--font-display);font-size:20px;margin:0 0 8px;color:var(--pine-900);}
+  .modal p{font-size:13.5px;color:var(--ink-700);line-height:1.6;margin:0 0 var(--space-5);}
+  .modal-actions{display:flex;justify-content:flex-end;gap:10px;}
+
+  .tooltip-demo{position:relative;display:inline-block;}
+  .tooltip-bubble{
+    position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);
+    background:var(--pine-900);color:var(--cream-50);font-size:12px;
+    padding:6px 10px;border-radius:6px;white-space:nowrap;opacity:0;pointer-events:none;
+    transition:opacity .15s ease;
+  }
+  .tooltip-demo:hover .tooltip-bubble{opacity:1;}
+
+  /* Icons grid */
+  .icon-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:var(--space-4);text-align:center;}
+  .icon-tile{padding:var(--space-4) var(--space-2);border:1px solid var(--sand-300);border-radius:var(--radius-md);background:var(--white);}
+  .icon-tile svg{width:20px;height:20px;margin:0 auto 8px;color:var(--forest-700);}
+  .icon-tile span{font-size:11px;color:var(--ink-500);}
+
+  footer{margin-top:var(--space-9);padding-top:var(--space-6);border-top:1px solid var(--sand-300);font-size:12.5px;color:var(--ink-500);display:flex;justify-content:space-between;}
+
+  @media (max-width:900px){
+    .sidebar{display:none;}
+    main{margin-left:0;padding:var(--space-6);}
+    .cols-2,.cols-3,.cols-4{grid-template-columns:1fr;}
+    .icon-grid{grid-template-columns:repeat(3,1fr);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important;transition-duration:0.001ms !important;}
+  }
+</style>
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="brand">
+    <div class="brand-mark">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M12 2C8 6 5 10 5 14a7 7 0 0014 0c0-4-3-8-7-12z" fill="#F4F0E4"/></svg>
+    </div>
+    <div>
+      <div class="brand-name">Glade</div>
+      <div class="brand-sub">Design System v1.0</div>
+    </div>
+  </div>
+  <div class="side-nav">
+    <div class="side-group">
+      <div class="side-group-label">Foundations</div>
+      <a class="side-link is-active" href="#colors">Color</a>
+      <a class="side-link" href="#typography">Typography</a>
+      <a class="side-link" href="#spacing">Spacing &amp; radius</a>
+    </div>
+    <div class="side-group">
+      <div class="side-group-label">Components</div>
+      <a class="side-link" href="#buttons">Buttons</a>
+      <a class="side-link" href="#forms">Form controls</a>
+      <a class="side-link" href="#cards">Cards &amp; stats</a>
+      <a class="side-link" href="#dataviz">Data visualization</a>
+      <a class="side-link" href="#navigation">Navigation</a>
+      <a class="side-link" href="#tables">Tables</a>
+      <a class="side-link" href="#badges">Badges &amp; tags</a>
+      <a class="side-link" href="#avatars">Avatars</a>
+      <a class="side-link" href="#feedback">Alerts &amp; feedback</a>
+      <a class="side-link" href="#overlays">Modals &amp; tooltips</a>
+      <a class="side-link" href="#icons">Iconography</a>
+    </div>
+  </div>
+  <div class="side-foot">Built for dashboard &amp; fintech products with a warm, natural palette.</div>
+</nav>
+
+<main>
+
+  <header style="margin-bottom:var(--space-9);">
+    <p class="section-tag">Glade Design System</p>
+    <h1 style="font-family:var(--font-display);font-weight:500;font-size:52px;line-height:1.05;color:var(--pine-900);margin:0 0 20px;max-width:680px;">
+      A grounded visual language for dashboards people check every day.
+    </h1>
+    <p class="section-desc" style="font-size:16.5px;max-width:600px;">
+      Glade pairs a deep pine-green palette with a warm cream canvas — built from the dashboard, wallet and admin interfaces that inspired it. Every color, type style and component below is documented and ready to build with.
+    </p>
+    <div class="btn-row">
+      <button class="btn btn-primary btn-lg">Start building</button>
+      <button class="btn btn-outline btn-lg">Download tokens</button>
+    </div>
+  </header>
+
+  <!-- ============================= COLOR ============================= -->
+  <section id="colors">
+    <p class="section-tag">Foundations</p>
+    <h2 class="section-title">Color</h2>
+    <p class="section-desc">Pine and forest greens anchor the system; cream and sand carry the surfaces. Gold marks emphasis, coral marks risk. Click any swatch to copy its hex value.</p>
+
+    <p class="subhead">Core palette</p>
+    <div class="swatch-grid" id="core-swatches">
+      <div class="swatch" data-hex="#152A20"><div class="swatch-fill" style="background:#152A20"></div><div class="swatch-meta"><div class="swatch-name">Pine 900</div><div class="swatch-hex">#152A20</div></div></div>
+      <div class="swatch" data-hex="#356B4E"><div class="swatch-fill" style="background:#356B4E"></div><div class="swatch-meta"><div class="swatch-name">Forest 600</div><div class="swatch-hex">#356B4E</div></div></div>
+      <div class="swatch" data-hex="#8FAE96"><div class="swatch-fill" style="background:#8FAE96"></div><div class="swatch-meta"><div class="swatch-name">Sage 400</div><div class="swatch-hex">#8FAE96</div></div></div>
+      <div class="swatch" data-hex="#F4F0E4"><div class="swatch-fill" style="background:#F4F0E4"></div><div class="swatch-meta"><div class="swatch-name">Cream 100</div><div class="swatch-hex">#F4F0E4</div></div></div>
+      <div class="swatch" data-hex="#D6CBA8"><div class="swatch-fill" style="background:#D6CBA8"></div><div class="swatch-meta"><div class="swatch-name">Sand 400</div><div class="swatch-hex">#D6CBA8</div></div></div>
+      <div class="swatch" data-hex="#C99A3B"><div class="swatch-fill" style="background:#C99A3B"></div><div class="swatch-meta"><div class="swatch-name">Gold 500</div><div class="swatch-hex">#C99A3B</div></div></div>
+      <div class="swatch" data-hex="#B14B41"><div class="swatch-fill" style="background:#B14B41"></div><div class="swatch-meta"><div class="swatch-name">Coral 600</div><div class="swatch-hex">#B14B41</div></div></div>
+      <div class="swatch" data-hex="#1B211C"><div class="swatch-fill" style="background:#1B211C"></div><div class="swatch-meta"><div class="swatch-name">Ink 900</div><div class="swatch-hex">#1B211C</div></div></div>
+    </div>
+
+    <p class="subhead">Semantic colors</p>
+    <div class="swatch-grid">
+      <div class="swatch" data-hex="#457F5F"><div class="swatch-fill" style="background:#457F5F"></div><div class="swatch-meta"><div class="swatch-name">Success</div><div class="swatch-hex">#457F5F</div></div></div>
+      <div class="swatch" data-hex="#C99A3B"><div class="swatch-fill" style="background:#C99A3B"></div><div class="swatch-meta"><div class="swatch-name">Warning</div><div class="swatch-hex">#C99A3B</div></div></div>
+      <div class="swatch" data-hex="#B14B41"><div class="swatch-fill" style="background:#B14B41"></div><div class="swatch-meta"><div class="swatch-name">Danger</div><div class="swatch-hex">#B14B41</div></div></div>
+      <div class="swatch" data-hex="#3E6E7A"><div class="swatch-fill" style="background:#3E6E7A"></div><div class="swatch-meta"><div class="swatch-name">Info</div><div class="swatch-hex">#3E6E7A</div></div></div>
+    </div>
+  </section>
+
+  <!-- ============================= TYPOGRAPHY ============================= -->
+  <section id="typography">
+    <p class="section-tag">Foundations</p>
+    <h2 class="section-title">Typography</h2>
+    <p class="section-desc">Fraunces carries the moments that need warmth — greetings, big figures, section titles. Inter runs the interface itself: labels, body copy, and every number in a table. Numerals use tabular figures throughout so columns of data stay aligned.</p>
+
+    <div class="card">
+      <div class="type-row"><div class="type-sample" style="font-size:52px;font-weight:500;">Hello, Valentina</div><div class="type-meta"><b>Display</b>52 / 500 / Fraunces</div></div>
+      <div class="type-row"><div class="type-sample" style="font-size:38px;font-weight:500;">Portfolio overview</div><div class="type-meta"><b>H1</b>38 / 500 / Fraunces</div></div>
+      <div class="type-row"><div class="type-sample" style="font-size:27px;font-weight:500;">Monthly spending</div><div class="type-meta"><b>H2</b>27 / 500 / Fraunces</div></div>
+      <div class="type-row"><div class="type-sample" style="font-size:20px;font-weight:600;font-family:var(--font-body);">Recent transactions</div><div class="type-meta"><b>H3</b>20 / 600 / Inter</div></div>
+      <div class="type-row"><div class="type-sample body-sample" style="font-size:15.5px;line-height:1.6;">Body text sits in Inter at 15.5px with a 1.6 line height, kept under 80 characters per line for comfortable reading in cards and side panels.</div><div class="type-meta"><b>Body</b>15.5 / 400 / Inter</div></div>
+      <div class="type-row"><div class="type-sample body-sample" style="font-size:12.5px;color:var(--ink-500);font-weight:600;">Available balance</div><div class="type-meta"><b>Caption / label</b>12.5 / 600 / Inter</div></div>
+      <div class="type-row"><div class="type-sample body-sample" style="font-size:24px;font-weight:600;font-variant-numeric:tabular-nums;">₹92,142.10</div><div class="type-meta"><b>Data figure</b>24 / 600 / tabular</div></div>
+    </div>
+  </section>
+
+  <!-- ============================= SPACING ============================= -->
+  <section id="spacing">
+    <p class="section-tag">Foundations</p>
+    <h2 class="section-title">Spacing &amp; radius</h2>
+    <p class="section-desc">An 4px-based scale keeps rhythm consistent across dense dashboard layouts. Radius steps up with a component's size and prominence — small on controls, generous on cards and sheets.</p>
+
+    <div class="showcase cols-2">
+      <div class="card">
+        <p class="subhead" style="margin-top:0;">Spacing scale</p>
+        <div class="space-row"><div class="space-label">4 — space-1</div><div class="space-bar" style="width:4px;"></div></div>
+        <div class="space-row"><div class="space-label">8 — space-2</div><div class="space-bar" style="width:8px;"></div></div>
+        <div class="space-row"><div class="space-label">12 — space-3</div><div class="space-bar" style="width:12px;"></div></div>
+        <div class="space-row"><div class="space-label">16 — space-4</div><div class="space-bar" style="width:16px;"></div></div>
+        <div class="space-row"><div class="space-label">24 — space-5</div><div class="space-bar" style="width:24px;"></div></div>
+        <div class="space-row"><div class="space-label">32 — space-6</div><div class="space-bar" style="width:32px;"></div></div>
+        <div class="space-row"><div class="space-label">48 — space-7</div><div class="space-bar" style="width:48px;"></div></div>
+        <div class="space-row"><div class="space-label">64 — space-8</div><div class="space-bar" style="width:64px;"></div></div>
+      </div>
+      <div class="card">
+        <p class="subhead" style="margin-top:0;">Radius scale</p>
+        <div style="display:flex;gap:20px;align-items:flex-end;">
+          <div style="text-align:center;"><div style="width:56px;height:56px;background:var(--sage-300);border-radius:6px;margin-bottom:8px;"></div><span style="font-size:12px;color:var(--ink-500);">sm · 6</span></div>
+          <div style="text-align:center;"><div style="width:56px;height:56px;background:var(--sage-300);border-radius:12px;margin-bottom:8px;"></div><span style="font-size:12px;color:var(--ink-500);">md · 12</span></div>
+          <div style="text-align:center;"><div style="width:56px;height:56px;background:var(--sage-300);border-radius:20px;margin-bottom:8px;"></div><span style="font-size:12px;color:var(--ink-500);">lg · 20</span></div>
+          <div style="text-align:center;"><div style="width:56px;height:56px;background:var(--sage-300);border-radius:999px;margin-bottom:8px;"></div><span style="font-size:12px;color:var(--ink-500);">pill</span></div>
+        </div>
+        <p class="subhead">Elevation</p>
+        <div style="display:flex;gap:20px;">
+          <div style="width:80px;height:56px;background:white;border-radius:10px;box-shadow:var(--shadow-1);display:grid;place-items:center;font-size:11px;color:var(--ink-500);">shadow-1</div>
+          <div style="width:80px;height:56px;background:white;border-radius:10px;box-shadow:var(--shadow-2);display:grid;place-items:center;font-size:11px;color:var(--ink-500);">shadow-2</div>
+          <div style="width:80px;height:56px;background:white;border-radius:10px;box-shadow:var(--shadow-3);display:grid;place-items:center;font-size:11px;color:var(--ink-500);">shadow-3</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= BUTTONS ============================= -->
+  <section id="buttons">
+    <p class="section-tag">Components</p>
+    <h2 class="section-title">Buttons</h2>
+    <p class="section-desc">Pill-shaped by default, matching the rounded, friendly language of the source dashboards. Gold is reserved for a single standout action per screen.</p>
+
+    <div class="card">
+      <p class="subhead" style="margin-top:0;">Variants</p>
+      <div class="btn-row">
+        <button class="btn btn-primary">Primary action</button>
+        <button class="btn btn-gold">Upgrade plan</button>
+        <button class="btn btn-outline">Secondary</button>
+        <button class="btn btn-ghost">Ghost</button>
+        <button class="btn btn-danger">Delete account</button>
+        <button class="btn btn-primary" disabled>Disabled</button>
+      </div>
+      <p class="subhead">Sizes</p>
+      <div class="btn-row">
+        <button class="btn btn-primary btn-sm">Small</button>
+        <button class="btn btn-primary">Medium</button>
+        <button class="btn btn-primary btn-lg">Large</button>
+      </div>
+      <p class="subhead">Icon buttons</p>
+      <div class="btn-row">
+        <button class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
+        <button class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></button>
+        <button class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= FORMS ============================= -->
+  <section id="forms">
+    <p class="section-tag">Components</p>
+    <h2 class="section-title">Form controls</h2>
+    <p class="section-desc">Inputs sit on a soft cream fill rather than pure white, so forms feel embedded in the page instead of floating on top of it.</p>
+
+    <div class="showcase cols-2">
+      <div class="card">
+        <div class="field">
+          <label>Full name</label>
+          <input class="input" placeholder="Andrew Forbist" />
+        </div>
+        <div class="field">
+          <div class="input-icon-wrap">
+            <label>Search transactions</label>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            <input class="input" placeholder="Search"/>
+          </div>
+        </div>
+        <div class="field">
+          <label>Account type</label>
+          <select class="select">
+            <option>Savings</option>
+            <option>Checking</option>
+            <option>Business</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Amount</label>
+          <input class="input is-error" placeholder="₹0.00" />
+          <div class="field-hint is-error">Enter an amount greater than ₹0</div>
+        </div>
+        <div class="field">
+          <label>Disabled field</label>
+          <input class="input" disabled placeholder="Not editable" />
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="field">
+          <label>Notes</label>
+          <textarea class="textarea" placeholder="Add a note to this transaction…"></textarea>
+        </div>
+        <p class="subhead" style="margin-top:0;">Checkbox &amp; radio</p>
+        <div class="check-row"><div class="check-box checked"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div> Auto-pay bills monthly</div>
+        <div class="check-row"><div class="check-box"></div> Send me spending summaries</div>
+        <div class="check-row"><div class="radio-box checked"></div> Weekly report</div>
+        <div class="check-row"><div class="radio-box"></div> Monthly report</div>
+        <p class="subhead">Toggle</p>
+        <div class="check-row"><div class="toggle on"></div> Two-factor authentication</div>
+        <div class="check-row"><div class="toggle"></div> Marketing emails</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= CARDS ============================= -->
+  <section id="cards">
+    <p class="section-tag">Components</p>
+    <h2 class="section-title">Cards &amp; stats</h2>
+    <p class="section-desc">The workhorse of every dashboard reference: a greeting header, stat tiles with delta pills, and transaction lists.</p>
+
+    <p class="subhead" style="margin-top:0;">Greeting</p>
+    <div class="greet-card" style="margin-bottom:var(--space-5);">
+      <div>
+        <div class="greet-name">Hello, Siburian</div>
+        <div class="greet-sub">Here's what happened with your money this week</div>
+      </div>
+      <button class="btn btn-gold btn-sm">Add money</button>
+    </div>
+
+    <p class="subhead">Stat tiles</p>
+    <div class="showcase cols-3" style="margin-bottom:var(--space-5);">
+      <div class="stat-card">
+        <div class="stat-top"><span class="stat-label">Total balance</span><span class="delta up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 19V5M5 12l7-7 7 7"/></svg>4.8%</span></div>
+        <div class="stat-value">$12,172.07</div>
+        <div class="progress-track"><div class="progress-fill" style="width:64%;"></div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-top"><span class="stat-label">Monthly spending</span><span class="delta down"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 5v14M5 12l7 7 7-7"/></svg>2.1%</span></div>
+        <div class="stat-value">$3,916.50</div>
+        <div class="progress-track"><div class="progress-fill" style="width:38%;background:var(--gold-500);"></div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-top"><span class="stat-label">Savings goal</span><span class="delta up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 19V5M5 12l7-7 7 7"/></svg>12%</span></div>
+        <div class="stat-value">$7,110.12</div>
+        <div class="progress-track"><div class="progress-fill" style="width:82%;"></div></div>
+      </div>
+    </div>
+
+    <div class="showcase cols-2">
+      <div class="card list-card">
+        <p class="subhead" style="margin-top:0;">Transaction list</p>
+        <div class="row"><div class="avatar sz-md">MW</div><div><div class="row-name">Maria Warren</div><div class="row-sub">16 Jun 2026 · Transfer</div></div><div class="row-amount" style="margin-left:auto;color:var(--forest-700);">+$4,263.90</div></div>
+        <div class="row"><div class="avatar sz-md" style="background:var(--gold-500);color:var(--pine-950);">DA</div><div><div class="row-name">Denver Aspen</div><div class="row-sub">12 Jun 2026 · Subscription</div></div><div class="row-amount" style="margin-left:auto;">-$52.00</div></div>
+        <div class="row"><div class="avatar sz-md" style="background:var(--coral-600);">AP</div><div><div class="row-name">Apple Marchand Pro</div><div class="row-sub">08 Jun 2026 · Purchase</div></div><div class="row-amount" style="margin-left:auto;">-$1,209.10</div></div>
+      </div>
+
+      <div class="card">
+        <p class="subhead" style="margin-top:0;">Empty &amp; loading states</p>
+        <div class="empty-state" style="border:1px dashed var(--sand-400);border-radius:var(--radius-md);margin-bottom:var(--space-4);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg>
+          <p>No transactions yet — they'll show up here once you add an account.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div class="skeleton" style="height:14px;width:70%;"></div>
+          <div class="skeleton" style="height:14px;width:90%;"></div>
+          <div class="skeleton" style="height:14px;width:50%;"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= DATA VIZ ============================= -->
+  <section id="dataviz">
+    <p class="section-tag">Components</p>
+    <h2 class="section-title">Data visualization</h2>
+    <p class="section-desc">Bars, radial gauges and area charts pull from the same two greens plus gold for standout series — never more than one accent color per chart.</p>
+
+    <div class="showcase cols-3" style="margin-bottom:var(--space-5);">
+      <div class="card">
+        <div class="chart-card-head"><h4>Weekly activity</h4><span>Mon–Sun</span></div>
+        <div class="bar-chart">
+          <div class="bar" style="height:40%;"></div>
+          <div class="bar" style="height:65%;"></div>
+          <div class="bar active" style="height:90%;"><span>90</span></div>
+          <div class="bar" style="height:55%;"></div>
+          <div class="bar" style="height:70%;"></div>
+          <div class="bar" style="height:35%;"></div>
+          <div class="bar" style="height:48%;"></div>
+        </div>
+      </div>
+
+      <div class="card" style="display:flex;flex-direction:column;align-items:center;justify-content:center;">
+        <div class="radial lg" style="--pct:70;"><div class="radial-inner"><b>70%</b><span>on track</span></div></div>
+        <p class="subhead" style="margin-bottom:0;">Budget used</p>
+      </div>
+
+      <div class="card">
+        <div class="chart-card-head"><h4>Portfolio trend</h4><span>30 days</span></div>
+        <svg class="sparkline" viewBox="0 0 200 60" preserveAspectRatio="none">
+          <polygon points="0,50 20,42 40,46 60,30 80,34 100,18 120,24 140,12 160,20 180,8 200,14 200,60 0,60" fill="var(--sage-200)"/>
+          <polyline points="0,50 20,42 40,46 60,30 80,34 100,18 120,24 140,12 160,20 180,8 200,14" fill="none" stroke="var(--forest-600)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="showcase cols-4">
+      <div class="card" style="display:flex;flex-direction:column;align-items:center;">
+        <div class="radial md" style="--pct:41;"><div class="radial-inner"><b>41%</b></div></div>
+        <span style="font-size:12px;color:var(--ink-500);margin-top:8px;">Team capacity</span>
+      </div>
+      <div class="card" style="display:flex;flex-direction:column;align-items:center;">
+        <div class="radial md" style="--pct:12.8;background:conic-gradient(var(--gold-500) 12.8%, var(--sand-300) 0);"><div class="radial-inner"><b>12.8</b></div></div>
+        <span style="font-size:12px;color:var(--ink-500);margin-top:8px;">Growth rate</span>
+      </div>
+      <div class="card">
+        <span class="stat-label">Storage used</span>
+        <div style="margin:12px 0 6px;"><span style="font-family:var(--font-display);font-size:20px;">64.4GB</span> <span style="color:var(--ink-500);font-size:12.5px;">of 100GB</span></div>
+        <div class="progress-track"><div class="progress-fill" style="width:64%;"></div></div>
+      </div>
+      <div class="card">
+        <span class="stat-label">Task completion</span>
+        <div style="margin:12px 0 6px;"><span style="font-family:var(--font-display);font-size:20px;">154/180</span></div>
+        <div class="progress-track"><div class="progress-fill" style="width:85%;background:var(--gold-500);"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= NAVIGATION ============================= -->
+  <section id="navigation">
+    <p class="section-tag">Components</p>
+    <h2 class="section-title">Navigation</h2>
+    <p class="section-desc">A topbar for search and account context, tabs for switching views within a page, and pagination for long lists.</p>
+
+    <p class="subhead" style="margin-top:0;">Topbar</p>
+    <div class="topbar-demo" style="margin-bottom:var(--space-5);">
+      <div class="input-icon-wrap" style="width:240px;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input class="input" placeholder="Search anything" style="padding-top:8px;padding-bottom:8px;"/>
+      </div>
+      <div style="display:flex;align-items:center;gap:14px;">
+        <div style="position:relative;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg><span class="count-badge" style="position:absolute;top:-6px;right:-8px;">3</span></div>
+        <div class="avatar sz-sm">RW</div>
+      </div>
+    </div>
+
+    <p class="subhead">Tabs</p>
+    <div class="tabs" style="margin-bottom:var(--space-5);">
+      <div class="tab is-active">Overview</div>
+      <div class="tab">Payments</div>
+      <div class="tab">Cards</div>
+      <div class="tab">History</div>
+      <div class="tab">Settings</div>
+    </div>
+
+    <div class="showcase cols-2">
+      <div>
+        <p class="subhead" style="margin-top:0;">Breadcrumbs</p>
+        <div class="breadcrumb">Dashboard <span>›</span> Payments <span>›</span> <b>Invoice #2291</b></div>
+      </div>
+      <div>
+        <p class="subhead" style="margin-top:0;">Pagination</p>
+        <div class="pagination">
+          <div class="page-btn">‹</div>
+          <div class="page-btn is-active">1</div>
+          <div class="page-btn">2</div>
+          <div class="page-btn">3</div>
+          <div class="page-btn">›</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= TABLES ============================= -->
+  <section id="tables">
+    <p class="section-tag">Components</p>
+    <h2 class="section-title">Tables</h2>
+    <p class="section-desc">Hairline row dividers keep dense financial data legible without the visual noise of full borders or striping.</p>
+
+    <div class="card" style="padding:0;overflow:hidden;">
+      <table class="data-table">
+        <thead>
+          <tr><th>Recipient<span class="sort-ind">↓</span></th><th>Date</th><th>Status</th><th style="text-align:right;">Amount</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Notion Labs Inc.</td><td>Jun 16, 2026</td><td><span class="pill neutral">Pending</span></td><td style="text-align:right;font-variant-numeric:tabular-nums;">$29.00</td></tr>
+          <tr><td>Rosa Chen — Freelance</td><td>Jun 14, 2026</td><td><span class="pill success">Completed</span></td><td style="text-align:right;font-variant-numeric:tabular-nums;">$840.00</td></tr>
+          <tr><td>Google Workspace</td><td>Jun 10, 2026</td><td><span class="pill success">Completed</span></td><td style="text-align:right;font-variant-numeric:tabular-nums;">$18.00</td></tr>
+          <tr><td>Refund — Nike Order</td><td>Jun 05, 2026</td><td><span class="pill danger">Failed</span></td><td style="text-align:right;font-variant-numeric:tabular-nums;">$132.40</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============================= BADGES ============================= -->
+  <section id="badges">
+    <p class="section-tag">Components</p>
+    <h2 class="section-title">Badges &amp; tags</h2>
+    <p class="section-desc">Status pills communicate state at a glance; tags label categories; count badges surface unread items.</p>
+
+    <div class="card">
+      <p class="subhead" style="margin-top:0;">Status pills</p>
+      <div class="btn-row">
+        <span class="pill success"><span class="pill-dot"></span>Completed</span>
+        <span class="pill warning"><span class="pill-dot"></span>Pending</span>
+        <span class="pill danger"><span class="pill-dot"></span>Failed</span>
+        <span class="pill info"><span class="pill-dot"></span>In review</span>
+        <span class="pill neutral"><span class="pill-dot"></span>Draft</span>
+      </div>
+      <p class="subhead">Tags</p>
+      <div class="btn-row">
+        <span class="tag">Groceries</span>
+        <span class="tag">Utilities</span>
+        <span class="tag">Subscriptions</span>
+        <span class="tag">Travel</span>
+      </div>
+      <p class="subhead">Count badge</p>
+      <div class="btn-row" style="gap:20px;">
+        <span style="position:relative;display:inline-block;"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l9 6 9-6M3 8v10h18V8"/></svg><span class="count-badge" style="position:absolute;top:-7px;right:-9px;">5</span></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= AVATARS ============================= -->
+  <section id="avatars">
+    <p class="section-tag">Components</p>
+    <h2 class="section-title">Avatars</h2>
+    <p class="section-desc">Initials on a forest fill by default. A status dot shows presence; stacked groups summarize shared access.</p>
+
+    <div class="card">
+      <p class="subhead" style="margin-top:0;">Sizes</p>
+      <div class="btn-row" style="align-items:center;">
+        <div class="avatar sz-sm">RW</div>
+        <div class="avatar sz-md">RW</div>
+        <div class="avatar sz-lg">RW</div>
+      </div>
+      <p class="subhead">With status</p>
+      <div class="btn-row">
+        <div class="avatar sz-md" style="background:var(--gold-500);color:var(--pine-950);">JL<span class="status-dot"></span></div>
+        <div class="avatar sz-md" style="background:var(--coral-600);">MK<span class="status-dot" style="background:var(--ink-300);"></span></div>
+      </div>
+      <p class="subhead">Group</p>
+      <div class="avatar-stack">
+        <div class="avatar sz-md">RW</div>
+        <div class="avatar sz-md" style="background:var(--gold-500);color:var(--pine-950);">JL</div>
+        <div class="avatar sz-md" style="background:var(--coral-600);">MK</div>
+        <div class="avatar sz-md" style="background:var(--ink-500);">+4</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= ALERTS ============================= -->
+  <section id="feedback">
+    <p class="section-tag">Components</p>
+    <h2 class="section-title">Alerts &amp; feedback</h2>
+    <p class="section-desc">Inline banners sit at the top of a section they concern; toasts confirm an action the person just took and clear on their own.</p>
+
+    <div class="card" style="display:flex;flex-direction:column;gap:12px;margin-bottom:var(--space-5);">
+      <div class="alert success"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><div><b>Payment sent</b>Your transfer of $840.00 to Rosa Chen is complete.</div></div>
+      <div class="alert warning"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg><div><b>Card expiring soon</b>Your Visa ending 4417 expires at the end of this month.</div></div>
+      <div class="alert danger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg><div><b>Payment failed</b>We couldn't process your refund. Check your account details.</div></div>
+      <div class="alert info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><div><b>Scheduled maintenance</b>Transfers may be delayed on Sunday, 2–4am.</div></div>
+    </div>
+
+    <button class="btn btn-outline" id="toast-trigger">Trigger a toast</button>
+  </section>
+
+  <!-- ============================= OVERLAYS ============================= -->
+  <section id="overlays">
+    <p class="section-tag">Components</p>
+    <h2 class="section-title">Modals &amp; tooltips</h2>
+    <p class="section-desc">Modals interrupt for a decision that needs full attention; tooltips clarify a control without leaving the page.</p>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" id="modal-trigger">Open modal</button>
+      <div class="tooltip-demo">
+        <button class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></button>
+        <div class="tooltip-bubble">Shows account details</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= ICONS ============================= -->
+  <section id="icons">
+    <p class="section-tag">Components</p>
+    <h2 class="section-title">Iconography</h2>
+    <p class="section-desc">A single-weight, rounded-join line set at 20px, matching the softness of the type and radius scale. Scales down to 16px for inline use and up to 24px for primary actions.</p>
+
+    <div class="icon-grid">
+      <div class="icon-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2H8a2 2 0 00-2 2v2"/></svg><span>Wallet</span></div>
+      <div class="icon-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18M7 15l4-4 3 3 5-6"/></svg><span>Analytics</span></div>
+      <div class="icon-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg><span>Alerts</span></div>
+      <div class="icon-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.9l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.9-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1-1.6 1.7 1.7 0 00-1.9.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.9 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.6-1 1.7 1.7 0 00-.3-1.9l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.9.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.9-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.9V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/></svg><span>Settings</span></div>
+      <div class="icon-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><span>Search</span></div>
+      <div class="icon-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg><span>Add</span></div>
+      <div class="icon-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 1l4 4-4 4M3 11V9a4 4 0 014-4h14M7 23l-4-4 4-4M21 13v2a4 4 0 01-4 4H3"/></svg><span>Transfer</span></div>
+      <div class="icon-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 016-6h4a6 6 0 016 6v1"/></svg><span>Profile</span></div>
+      <div class="icon-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span>Calendar</span></div>
+      <div class="icon-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg><span>Increase</span></div>
+      <div class="icon-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg><span>Decrease</span></div>
+      <div class="icon-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span>Messages</span></div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Glade Design System — built from dashboard, wallet &amp; admin UI references</span>
+    <span>Foundations · Components · v1.0</span>
+  </footer>
+</main>
+
+<!-- Modal -->
+<div id="modal-overlay">
+  <div class="modal">
+    <h3>Confirm transfer</h3>
+    <p>You're about to send $840.00 to Rosa Chen. This can't be undone once confirmed.</p>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" id="modal-cancel">Cancel</button>
+      <button class="btn btn-primary" id="modal-confirm">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+
+<script>
+  // Copy hex on swatch click
+  document.querySelectorAll('.swatch').forEach(function(sw){
+    sw.addEventListener('click', function(){
+      var hex = sw.getAttribute('data-hex');
+      navigator.clipboard && navigator.clipboard.writeText(hex).catch(function(){});
+      var label = sw.querySelector('.swatch-hex');
+      var original = label.textContent;
+      label.textContent = 'Copied';
+      label.classList.add('swatch-copied');
+      setTimeout(function(){ label.textContent = original; label.classList.remove('swatch-copied'); }, 1100);
+    });
+  });
+
+  // Sidebar active link on scroll
+  var links = document.querySelectorAll('.side-link');
+  var sections = Array.from(links).map(function(l){ return document.querySelector(l.getAttribute('href')); });
+  window.addEventListener('scroll', function(){
+    var pos = window.scrollY + 120;
+    var current = 0;
+    sections.forEach(function(sec, i){ if(sec && sec.offsetTop <= pos) current = i; });
+    links.forEach(function(l, i){ l.classList.toggle('is-active', i === current); });
+  });
+
+  // Tabs
+  document.querySelectorAll('.tab').forEach(function(tab){
+    tab.addEventListener('click', function(){
+      tab.parentElement.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('is-active'); });
+      tab.classList.add('is-active');
+    });
+  });
+
+  // Toggle switches
+  document.querySelectorAll('.toggle').forEach(function(t){
+    t.addEventListener('click', function(){ t.classList.toggle('on'); });
+  });
+
+  // Modal
+  var overlay = document.getElementById('modal-overlay');
+  document.getElementById('modal-trigger').addEventListener('click', function(){ overlay.classList.add('show'); });
+  document.getElementById('modal-cancel').addEventListener('click', function(){ overlay.classList.remove('show'); });
+  document.getElementById('modal-confirm').addEventListener('click', function(){
+    overlay.classList.remove('show');
+    showToast('Transfer confirmed');
+  });
+  overlay.addEventListener('click', function(e){ if(e.target === overlay) overlay.classList.remove('show'); });
+
+  // Toast
+  function showToast(msg){
+    var t = document.createElement('div');
+    t.className = 'toast';
+    t.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><span>' + msg + '</span>';
+    document.getElementById('toast-container').appendChild(t);
+    requestAnimationFrame(function(){ t.classList.add('show'); });
+    setTimeout(function(){ t.classList.remove('show'); setTimeout(function(){ t.remove(); }, 300); }, 2600);
+  }
+  document.getElementById('toast-trigger').addEventListener('click', function(){ showToast('Saved successfully'); });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,43 @@
+node_modules
+
+# Output
+.output
+.vercel
+.netlify
+.wrangler
+**/.svelte-kit
+**/build
+.turbo
+.expo
+dist
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.*
+!.env.example
+!.env.test
+
+# Vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+
+# IDE / agent tooling
+.cursor/
+.serena/
+.remember/
+.gemini/
+.opencode/
+.vscode/
+
+# Prisma / test artifacts
+**/coverage/
+*.log
+
+# Local env & secrets (never commit)
+packages/api/.env
+packages/db/.env
+apps/*/.env
