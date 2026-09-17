@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import type { CreatePickupResponse, VisualTier, WardSummary } from '@kachracash/types';
-import { Button, GladeScreen, Pill } from '@kachracash/ui/native';
+import { Button, GladeScreen, Icon, Pill, StepBanner } from '@kachracash/ui/native';
 import { colors, surfacePalette } from '@kachracash/ui/tokens';
 import { createPickup, fetchAllTierRates, fetchWards, getApiBaseUrl, getDevCitizenId } from './src/lib/api';
 import { CATEGORY_CARDS, formatFloorRate } from './src/lib/categories';
@@ -131,10 +131,11 @@ export default function App() {
 	return (
 		<GladeScreen app="citizen" subtitle="Schedule pickup">
 			<StatusBar style="dark" />
-			<View style={styles.stepRow}>
-				<Text style={[styles.step, step === 1 && styles.stepActive]}>1 · Category</Text>
-				<Text style={[styles.step, step === 2 && styles.stepActive]}>2 · Ward & slot</Text>
-				<Text style={[styles.step, step === 3 && styles.stepActive]}>3 · Confirm</Text>
+			<StepBanner activeStep={step} />
+			<View style={styles.wizardSteps}>
+				<Text style={[styles.wizardStep, step === 1 && styles.wizardStepActive]}>1 · Category</Text>
+				<Text style={[styles.wizardStep, step === 2 && styles.wizardStepActive]}>2 · Ward & slot</Text>
+				<Text style={[styles.wizardStep, step === 3 && styles.wizardStepActive]}>3 · Confirm</Text>
 			</View>
 
 			{step === 1 ? (
@@ -165,11 +166,17 @@ export default function App() {
 									styles.categoryCard,
 									{
 										backgroundColor: palette.card,
-										borderColor: isSelected ? palette.accent : palette.border
+										borderColor: isSelected ? palette.accent : palette.border,
+										borderWidth: isSelected ? 2 : 1
 									}
 								]}
 							>
-								<Text style={[styles.categoryTitle, { color: palette.heading }]}>{category.title}</Text>
+								<View style={styles.categoryHead}>
+									<View style={[styles.categoryIcon, { backgroundColor: palette.cardMuted }]}>
+										<Icon name={category.icon} size={18} color={palette.accent} />
+									</View>
+									<Text style={[styles.categoryTitle, { color: palette.heading }]}>{category.title}</Text>
+								</View>
 								<Text style={{ color: palette.textMuted }}>{category.desc}</Text>
 								<Text style={styles.rate}>{rateLabel}</Text>
 							</Pressable>
@@ -237,11 +244,13 @@ export default function App() {
 									styles.select,
 									{
 										backgroundColor: palette.card,
-										borderColor: isSelected ? palette.accent : palette.border
+										borderColor: isSelected ? palette.accent : palette.border,
+										borderWidth: isSelected ? 2 : 1
 									}
 								]}
 							>
-								<Text>{slot.label}</Text>
+								<Icon name="calendar" size={16} color={isSelected ? palette.accent : colors.ink500} />
+								<Text style={{ color: palette.heading, flex: 1 }}>{slot.label}</Text>
 							</Pressable>
 						);
 					})}
@@ -296,19 +305,34 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-	stepRow: { flexDirection: 'row', gap: 8, marginBottom: 4 },
-	step: { fontSize: 12, color: colors.ink500 },
-	stepActive: { color: colors.forest600, fontWeight: '700' },
+	wizardSteps: { flexDirection: 'row', gap: 8, marginTop: -4, marginBottom: 4 },
+	wizardStep: { fontSize: 12, color: colors.ink500 },
+	wizardStepActive: { color: colors.forest600, fontWeight: '700' },
 	titleRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 12 },
 	title: { fontSize: 22, fontWeight: '500', flex: 1 },
 	loadingRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 4 },
 	errorText: { color: colors.coral600, fontSize: 12, marginBottom: 8 },
-	categoryCard: { borderWidth: 1, borderRadius: 12, padding: 14, gap: 4 },
-	categoryTitle: { fontSize: 16, fontWeight: '600' },
-	rate: { marginTop: 4, color: colors.gold600, fontWeight: '700' },
+	categoryCard: { borderRadius: 12, padding: 14, gap: 6 },
+	categoryHead: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+	categoryIcon: {
+		width: 34,
+		height: 34,
+		borderRadius: 8,
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
+	categoryTitle: { fontSize: 16, fontWeight: '600', flex: 1 },
+	rate: { marginTop: 2, color: colors.gold600, fontWeight: '700' },
 	apiHint: { fontSize: 10, color: colors.ink300, marginTop: -4, marginBottom: 8 },
-	label: { fontSize: 12, color: colors.ink500, fontWeight: '600' },
-	select: { borderWidth: 1, borderRadius: 12, padding: 12, marginBottom: 8 },
+	label: { fontSize: 12, color: colors.ink500, fontWeight: '600', marginTop: 4 },
+	select: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		gap: 10,
+		borderRadius: 12,
+		padding: 12,
+		marginBottom: 8
+	},
 	navRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 12, marginTop: 8 },
 	summaryCard: { borderWidth: 1, borderRadius: 12, padding: 16, gap: 4, marginBottom: 12 },
 	summaryGap: { marginTop: 12 },

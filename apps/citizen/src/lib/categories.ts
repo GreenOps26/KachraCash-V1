@@ -1,26 +1,31 @@
 import type { VisualTier } from '@kachracash/types';
+import type { IconName } from '@kachracash/ui/native';
 
 export interface CategoryCardModel {
 	tier: VisualTier;
 	title: string;
 	desc: string;
+	icon: IconName;
 }
 
 export const CATEGORY_CARDS: CategoryCardModel[] = [
 	{
 		tier: 'RIGID_CONTAINERS',
 		title: 'Rigid containers',
-		desc: 'PET bottles, HDPE, cans'
+		desc: 'PET bottles, HDPE, cans',
+		icon: 'bottle'
 	},
 	{
 		tier: 'SOFT_FILMS',
 		title: 'Soft film & paper',
-		desc: 'Cardboard, newspaper'
+		desc: 'Cardboard, newspaper',
+		icon: 'paper'
 	},
 	{
 		tier: 'MIXED_BULKY',
 		title: 'Bulky & metals',
-		desc: 'Appliances, iron, steel'
+		desc: 'Appliances, iron, steel',
+		icon: 'metal'
 	}
 ];
 

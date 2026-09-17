@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import type { PickupListResponse, VisualTier } from '@kachracash/types';
-import { Button, GladeScreen, Pill } from '@kachracash/ui/native';
+import { Button, GladeScreen, Icon, Pill } from '@kachracash/ui/native';
 import { colors, surfacePalette } from '@kachracash/ui/tokens';
 import {
 	acceptPickup,
@@ -187,7 +187,10 @@ export default function App() {
 
 			<View style={[styles.blePanel, { backgroundColor: palette.card, borderColor: palette.border }]}>
 				<View style={styles.bleHeader}>
-					<Text style={[styles.bleTitle, { color: palette.heading }]}>BLE hanging scale</Text>
+					<View style={styles.bleTitleRow}>
+						<Icon name="scale" size={18} color={palette.highlight} />
+						<Text style={[styles.bleTitle, { color: palette.heading }]}>BLE hanging scale</Text>
+					</View>
 					<Pill
 						label={scale.status === 'connected' ? 'GATT stream live' : scale.status}
 						tone={scale.status === 'connected' ? 'success' : 'info'}
@@ -199,7 +202,12 @@ export default function App() {
 				</Text>
 
 				{scale.status === 'disconnected' || scale.status === 'error' ? (
-					<Button variant="primary" size="field" label="Scan for scale" onPress={() => scale.startScan()} />
+					<Button
+						variant="primary"
+						size="field"
+						label="Scan for scale"
+						onPress={() => scale.startScan()}
+					/>
 				) : null}
 
 				{scale.status === 'scanning' ? (
@@ -305,6 +313,7 @@ const styles = StyleSheet.create({
 	devOtp: { color: colors.gold500, fontWeight: '700' },
 	blePanel: { borderWidth: 1, borderRadius: 12, padding: 14, gap: 10 },
 	bleHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 8 },
+	bleTitleRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
 	bleTitle: { fontSize: 15, fontWeight: '700' },
 	scanList: { gap: 8 },
 	deviceRow: { borderWidth: 1, borderRadius: 10, padding: 10, gap: 2 },

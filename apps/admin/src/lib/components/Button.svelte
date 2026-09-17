@@ -42,10 +42,14 @@
 	);
 </script>
 
-{#if href}
-	<a class={classes} {href} style={inlineStyle} aria-disabled={disabled}>
+{#if href && !disabled}
+	<a class={classes} {href} style={inlineStyle}>
 		{@render children()}
 	</a>
+{:else if href && disabled}
+	<span class="{classes} btn-disabled-link" style={inlineStyle} aria-disabled="true">
+		{@render children()}
+	</span>
 {:else}
 	<button class={classes} {type} {disabled} {onclick} style={inlineStyle}>
 		{@render children()}

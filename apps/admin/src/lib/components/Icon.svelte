@@ -10,7 +10,13 @@
 		| 'check'
 		| 'plug'
 		| 'users'
-		| 'trend';
+		| 'trend'
+		| 'calendar'
+		| 'scale'
+		| 'bottle'
+		| 'paper'
+		| 'metal'
+		| 'arrow-left';
 
 	interface Props {
 		name: IconName;
@@ -38,7 +44,18 @@
 			'MM12 22v-5M9 8V2M15 8V2M7 13h10a2 2 0 0 1 2 2v3a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4v-3a2 2 0 0 1 2-2Z',
 		users:
 			'MM16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9.5 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM20 8v6M23 11h-6',
-		trend: 'M3 17l6-6 4 4 8-8M14 7h7v7'
+		trend: 'M3 17l6-6 4 4 8-8M14 7h7v7',
+		calendar:
+			'M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z',
+		scale:
+			'M12 3v18M3 12h18M6 6l12 12M18 6 6 18',
+		bottle:
+			'M10 2h4v3h2a2 2 0 0 1 2 2v11a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3V7a2 2 0 0 1 2-2h2V2Z',
+		paper:
+			'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6ZM14 2v6h6M8 13h8M8 17h5',
+		metal:
+			'M4 8h16M6 8V6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2M8 12h8M10 16h4',
+		'arrow-left': 'M19 12H5M12 19l-7-7 7-7'
 	};
 </script>
 

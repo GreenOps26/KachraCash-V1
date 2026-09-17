@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KachraCash — UI Preview (Citizen · Partner · Admin)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,340..600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pine-950:#0F1E16;--pine-900:#152A20;--pine-800:#1D3A2B;
+  --forest-700:#2C5A43;--forest-600:#356B4E;--forest-500:#457F5F;
+  --sage-400:#8FAE96;--sage-300:#AFC7B2;--sage-200:#D2E0D3;
+  --cream-50:#FAF7EF;--cream-100:#F4F0E4;--sand-300:#E4DCC5;--sand-400:#D6CBA8;
+  --gold-600:#B3822A;--gold-500:#C99A3B;
+  --coral-600:#B14B41;--coral-100:#F3DAD6;
+  --info-600:#3E6E7A;--info-100:#DCE8E9;
+  --ink-900:#1B211C;--ink-700:#3D453E;--ink-500:#6B756E;--ink-300:#9AA39B;
+  --white:#FFFFFF;
+  --radius-sm:6px;--radius-md:12px;--radius-lg:20px;--radius-pill:999px;
+  --font-display:'Fraunces',serif;--font-body:'Inter',sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--font-body);background:var(--cream-100);color:var(--ink-900);-webkit-font-smoothing:antialiased}
+a{color:var(--forest-600);text-decoration:none;font-weight:600}
+a:hover{text-decoration:underline}
+header.hero{padding:40px 32px 24px;max-width:1200px;margin:0 auto}
+.hero h1{font-family:var(--font-display);font-size:clamp(1.75rem,3vw,2.5rem);margin:0 0 8px;color:var(--pine-900)}
+.hero p{margin:0;color:var(--ink-700);max-width:60ch;line-height:1.6}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;padding:0 32px 24px;max-width:1200px;margin:0 auto}
+.tab{padding:10px 18px;border-radius:var(--radius-pill);border:1px solid var(--sand-400);background:var(--white);font:inherit;font-weight:600;cursor:pointer}
+.tab.is-active{background:var(--forest-600);color:var(--cream-50);border-color:var(--forest-600)}
+.preview-wrap{max-width:1200px;margin:0 auto;padding:0 32px 64px}
+.panel{display:none}
+.panel.is-active{display:block}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:start}
+.phone{background:var(--white);border:1px solid var(--sand-400);border-radius:28px;overflow:hidden;box-shadow:0 16px 40px rgba(15,30,22,.12)}
+.phone-dark{background:var(--pine-950);border-color:var(--pine-800)}
+.phone-bar{height:28px;background:var(--cream-50);border-bottom:1px solid var(--sand-300)}
+.phone-dark .phone-bar{background:var(--pine-900);border-color:var(--pine-800)}
+.phone-body{padding:16px;display:flex;flex-direction:column;gap:12px;min-height:520px}
+.phone-dark .phone-body{color:var(--cream-50)}
+.brand{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+.mark{width:32px;height:32px;border-radius:9px;background:linear-gradient(155deg,var(--sage-300),var(--forest-600));display:grid;place-items:center}
+.mark svg{width:16px;height:16px}
+.brand-name{font-family:var(--font-display);font-size:17px;font-weight:500}
+.brand-sub{font-size:10px;color:var(--ink-500)}
+.phone-dark .brand-sub{color:var(--sage-400)}
+.step-banner{display:flex;flex-wrap:wrap;gap:6px;padding:10px 12px;background:var(--cream-50);border:1px solid var(--sand-300);border-radius:var(--radius-md);font-size:11px;font-weight:600;color:var(--ink-700)}
+.step-banner .on{color:var(--forest-600)}
+.card{border:1px solid var(--sand-400);border-radius:var(--radius-md);padding:12px;background:var(--white)}
+.phone-dark .card{background:var(--pine-900);border-color:var(--pine-800)}
+.card h3{margin:0 0 4px;font-size:14px;font-family:var(--font-display)}
+.card p{margin:0;font-size:12px;color:var(--ink-500)}
+.phone-dark .card p{color:var(--sage-400)}
+.rate{color:var(--gold-600);font-weight:700;font-size:12px;margin-top:6px}
+.btn{font:inherit;font-size:13px;font-weight:600;border-radius:var(--radius-pill);padding:10px 16px;border:1px solid transparent;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn-gold{background:var(--gold-500);color:var(--pine-950)}
+.btn-primary{background:var(--forest-600);color:var(--cream-50)}
+.btn-outline{background:transparent;border-color:var(--forest-600);color:var(--forest-600)}
+.btn-field{width:100%;min-height:48px}
+.pill{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;padding:3px 8px;border-radius:var(--radius-pill);background:var(--sage-200);color:var(--forest-700)}
+.pill-warn{background:#f3e6c6;color:var(--gold-600)}
+.scale-box{background:var(--pine-900);border-radius:var(--radius-md);padding:18px;text-align:center}
+.scale-val{font-family:var(--font-display);font-size:28px;color:var(--sage-300)}
+.admin-frame{background:var(--white);border:1px solid var(--sand-400);border-radius:var(--radius-lg);overflow:hidden;box-shadow:0 16px 40px rgba(15,30,22,.1)}
+.admin-layout{display:flex;min-height:480px}
+.sidebar{width:200px;background:var(--pine-900);color:var(--sage-200);padding:20px 14px}
+.side-link{display:block;padding:8px 10px;border-radius:var(--radius-sm);font-size:12px;color:var(--sage-200);margin-bottom:4px;cursor:pointer}
+.side-link.on{background:var(--forest-700);color:var(--cream-50)}
+.admin-main{flex:1;padding:20px;background:var(--cream-100)}
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.stat{background:var(--white);border:1px solid var(--sand-400);border-radius:var(--radius-md);padding:12px}
+.stat label{font-size:10px;color:var(--ink-500);font-weight:600}
+.stat b{display:block;font-family:var(--font-display);font-size:20px;margin-top:2px}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{text-align:left;color:var(--ink-500);padding:6px 0}
+td{padding:10px 0;border-top:1px solid var(--sand-300)}
+.footnote{margin-top:32px;padding:16px;background:var(--white);border:1px solid var(--sand-400);border-radius:var(--radius-md);font-size:13px;color:var(--ink-700);line-height:1.55}
+@media(max-width:1000px){.grid-3{grid-template-columns:1fr}.stat-row{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<header class="hero">
+  <h1>KachraCash UI Preview</h1>
+  <p>কচৰা ক্যাশ — Glade design system across citizen, partner (collector), and admin surfaces. Open this file in any browser for a quick visual review without running the dev servers.</p>
+</header>
+
+<div class="tabs" role="tablist">
+  <button class="tab is-active" data-panel="all" role="tab">All apps</button>
+  <button class="tab" data-panel="citizen" role="tab">Citizen</button>
+  <button class="tab" data-panel="partner" role="tab">Partner</button>
+  <button class="tab" data-panel="admin" role="tab">Admin</button>
+</div>
+
+<div class="preview-wrap">
+  <section class="panel is-active" id="panel-all">
+    <div class="grid-3">
+      <div class="phone" id="citizen-preview">
+        <div class="phone-bar"></div>
+        <div class="phone-body">
+          <div class="brand"><div class="mark"><svg viewBox="0 0 24 24"><path d="M12 2C8 6 5 10 5 14a7 7 0 0014 0c0-4-3-8-7-12z" fill="#FAF7EF"/></svg></div><div><div class="brand-name">KachraCash</div><div class="brand-sub">Schedule pickup</div></div></div>
+          <div class="step-banner"><span class="on">Schedule</span> → Weigh transparently → Instant UPI payout</div>
+          <div class="card is-selected" style="border-color:var(--forest-600)"><h3>Rigid containers</h3><p>PET bottles, HDPE, cans</p><div class="rate">₹12.00–₹18.00 / kg</div></div>
+          <div class="card"><h3>Soft film & paper</h3><p>Cardboard, newspaper</p><div class="rate">₹6.00–₹10.00 / kg</div></div>
+          <button class="btn btn-gold btn-field" type="button">Continue to ward & slot</button>
+        </div>
+      </div>
+
+      <div class="phone phone-dark" id="partner-preview">
+        <div class="phone-bar"></div>
+        <div class="phone-body">
+          <div class="brand"><div class="mark"><svg viewBox="0 0 24 24"><path d="M12 2C8 6 5 10 5 14a7 7 0 0014 0c0-4-3-8-7-12z" fill="#FAF7EF"/></svg></div><div><div class="brand-name">KachraCash</div><div class="brand-sub">Collector · field mode</div></div></div>
+          <div class="card"><div style="display:flex;justify-content:space-between"><b>Priya Sharma</b><span class="pill pill-warn">Weighing</span></div><p>Ward 12 · Beltola</p></div>
+          <div class="card"><b>BLE hanging scale</b><p>GATT stream live · simulator</p></div>
+          <div class="scale-box"><div class="scale-val" id="weight-display">2.500 kg</div><p style="font-size:11px;color:var(--sage-400);margin:6px 0 0">Floor settlement · ₹36.25 gross</p></div>
+          <div style="display:flex;gap:8px"><button class="btn btn-primary btn-field" type="button" id="tare-btn">Confirm tare</button><button class="btn btn-gold btn-field" type="button" id="lock-btn">Lock weight</button></div>
+          <button class="btn btn-gold btn-field" type="button">Complete & pay citizen</button>
+        </div>
+      </div>
+
+      <div class="admin-frame" id="admin-preview">
+        <div class="admin-layout">
+          <aside class="sidebar">
+            <div class="brand" style="margin-bottom:16px"><div class="mark"><svg viewBox="0 0 24 24"><path d="M12 2C8 6 5 10 5 14a7 7 0 0014 0c0-4-3-8-7-12z" fill="#FAF7EF"/></svg></div><div><div class="brand-name" style="color:var(--cream-50)">KachraCash</div><div class="brand-sub">Ops console</div></div></div>
+            <div class="side-link on">Dispatch radar</div>
+            <div class="side-link">Ward suspension</div>
+            <div class="side-link">Float ledger</div>
+            <div class="side-link">Rate cards</div>
+          </aside>
+          <main class="admin-main">
+            <h2 style="font-family:var(--font-display);margin:0 0 12px">Dispatch radar</h2>
+            <div class="stat-row">
+              <div class="stat"><label>Active pickups</label><b>3</b></div>
+              <div class="stat"><label>SLA breaches</label><b style="color:var(--gold-600)">2</b></div>
+              <div class="stat"><label>UPI success</label><b style="color:var(--forest-600)">100%</b></div>
+              <div class="stat"><label>Suspended</label><b>1</b></div>
+            </div>
+            <div class="card" style="background:var(--white)">
+              <table><thead><tr><th>Ward</th><th>Collector</th><th>Status</th><th>Amount</th></tr></thead>
+              <tbody>
+                <tr><td><b>Beltola</b></td><td>Rahim Ali</td><td><span class="pill">Weighing</span></td><td>₹142.00</td></tr>
+                <tr><td><b>Jayanagar</b></td><td>Deepa Das</td><td><span class="pill">Assigned</span></td><td>—</td></tr>
+              </tbody></table>
+            </div>
+          </main>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-citizen"><p style="margin-bottom:16px">Citizen booking flow: category → ward & slot → confirm → UPI payout.</p><div style="max-width:400px"><div class="phone"><div class="phone-bar"></div><div class="phone-body" id="citizen-solo"></div></div></div></section>
+  <section class="panel" id="panel-partner"><p style="margin-bottom:16px">Partner field app: BLE scale telemetry, zero-tare, weight lock, OTP settlement.</p><div style="max-width:400px"><div class="phone phone-dark"><div class="phone-bar"></div><div class="phone-body" id="partner-solo"></div></div></div></section>
+  <section class="panel" id="panel-admin"><p style="margin-bottom:16px">Admin ops desk: dispatch, ward suspension, float ledger, rate cards.</p><div class="admin-frame" style="max-width:800px" id="admin-solo"></div></section>
+
+  <div class="footnote">
+    <strong>Live interactive previews</strong> — run <code>pnpm dev</code> from the repo root, then open
+    <a href="http://localhost:5173/">http://localhost:5173/</a> (hub),
+    <a href="http://localhost:5173/citizen">/citizen</a>,
+    <a href="http://localhost:5173/partner">/partner</a>, and
+    <a href="http://localhost:5173/admin">/admin</a>.
+    Design tokens: <code>docs/glade-design-system.html</code>.
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('.tab').forEach(function(tab){
+  tab.addEventListener('click',function(){
+    document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('is-active')});
+    document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('is-active')});
+    tab.classList.add('is-active');
+    document.getElementById('panel-'+tab.dataset.panel).classList.add('is-active');
+  });
+});
+
+var weight=2.5, locked=false;
+var wEl=document.getElementById('weight-display');
+document.getElementById('lock-btn').addEventListener('click',function(){
+  locked=!locked;
+  this.textContent=locked?'Weight locked':'Lock weight';
+  wEl.textContent=(locked?weight:weight).toFixed(3)+' kg';
+});
+document.getElementById('tare-btn').addEventListener('click',function(){
+  weight=0; wEl.textContent='0.000 kg'; locked=false;
+  document.getElementById('lock-btn').textContent='Lock weight';
+});
+
+document.getElementById('citizen-solo').innerHTML=document.getElementById('citizen-preview').querySelector('.phone-body').innerHTML;
+document.getElementById('partner-solo').innerHTML=document.getElementById('partner-preview').querySelector('.phone-body').innerHTML;
+document.getElementById('admin-solo').innerHTML=document.getElementById('admin-preview').innerHTML;
+</script>
+</body>
+</html>
